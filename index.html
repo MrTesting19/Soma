@@ -6,9 +6,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Soma">
+<link rel="apple-touch-icon" href="icon.png">
 <link rel="manifest" href="manifest.json">
 <title>Soma</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Nunito+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Nunito+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;font-family:'Sora',system-ui,sans-serif}
@@ -44,6 +45,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .empty-state{padding:30px 20px;text-align:center;color:var(--muted);font-size:13px;line-height:1.6}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn .25s ease forwards}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:20px;height:20px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -55,7 +58,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
       <div id="mp-sub" style="font-size:11px;color:var(--muted);margin-top:2px"></div>
     </div>
     <div id="mp-nav" style="flex:1;padding:10px;overflow-y:auto"></div>
-    <div style="padding:12px 18px;border-top:0.5px solid var(--bdr);font-size:9px;color:var(--muted);letter-spacing:.02em">soma v3.0</div>
+    <div style="padding:12px 18px;border-top:0.5px solid var(--bdr);font-size:9px;color:var(--muted);letter-spacing:.02em">soma v4.0</div>
   </div>
   <div id="hdr">
     <span style="font-size:20px;font-weight:700;color:var(--ac);letter-spacing:-.8px">soma</span>
@@ -68,23 +71,23 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 <script>
 // ===== THEMES & ACCENTS =====
-const FONTS={'sora':['Sora','sans-serif'],'dm-sans':['DM Sans','sans-serif'],'jakarta':['Plus Jakarta Sans','sans-serif'],'outfit':['Outfit','sans-serif'],'nunito':['Nunito Sans','sans-serif']};
+// [9] Inter font added
+const FONTS={'sora':['Sora','sans-serif'],'dm-sans':['DM Sans','sans-serif'],'jakarta':['Plus Jakarta Sans','sans-serif'],'outfit':['Outfit','sans-serif'],'nunito':['Nunito Sans','sans-serif'],'inter':['Inter','sans-serif']};
 const THEMES={light:{bg:'#FFFFFF',surf:'#FFFFFF',surf2:'#F7F7F6',text:'#1C1917',sub:'#44403C',muted:'#9CA3AF',bdr:'#E5E5E4'},dark:{bg:'#161615',surf:'#1E1D1C',surf2:'#272625',text:'#F5F5F4',sub:'#D6D3D1',muted:'#78716C',bdr:'#333230'},warm:{bg:'#FDF8F0',surf:'#FFFBF5',surf2:'#F5ECD9',text:'#2C1810',sub:'#5C3D2E',muted:'#9C7060',bdr:'#E8D5C0'},cool:{bg:'#F0F4F8',surf:'#FFFFFF',surf2:'#E8EFF6',text:'#1E2A3A',sub:'#354A60',muted:'#6B82A0',bdr:'#CDD8E5'}};
 const ACCENTS={amber:{m:'#F59E0B',bg:'#FFFBEB',bdr:'#FDE68A',t:'#92400E'},teal:{m:'#14B8A6',bg:'#F0FDFA',bdr:'#99F6E4',t:'#0F766E'},blue:{m:'#3B82F6',bg:'#EFF6FF',bdr:'#BFDBFE',t:'#1D4ED8'},coral:{m:'#F97316',bg:'#FFF7ED',bdr:'#FED7AA',t:'#C2410C'},purple:{m:'#8B5CF6',bg:'#F5F3FF',bdr:'#DDD6FE',t:'#5B21B6'},green:{m:'#22C55E',bg:'#F0FDF4',bdr:'#BBF7D0',t:'#15803D'},rose:{m:'#F43F5E',bg:'#FFF1F2',bdr:'#FECDD3',t:'#BE123C'},slate:{m:'#64748B',bg:'#F8FAFC',bdr:'#CBD5E1',t:'#334155'},gold:{m:'#CA8A04',bg:'#FEFCE8',bdr:'#FEF08A',t:'#713F12'},mint:{m:'#34D399',bg:'#ECFDF5',bdr:'#A7F3D0',t:'#065F46'},crimson:{m:'#DC2626',bg:'#FEF2F2',bdr:'#FECACA',t:'#991B1B'},indigo:{m:'#6366F1',bg:'#EEF2FF',bdr:'#C7D2FE',t:'#3730A3'}};
 
 // ===== PERSISTENCE =====
 function saveState(){try{const d={meals:S.todayMeals,symptoms:S.symptomLogs,stool:S.stoolLogs,notes:S.noteLogs,water:S.waterLogs,waterTotal:S.water,morningDoneAt:S.morningDoneAt,morningData:S.morningData,theme:S.theme,accent:S.accent,font:S.font,fontSize:S.fontSize,density:S.density,sections:S.sections,targets:S.targets,days:S.days,savedDate:new Date().toISOString().split('T')[0]};localStorage.setItem('soma_data',JSON.stringify(d));}catch(e){}}
-function loadState(){try{const raw=localStorage.getItem('soma_data');if(!raw)return;const d=JSON.parse(raw);const today=new Date().toISOString().split('T')[0];if(d.savedDate===today){S.todayMeals=d.meals||[];S.symptomLogs=d.symptoms||[];S.stoolLogs=d.stool||[];S.noteLogs=d.notes||[];S.waterLogs=d.water||[];S.water=d.waterTotal||0;S.morningDoneAt=d.morningDoneAt||null;S.morningData=d.morningData||S.morningData;if(d.days)S.days=d.days;}else{// New day — archive yesterday then reset
-if(d.meals&&d.meals.length>0){const hist=d.days||[];hist.push({date:d.savedDate,meals:d.meals,symptoms:d.symptoms,stool:d.stool,notes:d.notes,water:d.water,waterTotal:d.waterTotal,morningData:d.morningData});S.days=hist;}S.todayMeals=[];S.symptomLogs=[];S.stoolLogs=[];S.noteLogs=[];S.waterLogs=[];S.water=0;S.morningDoneAt=null;}
+function loadState(){try{const raw=localStorage.getItem('soma_data');if(!raw)return;const d=JSON.parse(raw);const today=new Date().toISOString().split('T')[0];if(d.savedDate===today){S.todayMeals=d.meals||[];S.symptomLogs=d.symptoms||[];S.stoolLogs=d.stool||[];S.noteLogs=d.notes||[];S.waterLogs=d.water||[];S.water=d.waterTotal||0;S.morningDoneAt=d.morningDoneAt||null;S.morningData=d.morningData||S.morningData;if(d.days)S.days=d.days;}else{if(d.meals&&d.meals.length>0){const hist=d.days||[];hist.push({date:d.savedDate,meals:d.meals,symptoms:d.symptoms,stool:d.stool,notes:d.notes,water:d.water,waterTotal:d.waterTotal,morningData:d.morningData});S.days=hist;}S.todayMeals=[];S.symptomLogs=[];S.stoolLogs=[];S.noteLogs=[];S.waterLogs=[];S.water=0;S.morningDoneAt=null;}
 if(d.theme)S.theme=d.theme;if(d.accent)S.accent=d.accent;if(d.font)S.font=d.font;if(d.fontSize)S.fontSize=d.fontSize;if(d.density)S.density=d.density;if(d.sections)S.sections={...S.sections,...d.sections};if(d.targets)S.targets={...S.targets,...d.targets};}catch(e){}}
 
 // ===== APP STATE =====
 const S={view:'home',theme:'light',accent:'amber',font:'sora',fontSize:'normal',density:'comfortable',
 sections:{quickLog:true,todaySummary:true,meals:true,symptoms:true,stool:true,notes:true,dttInfo:true},
 targets:{calories:2500,protein:105,fat:55,carbs:380,water:2500},
-logActive:false,logText:'',logResult:null,expandedMeal:null,expandedInsight:null,expandedHistory:null,expandedLibMeal:null,
+logActive:false,logText:'',logResult:null,logLoading:false,expandedMeal:null,expandedInsight:null,expandedHistory:null,expandedLibMeal:null,
 water:0,todayMeals:[],chartMetric:'weight',chartRange:'week',chartOverlay:null,
-libTab:'meals',libMealRange:'today',settingsTab:null,
+libTab:'meals',libRange:'today',settingsTab:null,
 morningOpen:false,morningStep:0,morningData:{tongue:false,tsev:5,reflux:false,indigestion:false,nasal:false,weight:'',sleepQ:'Fair'},morningDoneAt:null,
 docOpen:false,docDays:7,searchText:'',moreOpen:false,toastTimer:null,toastUndoFn:null,
 symptomLogs:[],stoolLogs:[],noteLogs:[],waterLogs:[],
@@ -106,12 +109,32 @@ const ub=document.getElementById('toast-undo');if(ub)ub.style.color=a.m;
 
 // ===== FOOD DATABASE & PARSING =====
 const COOK_WORDS=['fried','boiled','grilled','steamed','roasted','poached','scrambled','baked','sauteed','mashed','blended','raw','smoked','braised'];
+// [4] Condiment set for excluding from meal titles
+const CONDIMENTS=new Set(['ghee','olive oil','evoo','coconut oil','butter','extra virgin olive oil','clarified butter']);
+
 const FDB=[{n:'chicken breast',v:[165,31,0,3.6,0,0],a:['chicken','breast'],defG:165},{n:'chicken mince',v:[163,28,0,5,0,0],a:['mince chicken','minced chicken'],defG:150},{n:'chicken thigh',v:[177,24,0,9,0,0],a:['thigh'],defG:150},{n:'turkey',v:[135,30,0,1,0,0],a:['turkey breast','turkey mince'],defG:150},{n:'pollock',v:[92,20,0,1,0,0],a:['pollock fillet'],defG:150},{n:'cod',v:[82,18,0,0.7,0,0],a:['cod fillet'],defG:150},{n:'salmon',v:[208,20,0,13,0,0],a:['salmon fillet'],defG:150},{n:'tuna',v:[132,29,0,1,0,0],a:['tuna steak','canned tuna'],defG:150},{n:'haddock',v:[89,19,0,0.9,0,0],a:[],defG:150},{n:'sea bass',v:[97,18,0,2,0,0],a:['seabass'],defG:150},{n:'mackerel',v:[205,19,0,14,0,0],a:['smoked mackerel'],defG:150},{n:'prawns',v:[99,21,0,1.5,0,0],a:['shrimp','king prawns'],defG:100},{n:'white fish',v:[90,19,0,1,0,0],a:['fish fillet','fish'],defG:150},{n:'egg',v:[155,13,1.1,11,0.6,0],a:['eggs','whole egg','free range egg','medium egg','large egg'],gpu:70,u:'egg',defG:70},{n:'egg white',v:[52,11,0.7,0.2,0.5,0],a:['egg whites'],defG:33},{n:'white rice',v:[130,2.7,28,0.3,0,0.4],a:['rice','basmati','basmati rice','jasmine rice'],cupG:186,defG:185},{n:'brown rice',v:[123,2.6,26,1,0,1.8],a:['brown basmati'],cupG:195,defG:185},{n:'oats',v:[389,17,66,7,0,10],a:['porridge','rolled oats','oatmeal'],cupG:81,defG:40},{n:'pasta',v:[158,5.8,31,0.9,0.6,1.8],a:['spaghetti','penne'],cupG:140,defG:180},{n:'sweet potato',v:[86,1.6,20,0.1,4.2,3],a:['sweet potato mash','sweetpotato'],cupG:200,defG:200},{n:'potato',v:[77,2,17,0.1,0.8,2.2],a:['white potato','mashed potato','boiled potato','potatoes'],cupG:170,defG:200},{n:'courgette',v:[17,1.2,3.1,0.3,2.5,1],a:['zucchini','courgettes'],defG:150},{n:'broccoli',v:[34,2.8,7,0.4,1.7,2.6],a:['broccoli florets'],cupG:90,defG:80},{n:'spinach',v:[23,2.9,3.6,0.4,0.4,2.2],a:['baby spinach'],cupG:30,defG:80},{n:'carrot',v:[41,0.9,10,0.2,4.7,2.8],a:['carrots'],cupG:128,defG:80},{n:'banana',v:[89,1.1,23,0.3,12,2.6],a:['bananas'],defG:120},{n:'avocado',v:[160,2,9,15,0.7,6.7],a:['avocados'],defG:80},{n:'ghee',v:[900,0,0,100,0,0],a:['clarified butter'],gpu:5,u:'tsp',defG:5},{n:'olive oil',v:[884,0,0,100,0,0],a:['evoo','extra virgin olive oil','oil'],gpu:5,u:'tsp',defG:5},{n:'coconut oil',v:[862,0,0,100,0,0],a:[],gpu:5,u:'tsp',defG:5},{n:'butter',v:[717,0.9,0.1,81,0.1,0],a:['unsalted butter'],gpu:5,u:'tsp',defG:5},{n:'honey',v:[304,0.3,82,0,82,0.2],a:['raw honey'],gpu:21,u:'tbsp',defG:21},{n:'whey protein',v:[113,23,4,2,3,0],a:['protein powder','whey'],gpu:30,u:'scoop',defG:30},{n:'bone broth',v:[10,2,0.5,0.1,0,0],a:['stock','chicken stock'],cupG:240,defG:240},{n:'date',v:[277,1.8,75,0.2,63,6.7],a:['dates','medjool date','medjool dates'],gpu:24,u:'date',defG:24},{n:'ginger',v:[80,1.8,18,0.8,1.7,2],a:['fresh ginger'],defG:5},{n:'ginger tea',v:[2,0,0.5,0,0.2,0],a:['ginger tea'],cupG:240,defG:240}];
 
 function findFood(w){const s=w.toLowerCase().trim().replace(/s$/,'');let cl=s;COOK_WORDS.forEach(cw=>{cl=cl.replace(new RegExp('\\b'+cw+'\\b','gi'),'').trim();});cl=cl.replace(/\s+/g,' ').trim();if(!cl)return null;return FDB.find(f=>f.n===cl||f.n===s||cl.includes(f.n)||f.n.includes(cl)||(f.a&&f.a.some(a=>a===cl||a===s||cl.includes(a)||a.includes(cl))));}
 function extractCook(text){const l=text.toLowerCase();for(const cw of COOK_WORDS){if(l.includes(cw))return cw.charAt(0).toUpperCase()+cw.slice(1);}return null;}
 function tc(s){return s.replace(/\b\w/g,c=>c.toUpperCase());}
-function cleanName(n){let c=n.toLowerCase();COOK_WORDS.forEach(cw=>{c=c.replace(new RegExp('\\b'+cw+'\\b','gi'),'').trim();});c=c.replace(/\bat\b/gi,'').trim();return tc(c.replace(/\s+/g,' ').trim());}
+
+// [3] Fixed cleanName — protect multi-word foods like "sweet potato" before stripping cook words
+function cleanName(n){
+  let c=n.toLowerCase();
+  // Protect known multi-word food names
+  const protectedNames=['sweet potato','white rice','brown rice','sea bass','bone broth','egg white','white fish','coconut oil','olive oil','ginger tea'];
+  const placeholders={};
+  protectedNames.forEach((pn,i)=>{
+    const ph='__PROT'+i+'__';
+    if(c.includes(pn)){placeholders[ph]=pn;c=c.replace(new RegExp(pn,'g'),ph);}
+  });
+  COOK_WORDS.forEach(cw=>{c=c.replace(new RegExp('\\b'+cw+'\\b','gi'),'').trim();});
+  c=c.replace(/\bat\b/gi,'').trim();
+  // Restore protected names
+  Object.entries(placeholders).forEach(([ph,orig])=>{c=c.replace(new RegExp(ph,'g'),orig);});
+  return tc(c.replace(/\s+/g,' ').trim());
+}
+
 function calcDTT(m){let b=(m.texture||'')==='Slurry'?1.5:(m.texture||'')==='Mashed'?2:(m.texture||'')==='Soft'?2.5:3;if((m.fat||0)>15)b+=1;else if((m.fat||0)>8)b+=0.5;if((m.cals||0)>600)b+=0.5;return b.toFixed(1);}
 function macroLvl(mk,v){const T2={calories:[500,300],protein:[35,20],carbs:[60,30],fat:[8,4],sugar:[8,4],fibre:[5,2]};const[hi,md]=T2[mk]||[100,50];return v>=hi?{l:'High',bg:'#FEE2E2',c:'#DC2626'}:v>=md?{l:'Med',bg:'#FEF3C7',c:'#92400E'}:{l:'Low',bg:'#DCFCE7',c:'#15803D'};}
 
@@ -125,10 +148,9 @@ function stripTime(text){
     .replace(/\s+/g,' ').trim();
 }
 
-// ===== MEAL PARSER =====
+// ===== MEAL PARSER (local fallback) =====
 function parseMeal(text){
 const low=text.toLowerCase();
-// Extract time FIRST
 let time=null;
 const timePatterns=[
   /^(\d{1,2})\s*(am|pm)\b/i,
@@ -154,43 +176,33 @@ for(const pat of timePatterns){
 if(!time){const tm2=low.match(/\bat\s+(\d{1,2}:\d{2})/);if(tm2)time=tm2[1];}
 if(!time)time=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
 
-// STRIP TIME from text before ingredient parsing
 const cleaned=stripTime(text).toLowerCase();
-
 const method=extractCook(text);
 let k=0,p=0,c=0,f=0,s=0,fi=0;
-const ings=[],ingMethods=[],done=new Set();
-const addF=(fd,g,label,cm)=>{if(!fd||done.has(fd.n))return;const[fk,fp,fc,ff2,fs,ffi]=fd.v;k+=fk*g/100;p+=fp*g/100;c+=fc*g/100;f+=ff2*g/100;s+=fs*g/100;fi+=ffi*g/100;ings.push(label);ingMethods.push(cm||method||null);done.add(fd.n);};
+const ings=[],ingMethods=[],done=new Set(),ingFoodNames=[];
+const addF=(fd,g,label,cm)=>{if(!fd||done.has(fd.n))return;const[fk,fp,fc,ff2,fs,ffi]=fd.v;k+=fk*g/100;p+=fp*g/100;c+=fc*g/100;f+=ff2*g/100;s+=fs*g/100;fi+=ffi*g/100;ings.push(label);ingMethods.push(cm||method||null);ingFoodNames.push(fd.n);done.add(fd.n);};
 
-// Parse "Xg food" patterns — use cleaned text (no time)
 for(const m of cleaned.matchAll(/(\d+(?:\.\d+)?)\s*g\s+(?:of\s+)?([a-z][a-z ]+?)(?=\s*(?:and|,|\+|\d|all|boiled|grilled|steamed|mashed|blended|roasted|fried|at|$))/gi)){
   addF(findFood(m[2].trim()),+m[1],cleanName(m[2].trim())+': '+m[1]+'g',extractCook(m[2]));
 }
-// Parse "X cups food"
 for(const m of cleaned.matchAll(/(\d+(?:\.\d+)?)\s+cups?\s+(?:of\s+)?([a-z][a-z ]+?)(?=\s*(?:and|,|\+|\d|$))/gi)){
   const fd=findFood(m[2].trim());if(fd&&fd.cupG)addF(fd,+m[1]*fd.cupG,cleanName(m[2].trim())+': '+m[1]+' cup'+(+m[1]!==1?'s':''));
 }
-// Parse "X eggs"
 const em=cleaned.match(/(\d+)\s+(?:(fried|boiled|scrambled|poached)\s+)?eggs?/);
 if(em){const fd=findFood('egg');if(fd&&fd.gpu){addF(fd,+em[1]*fd.gpu,'Egg'+(+em[1]>1?'s':'')+' x'+em[1],em[2]?tc(em[2]):method);}}
 if(!em){const em2=cleaned.match(/(?:^|\s)(?:(fried|boiled|scrambled|poached)\s+)?eggs?(?:\s|$|,)/);if(em2){const fd=findFood('egg');if(fd&&fd.gpu)addF(fd,fd.gpu,'Egg x1',em2[1]?tc(em2[1]):method);}}
-// Parse tsp
 for(const m of cleaned.matchAll(/(\d+(?:\.\d+)?)\s+tsps?\s+(?:of\s+)?([a-z][a-z ]+?)(?=\s*(?:and|,|\+|\d|$))/gi)){
   const fd=findFood(m[2].trim());if(fd&&fd.gpu)addF(fd,+m[1]*fd.gpu,cleanName(m[2].trim())+': '+m[1]+' tsp');
 }
-// Parse tbsp
 for(const m of cleaned.matchAll(/(\d+(?:\.\d+)?)\s+tbsps?\s+(?:of\s+)?([a-z][a-z ]+?)(?=\s*(?:and|,|\+|\d|$))/gi)){
   const fd=findFood(m[2].trim());if(fd)addF(fd,+m[1]*15,cleanName(m[2].trim())+': '+m[1]+' tbsp');
 }
-// Parse "X ml food"
 for(const m of cleaned.matchAll(/(\d+)\s*ml\s+(?:of\s+)?([a-z][a-z ]+?)(?=\s*(?:and|,|\+|\d|$))/gi)){
   const fd=findFood(m[2].trim());if(fd)addF(fd,+m[1],cleanName(m[2].trim())+': '+m[1]+'ml');
 }
-// Parse "X dates"
 const dm=cleaned.match(/(\d+)\s+(?:medjool\s+)?dates?/);
 if(dm&&!done.has('date')){const fd=findFood('date');if(fd&&fd.gpu)addF(fd,+dm[1]*fd.gpu,'Medjool Date'+(+dm[1]>1?'s':'')+' x'+dm[1]);}
 
-// Fallback: split by and/comma and try to find each part
 if(ings.length===0){
   const parts=cleaned.split(/\s+and\s+|,|\+/).map(p2=>p2.trim()).filter(Boolean);
   parts.forEach(part=>{
@@ -208,12 +220,15 @@ const cm=method||'Not specified';
 const tex=cm.includes('blend')?'Slurry':cm.includes('mash')||cm.includes('Mash')?'Mashed':'Soft';
 const fr=Math.round(f);
 
-// Build name from ingredients only (no amounts, no cooking, no "at")
+// [4] Build name from ingredients, excluding condiments
 const mealName=(()=>{
-  const names=ings.map(i2=>{
+  const names=ings.map((i2,idx)=>{
+    const foodName=ingFoodNames[idx]||'';
+    // Skip condiments in title
+    if(CONDIMENTS.has(foodName.toLowerCase()))return null;
     let raw=i2.split(':')[0].split('x')[0].replace(/[0-9]/g,'').trim();
     return cleanName(raw);
-  }).filter(n2=>n2.length>1);
+  }).filter(n2=>n2&&n2.length>1);
   if(!names.length)return'Logged Meal';
   if(names.length===1)return names[0];
   if(names.length===2)return names[0]+' & '+names[1];
@@ -228,20 +243,24 @@ const MKW=['rice','chicken','fish','pollock','cod','egg','potato','ghee','oil','
 const WKW=['water','hydrat','drink','glass','bottle'];
 const STOOL_KW=['stool','bristol','type 1','type 2','type 3','type 4','type 5','type 6','type 7','bowel movement','poo'];
 
+// [2] Fixed detectType — check water BEFORE food match
 function detectType(text){
   const l=text.toLowerCase();
   const w=WKW.filter(x=>l.includes(x)).length;
-  const m=MKW.filter(x=>l.includes(x)).length;
-  const sm=SKW.filter(x=>l.includes(x)).length;
   const st=STOOL_KW.filter(x=>l.includes(x)).length;
-  // Also check if the text matches any food in the database directly
-  const foodMatch=findFood(stripTime(text));
+  const sm=SKW.filter(x=>l.includes(x)).length;
+  const m=MKW.filter(x=>l.includes(x)).length;
+  // Check water FIRST, before food match
+  if(w>0&&m===0)return'water';
+  // Also catch patterns like "500ml water", "1 litre water" even if food keywords accidentally match
+  if(w>0&&/\b\d+\s*(?:ml|litre|liter|l\b|glass)/i.test(l)&&l.includes('water'))return'water';
   if(st>0&&m===0)return'stool';
-  if(w>0&&m===0&&!foodMatch)return'water';
+  const foodMatch=findFood(stripTime(text));
   if(m>0||foodMatch)return'meal';
   if(sm>0)return'symptom';
   return'note';
 }
+
 function parseStool(text){const l=text.toLowerCase();const tm=l.match(/type\s*(\d)/);const type=tm?+tm[1]:4;let color='Brown';['dark brown','green','yellow-brown','yellow','light brown'].forEach(c=>{if(l.includes(c))color=tc(c);});return{type,color,assisted:l.includes('assist')||l.includes('suppository'),note:null,time:new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})};}
 function parseSymptom(text){const l=text.toLowerCase();let sym=null,level=null,duration=null,time=null;
 const symMap={cramping:/cramp/,burn:/burn/,reflux:/reflux|heartburn/,bloating:/bloat/,fatigue:/fatigue|tired/,brainfog:/brain\s*fog|fog/,dryskin:/dry\s*skin|skin/,tongue:/tongue|coating/,indigestion:/indigestion/,nasal:/nasal|congestion/,redskin:/red\s*skin|redness/};
@@ -282,7 +301,8 @@ function doUndo(){if(S.toastUndoFn){S.toastUndoFn();render();}hideToast();}
 // ===== NAV FUNCTIONS =====
 function openMore(){S.moreOpen=true;document.getElementById('morepanel').style.right='0';document.getElementById('overlay').style.display='block';}
 function closeMore(){S.moreOpen=false;document.getElementById('morepanel').style.right='-260px';document.getElementById('overlay').style.display='none';}
-function navTo(v){if(v==='more'){openMore();return;}S.view=v;closeMore();render();}
+// [12] Auto-clear logResult on nav
+function navTo(v){if(v==='more'){openMore();return;}S.logResult=null;S.view=v;closeMore();render();}
 function goLog(){S.view='home';S.logActive=true;render();setTimeout(()=>{const ta=document.querySelector('#content textarea');if(ta)ta.focus();},80);}
 
 // ===== DOM HELPERS =====
@@ -303,6 +323,34 @@ function getNow(){return new Date().toLocaleTimeString('en-GB',{hour:'2-digit',m
 function getTodayLabel(){const d=new Date();return d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'});}
 function accentShades(base){const hex=base.replace('#','');const r=parseInt(hex.substr(0,2),16),g=parseInt(hex.substr(2,2),16),b=parseInt(hex.substr(4,2),16);return['rgb('+r+','+g+','+b+')','rgb('+Math.min(255,r+30)+','+Math.min(255,g+30)+','+Math.min(255,b+30)+')','rgb('+Math.min(255,r+60)+','+Math.min(255,g+60)+','+Math.min(255,b+60)+')','rgb('+Math.min(255,r+90)+','+Math.min(255,g+90)+','+Math.min(255,b+90)+')','rgb('+Math.min(255,r+40)+','+Math.min(255,g+50)+','+Math.min(255,b+60)+')'];}
 
+// ===== [5] LIBRARY DATE RANGE HELPER =====
+function getLibData(){
+  const range=S.libRange||'today';
+  const today=new Date().toISOString().split('T')[0];
+  if(range==='today'){
+    return{meals:S.todayMeals||[],symptoms:S.symptomLogs||[],stool:S.stoolLogs||[],notes:S.noteLogs||[],water:S.waterLogs||[]};
+  }
+  if(range==='yesterday'){
+    const yd=S.days.length>0?S.days[S.days.length-1]:null;
+    if(!yd)return{meals:[],symptoms:[],stool:[],notes:[],water:[]};
+    return{meals:yd.meals||[],symptoms:yd.symptoms||[],stool:yd.stool||[],notes:yd.notes||[],water:yd.water||[]};
+  }
+  // week or month — aggregate
+  const now=new Date();
+  const cutoff=range==='week'?new Date(now.getTime()-7*86400000):new Date(now.getTime()-30*86400000);
+  const cutoffStr=cutoff.toISOString().split('T')[0];
+  let meals=[],symptoms=[],stool=[],notes=[],water=[];
+  // Include today
+  meals=meals.concat(S.todayMeals||[]);symptoms=symptoms.concat(S.symptomLogs||[]);stool=stool.concat(S.stoolLogs||[]);notes=notes.concat(S.noteLogs||[]);water=water.concat(S.waterLogs||[]);
+  // Include matching archived days
+  (S.days||[]).forEach(d=>{
+    if(d.date>=cutoffStr){
+      meals=meals.concat(d.meals||[]);symptoms=symptoms.concat(d.symptoms||[]);stool=stool.concat(d.stool||[]);notes=notes.concat(d.notes||[]);water=water.concat(d.water||[]);
+    }
+  });
+  return{meals,symptoms,stool,notes,water};
+}
+
 // ===== HOME VIEW =====
 function viewHome(){
 const t=T(),a=A(),sz=z(),p2=pd();
@@ -315,21 +363,18 @@ const tW=S.waterLogs.reduce((s2,w)=>s2+w.ml,0);
 const wrap=div({});
 const shades=accentShades(a.m);
 
-// Header
 const hdr=div({marginBottom:'4px'});
 hdr.appendChild(div({fontSize:(sz+8)+'px',fontWeight:'700',letterSpacing:'-0.5px',color:t.text},[txt(getGreeting()+', Sean')]));
 hdr.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,marginTop:'2px'},[txt(getTodayLabel())]));
 wrap.appendChild(hdr);
 
-// DTT info line — show last logged meal
 if(S.sections.dttInfo&&todayMeals.length>0){
-  // Sort meals by time descending, pick first = most recent
   const sorted=[...todayMeals].sort((a2,b2)=>{
     const[ah,am2]=(a2.time||'00:00').split(':').map(Number);
     const[bh,bm]=(b2.time||'00:00').split(':').map(Number);
     return(bh*60+(bm||0))-(ah*60+(am2||0));
   });
-  const lastMeal=sorted[sorted.length-1]; // most recent by time (highest)
+  const lastMeal=sorted[sorted.length-1];
   const[lh,lm]=(lastMeal.time||'00:00').split(':').map(Number);
   const now2=new Date(),nowMin=now2.getHours()*60+now2.getMinutes(),diff=nowMin-(lh*60+(lm||0));
   if(diff>0&&diff<600){
@@ -346,7 +391,6 @@ if(S.sections.dttInfo&&todayMeals.length>0){
   }
 }
 
-// Morning check-in — HIDE after completed
 if(!S.morningDoneAt){
   const mcBtn=btn({width:'100%',background:t.surf,border:'0.5px solid '+t.bdr,borderRadius:'12px',padding:'12px 14px',textAlign:'left',color:t.sub,fontSize:sz+'px',display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px',cursor:'pointer',transition:'background .15s'},'',()=>{S.morningOpen=true;S.morningStep=0;renderModal();});
   mcBtn.appendChild(txt('Morning check-in'));
@@ -358,13 +402,22 @@ if(!S.morningDoneAt){
 if(S.sections.quickLog){
 wrap.appendChild(sl('Quick log'));
 const card=div({});card.className='card card-p';
-if(!S.logActive&&!S.logResult){
+if(!S.logActive&&!S.logResult&&!S.logLoading){
+  // [13] Same placeholder for inactive and active states
   const ph=btn({width:'100%',background:t.surf2,border:'0.5px solid '+t.bdr,borderRadius:'10px',padding:'11px 14px',textAlign:'left',color:t.muted,fontSize:(sz-1)+'px',display:'flex',justifyContent:'space-between',alignItems:'center',cursor:'text'},'',()=>{S.logActive=true;render();});
   ph.appendChild(txt('Meal, symptom, water, stool or note…'));
   card.appendChild(ph);
+}else if(S.logLoading){
+  // [7] Loading state while AI parses
+  const loadBox=div({display:'flex',alignItems:'center',justifyContent:'center',gap:'10px',padding:'20px'});
+  const spinner=document.createElement('span');spinner.className='spinner';spinner.style.borderColor='rgba(0,0,0,.15)';spinner.style.borderTopColor=a.m;
+  loadBox.appendChild(spinner);
+  loadBox.appendChild(div({fontSize:(sz-1)+'px',color:t.muted},[txt('Parsing with AI…')]));
+  card.appendChild(loadBox);
 }else if(S.logActive){
   const ta=document.createElement('textarea');ta.value=S.logText||'';
-  ta.placeholder='e.g. "100g chicken breast, 200g rice, 1 egg all boiled at 11am"\nor "cramping 4/10 at 2pm for 10 mins"\nor "banana" or "500ml water"';
+  // [13] Keep same placeholder as inactive state
+  ta.placeholder='Meal, symptom, water, stool or note…';
   Object.assign(ta.style,{width:'100%',border:'0.5px solid '+t.bdr,borderRadius:'10px',padding:'11px 13px',fontSize:(sz-1)+'px',minHeight:'76px',fontFamily:'inherit',color:t.text,background:t.surf2,lineHeight:'1.5',boxSizing:'border-box',display:'block'});
   ta.oninput=e=>{S.logText=e.target.value;};
   card.appendChild(ta);
@@ -378,13 +431,21 @@ if(!S.logActive&&!S.logResult){
   if(lr.type==='meal'){
     resBox.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff',marginBottom:'4px'},[txt('✓ '+lr.meal.name)]));
     if(lr.meal.cals){
-      const grid=div({display:'grid',gridTemplateColumns:'1fr 1fr',gap:'5px'});
-      [['Calories',lr.meal.cals,'kcal'],['Protein',lr.meal.protein,'g'],['Carbs',lr.meal.carbs,'g'],['Fat',lr.meal.fat,'g']].forEach(([l,v,u])=>{
+      // [10] More macros on log result: Sugar, Fibre, DTT
+      const grid=div({display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'5px'});
+      const items=[['Calories',lr.meal.cals,'kcal'],['Protein',lr.meal.protein,'g'],['Carbs',lr.meal.carbs,'g'],['Fat',lr.meal.fat,'g'],['Sugar',lr.meal.sugar,'g'],['Fibre',lr.meal.fibre,'g']];
+      items.forEach(([l,v,u])=>{
         const cell=div({background:'rgba(255,255,255,0.15)',borderRadius:'8px',padding:'6px 8px'});
         cell.appendChild(div({fontSize:'9px',color:'rgba(255,255,255,0.7)'},[txt(l)]));
-        cell.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff'},[txt((v||'—')+' '+u)]));
+        cell.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff'},[txt((v!=null?v:'—')+' '+u)]));
         grid.appendChild(cell);
-      });resBox.appendChild(grid);
+      });
+      // DTT estimate
+      const dttCell=div({background:'rgba(255,255,255,0.15)',borderRadius:'8px',padding:'6px 8px',gridColumn:'1 / -1'});
+      dttCell.appendChild(div({fontSize:'9px',color:'rgba(255,255,255,0.7)'},[txt('Est. DTT')]));
+      dttCell.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff'},[txt(calcDTT(lr.meal)+' hrs')]));
+      grid.appendChild(dttCell);
+      resBox.appendChild(grid);
     }
   }else if(lr.type==='symptom'){
     resBox.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff'},[txt('✓ Symptom logged')]));
@@ -396,7 +457,8 @@ if(!S.logActive&&!S.logResult){
   }else{
     resBox.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff'},[txt('✓ Note saved')]));
   }
-  resBox.appendChild(btn({marginTop:'5px',fontSize:'10px',color:'rgba(255,255,255,0.7)',background:'none',border:'none',cursor:'pointer',padding:'0'},'Clear',()=>{S.logResult=null;render();}));
+  // [11] Clear button — full-width pill
+  resBox.appendChild(btn({marginTop:'8px',width:'100%',fontSize:(sz-1)+'px',color:t.muted,background:'rgba(255,255,255,0.15)',border:'0.5px solid rgba(255,255,255,0.3)',borderRadius:'999px',padding:'9px 14px',cursor:'pointer',fontWeight:'500'},'Clear',()=>{S.logResult=null;render();}));
   card.appendChild(resBox);
 }
 wrap.appendChild(card);}
@@ -458,7 +520,7 @@ todayMeals.forEach((m,i)=>{
   wrap.appendChild(card);
 });}
 
-// Symptoms today — NON-EXPANDABLE cards matching meal style
+// Symptoms today
 if(S.sections.symptoms){
 wrap.appendChild(sl('Symptoms · '+S.symptomLogs.length));
 if(S.symptomLogs.length===0){
@@ -468,9 +530,7 @@ S.symptomLogs.forEach((sl2)=>{
   const label=sl2.symptom?tc(sl2.symptom):sl2.raw;
   const card=div({});card.className='card';
   const inner=div({padding:'12px 14px'});
-  // Name row — same style as meal name
   inner.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text,marginBottom:'4px'},[txt(label+(sl2.level?' — '+sl2.level+'/10':''))]));
-  // Meta row — time and duration, same style as meal meta
   const metaRow=div({display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'});
   if(sl2.time)metaRow.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(sl2.time)]));
   if(sl2.duration)metaRow.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(sl2.duration)]));
@@ -507,40 +567,135 @@ S.noteLogs.forEach(noteText=>{
 
 return wrap;}
 
-// ===== LOGGING =====
-function doLog(){
-const text=(S.logText||'').trim();if(!text)return;
-const parts=splitLogEntry(text);
-parts.forEach(part=>{
-  const type=detectType(part.text);
-  if(type==='meal'){
-    const meal=parseMeal(part.text);
-    S.todayMeals=[meal,...S.todayMeals];
-    S.logResult={type:'meal',meal};
-    showToast(meal.name+' logged',null);
-  }else if(type==='water'){
-    const ml=parseWater(part.text);
-    S.water+=ml;
-    S.waterLogs.push({ml,time:getNow()});
-    S.logResult={type:'water',ml};
-    showToast(ml+'ml water logged',null);
-  }else if(type==='stool'){
-    const stool=parseStool(part.text);
-    S.stoolLogs.push(stool);
-    S.logResult={type:'stool',stool};
-    showToast('Stool logged — Type '+stool.type,null);
-  }else if(type==='symptom'){
-    const parsed=parseSymptom(part.text);
-    S.symptomLogs.push(parsed);
-    S.logResult={type:'symptom',text:part.text,time:parsed.time};
-    showToast('Symptom logged',null);
-  }else{
-    S.noteLogs.push(part.text);
-    S.logResult={type:'note',text:part.text};
-    showToast('Note saved',null);
+// ===== [7] AI-POWERED LOGGING =====
+const AI_SYSTEM_PROMPT=`You are a nutrition parser for a health tracking app. Parse the user's log entry and return ONLY valid JSON.
+
+Detect type: meal, water, symptom, stool, or note.
+
+For meals, calculate accurate macros using standard nutritional databases. For branded foods use standard values.
+Never include ghee, olive oil, coconut oil, or butter in the meal name — they go in ingredients only.
+Extract cooking method per ingredient. Extract time if mentioned (format HH:MM 24hr).
+
+Return this exact JSON structure (omit irrelevant fields):
+{
+  "type": "meal",
+  "meal": {
+    "name": "Chicken Breast & Rice",
+    "time": "11:00",
+    "cookingMethod": "Boiled",
+    "texture": "Soft",
+    "fatLevel": "Low",
+    "cals": 450,
+    "protein": 42,
+    "carbs": 55,
+    "fat": 4,
+    "sugar": 0,
+    "fibre": 0.5,
+    "ingredients": ["Chicken Breast: 150g", "White Rice: 200g"],
+    "ingredientMethods": ["Boiled", "Boiled"]
   }
-});
-S.logText='';S.logActive=false;saveState();render();}
+}
+
+For water: { "type": "water", "ml": 500 }
+For symptom: { "type": "symptom", "symptom": "cramping", "level": 4, "duration": "10 mins", "time": "14:00", "raw": "..." }
+For stool: { "type": "stool", "stoolType": 4, "color": "Brown", "assisted": false }
+For note: { "type": "note", "text": "..." }
+
+Return ONLY JSON. No markdown. No explanation.`;
+
+async function aiParse(text){
+  try{
+    const response=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        model:"claude-sonnet-4-20250514",
+        max_tokens:400,
+        system:AI_SYSTEM_PROMPT,
+        messages:[{role:"user",content:text}]
+      })
+    });
+    if(!response.ok)throw new Error('API '+response.status);
+    const data=await response.json();
+    const raw=data.content.map(i=>i.text||'').join('').trim();
+    const clean=raw.replace(/```json|```/g,'').trim();
+    return JSON.parse(clean);
+  }catch(e){
+    console.error('AI parse failed, falling back to local:',e);
+    return null;
+  }
+}
+
+// ===== LOGGING =====
+async function doLog(){
+const text=(S.logText||'').trim();if(!text)return;
+S.logLoading=true;S.logActive=false;S.logText='';render();
+
+// Try AI parsing first
+const aiResult=await aiParse(text);
+if(aiResult&&aiResult.type){
+  processAIResult(aiResult,text);
+}else{
+  // Fallback to local parser
+  const parts=splitLogEntry(text);
+  parts.forEach(part=>{processLocalPart(part.text);});
+}
+S.logLoading=false;saveState();render();}
+
+function processAIResult(res,rawText){
+  if(res.type==='meal'&&res.meal){
+    const m=res.meal;
+    // Ensure required fields
+    if(!m.time)m.time=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    if(!m.texture)m.texture='Soft';
+    if(!m.fatLevel)m.fatLevel=(m.fat||0)>10?'High':(m.fat||0)>5?'Medium':'Low';
+    if(!m.cookingMethod)m.cookingMethod='Not specified';
+    if(!m.ingredientMethods)m.ingredientMethods=(m.ingredients||[]).map(()=>m.cookingMethod);
+    S.todayMeals=[m,...S.todayMeals];
+    S.logResult={type:'meal',meal:m};
+    showToast(m.name+' logged',null);
+  }else if(res.type==='water'){
+    const ml=res.ml||250;
+    S.water+=ml;S.waterLogs.push({ml,time:getNow()});
+    S.logResult={type:'water',ml};showToast(ml+'ml water logged',null);
+  }else if(res.type==='symptom'){
+    const parsed={symptom:res.symptom||null,level:res.level||null,duration:res.duration||null,time:res.time||getNow(),raw:rawText};
+    S.symptomLogs.push(parsed);
+    S.logResult={type:'symptom',text:rawText,time:parsed.time};showToast('Symptom logged',null);
+  }else if(res.type==='stool'){
+    const stool={type:res.stoolType||4,color:res.color||'Brown',assisted:res.assisted||false,note:null,time:getNow()};
+    S.stoolLogs.push(stool);
+    S.logResult={type:'stool',stool};showToast('Stool logged — Type '+stool.type,null);
+  }else if(res.type==='note'){
+    const noteText=res.text||rawText;
+    S.noteLogs.push(noteText);
+    S.logResult={type:'note',text:noteText};showToast('Note saved',null);
+  }
+}
+
+function processLocalPart(text){
+  const type=detectType(text);
+  if(type==='meal'){
+    const meal=parseMeal(text);
+    S.todayMeals=[meal,...S.todayMeals];
+    S.logResult={type:'meal',meal};showToast(meal.name+' logged',null);
+  }else if(type==='water'){
+    const ml=parseWater(text);
+    S.water+=ml;S.waterLogs.push({ml,time:getNow()});
+    S.logResult={type:'water',ml};showToast(ml+'ml water logged',null);
+  }else if(type==='stool'){
+    const stool=parseStool(text);
+    S.stoolLogs.push(stool);
+    S.logResult={type:'stool',stool};showToast('Stool logged — Type '+stool.type,null);
+  }else if(type==='symptom'){
+    const parsed=parseSymptom(text);
+    S.symptomLogs.push(parsed);
+    S.logResult={type:'symptom',text,time:parsed.time};showToast('Symptom logged',null);
+  }else{
+    S.noteLogs.push(text);
+    S.logResult={type:'note',text};showToast('Note saved',null);
+  }
+}
 
 function splitLogEntry(text){
   const sentences=text.split(/(?<=[.!])\s+/).filter(s2=>s2.trim().length>0);
@@ -608,7 +763,7 @@ if(S.days.length===0&&S.todayMeals.length===0){
 wrap.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,marginTop:'12px',lineHeight:'1.5'},[txt('Charts will populate as you log more days of data. Each day\'s data is saved when the next day begins.')]));
 return wrap;}
 
-// ===== DAILY LOG (History) =====
+// ===== [6] DAILY LOG (History) — Expandable =====
 function viewHistory(){
 const t=T(),a=A(),sz=z();
 const wrap=div({});
@@ -619,29 +774,80 @@ if(S.days.length===0){
   return wrap;
 }
 
-// Show past days
 [...S.days].reverse().forEach((d,i)=>{
-  const card=div({});card.className='card card-p';
-  card.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text,marginBottom:'4px'},[txt(d.date)]));
+  const isExp=S.expandedHistory===i;
+  const card=div({});card.className='card';
   const tCals=d.meals?d.meals.reduce((s2,m)=>s2+(m.cals||0),0):0;
-  card.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(tCals+' kcal · '+(d.meals?d.meals.length:0)+' meals · '+(d.symptoms?d.symptoms.length:0)+' symptoms')]));
+
+  const header=btn({width:'100%',background:'none',border:'none',padding:'12px 14px',cursor:'pointer',textAlign:'left',display:'block'},'',()=>{S.expandedHistory=isExp?null:i;render();});
+  header.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text,marginBottom:'4px'},[txt(d.date)]));
+  const metaRow=div({display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'});
+  metaRow.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(tCals+' kcal')]));
+  metaRow.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt((d.meals?d.meals.length:0)+' meals')]));
+  metaRow.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt((d.symptoms?d.symptoms.length:0)+' symptoms')]));
+  metaRow.appendChild(h('span',{style:{fontSize:'9px',color:t.muted,marginLeft:'auto'}},isExp?'▲':'▼'));
+  header.appendChild(metaRow);
+  card.appendChild(header);
+
+  if(isExp){
+    const exp=div({borderTop:'0.5px solid '+t.bdr,padding:'12px 14px',background:t.surf2});
+    // Meals
+    if(d.meals&&d.meals.length>0){
+      exp.appendChild(div({fontSize:'10px',fontWeight:'600',color:t.muted,textTransform:'uppercase',letterSpacing:'0.05em',marginBottom:'6px'},[txt('Meals')]));
+      d.meals.forEach(m=>{
+        const mRow=div({marginBottom:'8px',paddingBottom:'8px',borderBottom:'0.5px solid '+t.bdr});
+        mRow.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt(m.name)]));
+        mRow.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,marginTop:'2px'},[txt((m.time||'')+' · '+(m.cals||0)+' kcal · P:'+(m.protein||0)+'g F:'+(m.fat||0)+'g C:'+(m.carbs||0)+'g')]));
+        exp.appendChild(mRow);
+      });
+    }
+    // Symptoms
+    if(d.symptoms&&d.symptoms.length>0){
+      exp.appendChild(div({fontSize:'10px',fontWeight:'600',color:t.muted,textTransform:'uppercase',letterSpacing:'0.05em',marginBottom:'6px',marginTop:'8px'},[txt('Symptoms')]));
+      d.symptoms.forEach(s2=>{
+        exp.appendChild(div({fontSize:(sz-2)+'px',color:t.sub,marginBottom:'4px'},[txt((s2.symptom?tc(s2.symptom):'Unknown')+' '+(s2.time||'')+(s2.level?' — '+s2.level+'/10':''))]));
+      });
+    }
+    // Water
+    const wTotal=d.waterTotal||(d.water?d.water.reduce((s2,w)=>s2+(w.ml||0),0):0);
+    if(wTotal>0){
+      exp.appendChild(div({fontSize:'10px',fontWeight:'600',color:t.muted,textTransform:'uppercase',letterSpacing:'0.05em',marginBottom:'4px',marginTop:'8px'},[txt('Water')]));
+      exp.appendChild(div({fontSize:(sz-2)+'px',color:t.sub},[txt(wTotal+'ml')]));
+    }
+    // Stool
+    if(d.stool&&d.stool.length>0){
+      exp.appendChild(div({fontSize:'10px',fontWeight:'600',color:t.muted,textTransform:'uppercase',letterSpacing:'0.05em',marginBottom:'4px',marginTop:'8px'},[txt('Stool')]));
+      d.stool.forEach(s2=>{
+        exp.appendChild(div({fontSize:(sz-2)+'px',color:t.sub,marginBottom:'3px'},[txt('Type '+s2.type+' · '+s2.color+(s2.assisted?' · Assisted':''))]));
+      });
+    }
+    card.appendChild(exp);
+  }
   wrap.appendChild(card);
 });
 return wrap;}
 
-// ===== LIBRARY VIEW =====
+// ===== [5] LIBRARY VIEW — with date range =====
 function viewLibrary(){
 const t=T(),a=A(),sz=z();
 const wrap=div({});
 wrap.appendChild(div({fontSize:(sz+8)+'px',fontWeight:'700',letterSpacing:'-0.5px',color:t.text},[txt('Library')]));
 
-const tabRow=div({display:'flex',gap:'8px',marginTop:'12px',marginBottom:'14px'});
+// Date range selector
+const rangeRow=div({display:'flex',gap:'6px',marginTop:'10px',marginBottom:'4px'});
+rangeRow.appendChild(mkSelect([['today','Today'],['yesterday','Yesterday'],['week','This Week'],['month','This Month']],S.libRange,v=>{S.libRange=v;render();},{flex:'1'}));
+wrap.appendChild(rangeRow);
+
+const tabRow=div({display:'flex',gap:'8px',marginTop:'6px',marginBottom:'14px'});
 tabRow.appendChild(mkSelect([['meals','Meals'],['supplements','Supplements & Meds'],['foods','Safe & Avoid Foods'],['symptoms','Symptoms'],['water','Water Intake'],['stool','Stool Log']],S.libTab,v=>{S.libTab=v;render();},{flex:'1'}));
 wrap.appendChild(tabRow);
 
+const ld=getLibData();
+const rangeLabel=S.libRange==='today'?'today':S.libRange==='yesterday'?'yesterday':S.libRange==='week'?'this week':'this month';
+
 if(S.libTab==='meals'){
-  const allMeals=S.todayMeals||[];
-  if(allMeals.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No meals logged today.')]));return wrap;}
+  const allMeals=ld.meals;
+  if(allMeals.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No meals logged '+rangeLabel+'.')]));return wrap;}
   allMeals.forEach((m,i)=>{
     const isExp=S.expandedLibMeal===i;
     const card=div({});card.className='card';
@@ -658,19 +864,27 @@ if(S.libTab==='meals'){
         if(ingM&&ingM!=='Not specified'){const pill=document.createElement('span');pill.className='method-pill';pill.textContent=ingM;ingRow.appendChild(pill);}
         exp.appendChild(ingRow);
       });
+      // [8] Macros — coloured text columns, no pills
       const grid=div({display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'5px',marginTop:'8px'});
       [['Calories',m.cals,'kcal','calories'],['Protein',m.protein,'g','protein'],['Carbs',m.carbs,'g','carbs'],['Fat',m.fat,'g','fat'],['Sugar',m.sugar,'g','sugar'],['Fibre',m.fibre,'g','fibre']].forEach(([l,v,u,mk])=>{
         const cell=div({background:t.surf,borderRadius:'8px',padding:'6px 8px',border:'0.5px solid '+t.bdr});
         cell.appendChild(div({fontSize:'9px',color:t.muted},[txt(l)]));
         cell.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt(v!=null?v+u:'—')]));
-        if(v!=null&&mk){const lv=macroLvl(mk,v);cell.appendChild(div({marginTop:'2px'},[chip(lv.l,lv.bg,lv.c)]));}
+        if(v!=null&&mk){
+          const lv=macroLvl(mk,v);
+          cell.appendChild(div({marginTop:'2px',fontSize:'9px',fontWeight:'600',color:lv.c},[txt(lv.l)]));
+        }
         grid.appendChild(cell);
       });
       exp.appendChild(grid);
-      const delBtn=btn({marginTop:'10px',fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'8px',padding:'6px 12px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete meal',()=>{
-        S.todayMeals.splice(i,1);saveState();render();showToast('Meal deleted',null);
-      });
-      exp.appendChild(delBtn);card.appendChild(exp);
+      // Only show delete for today's meals
+      if(S.libRange==='today'){
+        const delBtn=btn({marginTop:'10px',fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'8px',padding:'6px 12px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete meal',()=>{
+          S.todayMeals.splice(i,1);saveState();render();showToast('Meal deleted',null);
+        });
+        exp.appendChild(delBtn);
+      }
+      card.appendChild(exp);
     }
     wrap.appendChild(card);
   });
@@ -709,33 +923,42 @@ if(S.libTab==='meals'){
   wrap.appendChild(sl('Avoid'));
   AVOID_FOODS.forEach(f2=>{wrap.appendChild(div({display:'flex',alignItems:'center',gap:'8px',padding:'9px 13px',background:t.surf,borderRadius:'10px',marginBottom:'5px',border:'0.5px solid #FECACA'},[div({color:'#DC2626',fontSize:'11px'},[txt('✗')]),div({fontSize:sz+'px',color:t.sub},[txt(f2)])]));});
 }else if(S.libTab==='symptoms'){
-  if(S.symptomLogs.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No symptoms logged today.')]));return wrap;}
-  S.symptomLogs.forEach((sl2,i)=>{
+  const syms=ld.symptoms;
+  if(syms.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No symptoms logged '+rangeLabel+'.')]));return wrap;}
+  syms.forEach((sl2,i)=>{
     const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';
     const info=div({});
     info.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text},[txt(sl2.symptom?tc(sl2.symptom):'Unknown')]));
-    info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(sl2.time+(sl2.level?' · '+sl2.level+'/10':'')+(sl2.duration?' · '+sl2.duration:''))]));
+    info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt((sl2.time||'')+(sl2.level?' · '+sl2.level+'/10':'')+(sl2.duration?' · '+sl2.duration:''))]));
     card.appendChild(info);
-    const del=btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{
-      S.symptomLogs.splice(i,1);saveState();render();showToast('Symptom deleted',null);
-    });
-    card.appendChild(del);wrap.appendChild(card);
+    if(S.libRange==='today'){
+      const del=btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{
+        S.symptomLogs.splice(i,1);saveState();render();showToast('Symptom deleted',null);
+      });
+      card.appendChild(del);
+    }
+    wrap.appendChild(card);
   });
 }else if(S.libTab==='water'){
-  const totalW=S.waterLogs.reduce((s2,w)=>s2+w.ml,0);
-  if(S.waterLogs.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No water logged today.')]));return wrap;}
+  const wLogs=ld.water;
+  const totalW=wLogs.reduce((s2,w)=>s2+(w.ml||0),0);
+  if(wLogs.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No water logged '+rangeLabel+'.')]));return wrap;}
   wrap.appendChild(div({fontSize:(sz-1)+'px',color:t.muted,marginBottom:'10px'},[txt('Total: '+totalW+'ml')]));
-  S.waterLogs.forEach((wl,i)=>{
+  wLogs.forEach((wl,i)=>{
     const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';
     card.appendChild(div({fontSize:sz+'px',color:t.text},[txt(wl.ml+'ml at '+wl.time)]));
-    const del=btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{
-      S.waterLogs.splice(i,1);saveState();render();showToast('Water entry deleted',null);
-    });
-    card.appendChild(del);wrap.appendChild(card);
+    if(S.libRange==='today'){
+      const del=btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{
+        S.waterLogs.splice(i,1);saveState();render();showToast('Water entry deleted',null);
+      });
+      card.appendChild(del);
+    }
+    wrap.appendChild(card);
   });
 }else if(S.libTab==='stool'){
-  if(S.stoolLogs.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No stool logged today.')]));return wrap;}
-  S.stoolLogs.forEach((sl2,i)=>{
+  const sLogs=ld.stool;
+  if(sLogs.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No stool logged '+rangeLabel+'.')]));return wrap;}
+  sLogs.forEach((sl2,i)=>{
     const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';
     const info=div({display:'flex',alignItems:'center',gap:'8px'});
     info.appendChild(bristolSVG(sl2.type,24));
@@ -743,10 +966,13 @@ if(S.libTab==='meals'){
     txt2.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text},[txt('Type '+sl2.type+' · '+sl2.color)]));
     txt2.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(BRISTOL[sl2.type-1])]));
     info.appendChild(txt2);card.appendChild(info);
-    const del=btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{
-      S.stoolLogs.splice(i,1);saveState();render();showToast('Stool entry deleted',null);
-    });
-    card.appendChild(del);wrap.appendChild(card);
+    if(S.libRange==='today'){
+      const del=btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{
+        S.stoolLogs.splice(i,1);saveState();render();showToast('Stool entry deleted',null);
+      });
+      card.appendChild(del);
+    }
+    wrap.appendChild(card);
   });
 }
 return wrap;}
@@ -757,7 +983,6 @@ const t=T(),a=A(),sz=z();
 const wrap=div({});
 wrap.appendChild(div({fontSize:(sz+8)+'px',fontWeight:'700',letterSpacing:'-0.5px',color:t.text},[txt('Progress')]));
 
-// Today's stats
 const tCals=S.todayMeals.reduce((s2,m)=>s2+(m.cals||0),0);
 const tP=S.todayMeals.reduce((s2,m)=>s2+(m.protein||0),0);
 const tF=S.todayMeals.reduce((s2,m)=>s2+(m.fat||0),0);
@@ -801,9 +1026,10 @@ Object.entries(ACCENTS).forEach(([name,acc])=>{
   b.onclick=()=>{S.accent=name;applyTheme();saveState();render();};ac.appendChild(b);
 });wrap.appendChild(ac);
 
+// [9] Font grid — 6 fonts including Inter
 wrap.appendChild(sl('Font'));
 const fg=div({display:'grid',gridTemplateColumns:'1fr 1fr',gap:'6px',marginBottom:'12px'});
-[['sora','Sora'],['dm-sans','DM Sans'],['jakarta','Jakarta Sans'],['outfit','Outfit'],['nunito','Nunito Sans']].forEach(([fk,fl])=>{
+[['sora','Sora'],['dm-sans','DM Sans'],['jakarta','Jakarta Sans'],['outfit','Outfit'],['nunito','Nunito Sans'],['inter','Inter']].forEach(([fk,fl])=>{
   fg.appendChild(btn({padding:'9px',borderRadius:'10px',border:'0.5px solid '+(S.font===fk?a.m:t.bdr),background:S.font===fk?a.bg:t.surf,color:S.font===fk?a.t:t.muted,fontSize:(sz-2)+'px',fontFamily:FONTS[fk][0]+',sans-serif',fontWeight:S.font===fk?'500':'400',cursor:'pointer'},fl,()=>{S.font=fk;applyTheme();saveState();render();}));
 });wrap.appendChild(fg);
 
