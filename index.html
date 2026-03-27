@@ -60,7 +60,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
       <div id="mp-sub" style="font-size:11px;color:var(--muted);margin-top:2px"></div>
     </div>
     <div id="mp-nav" style="flex:1;padding:10px;overflow-y:auto"></div>
-    <div style="padding:12px 18px;border-top:0.5px solid var(--bdr);font-size:9px;color:var(--muted);letter-spacing:.02em">soma v5.0</div>
+    <div style="padding:12px 18px;border-top:0.5px solid var(--bdr);font-size:9px;color:var(--muted);letter-spacing:.02em">soma v5.1</div>
   </div>
   <div id="hdr">
     <span style="font-size:20px;font-weight:700;color:var(--ac);letter-spacing:-.8px">soma</span>
@@ -74,25 +74,72 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <script>
 // ===== THEMES & ACCENTS =====
 const FONTS={'sora':['Sora','sans-serif'],'dm-sans':['DM Sans','sans-serif'],'jakarta':['Plus Jakarta Sans','sans-serif'],'outfit':['Outfit','sans-serif'],'nunito':['Nunito Sans','sans-serif'],'inter':['Inter','sans-serif']};
-// [10] Light theme bg changed to #F0EFEC
 const THEMES={light:{bg:'#F0EFEC',surf:'#FFFFFF',surf2:'#F7F7F6',text:'#1C1917',sub:'#44403C',muted:'#9CA3AF',bdr:'#E5E5E4'},dark:{bg:'#161615',surf:'#1E1D1C',surf2:'#272625',text:'#F5F5F4',sub:'#D6D3D1',muted:'#78716C',bdr:'#333230'},warm:{bg:'#FDF8F0',surf:'#FFFBF5',surf2:'#F5ECD9',text:'#2C1810',sub:'#5C3D2E',muted:'#9C7060',bdr:'#E8D5C0'},cool:{bg:'#F0F4F8',surf:'#FFFFFF',surf2:'#E8EFF6',text:'#1E2A3A',sub:'#354A60',muted:'#6B82A0',bdr:'#CDD8E5'}};
 const ACCENTS={amber:{m:'#F59E0B',bg:'#FFFBEB',bdr:'#FDE68A',t:'#92400E'},teal:{m:'#14B8A6',bg:'#F0FDFA',bdr:'#99F6E4',t:'#0F766E'},blue:{m:'#3B82F6',bg:'#EFF6FF',bdr:'#BFDBFE',t:'#1D4ED8'},coral:{m:'#F97316',bg:'#FFF7ED',bdr:'#FED7AA',t:'#C2410C'},purple:{m:'#8B5CF6',bg:'#F5F3FF',bdr:'#DDD6FE',t:'#5B21B6'},green:{m:'#22C55E',bg:'#F0FDF4',bdr:'#BBF7D0',t:'#15803D'},rose:{m:'#F43F5E',bg:'#FFF1F2',bdr:'#FECDD3',t:'#BE123C'},slate:{m:'#64748B',bg:'#F8FAFC',bdr:'#CBD5E1',t:'#334155'},gold:{m:'#CA8A04',bg:'#FEFCE8',bdr:'#FEF08A',t:'#713F12'},mint:{m:'#34D399',bg:'#ECFDF5',bdr:'#A7F3D0',t:'#065F46'},crimson:{m:'#DC2626',bg:'#FEF2F2',bdr:'#FECACA',t:'#991B1B'},indigo:{m:'#6366F1',bg:'#EEF2FF',bdr:'#C7D2FE',t:'#3730A3'}};
 
+// ===== SUPPLEMENT DATABASE (Fix 1) =====
+const SUPPLEMENT_DB=[
+  {name:'L-Taurine',dosePerUnit:500,unit:'mg',form:'capsule',kw:['taurine','l-taurine','l taurine']},
+  {name:'Zinc Carnosine',dosePerUnit:75,unit:'mg',form:'capsule',kw:['zinc carnosine','zinc']},
+  {name:'Magnesium Glycinate',dosePerUnit:400,unit:'mg',form:'capsule',kw:['magnesium glycinate','mag glycinate']},
+  {name:'Magnesium Citrate',dosePerUnit:3000,unit:'mg',form:'powder',kw:['magnesium citrate','mag citrate']},
+  {name:'Milk Thistle',dosePerUnit:150,unit:'mg',form:'capsule',kw:['milk thistle']},
+  {name:'Slippery Elm',dosePerUnit:400,unit:'mg',form:'capsule',kw:['slippery elm']},
+  {name:'Vitamin B Complex',dosePerUnit:1,unit:'cap',form:'capsule',kw:['b complex','vitamin b','vit b']},
+  {name:'Buscopan',dosePerUnit:10,unit:'mg',form:'tablet',kw:['buscopan']},
+  {name:'Famotidine',dosePerUnit:20,unit:'mg',form:'tablet',kw:['famotidine']},
+  {name:'Whey Protein',dosePerUnit:30,unit:'g',form:'scoop',kw:['whey protein','whey','protein powder']},
+  {name:'Probiotic',dosePerUnit:1,unit:'cap',form:'capsule',kw:['probiotic','probiotics']},
+  {name:'Digestive Enzyme',dosePerUnit:1,unit:'cap',form:'capsule',kw:['enzyme','digestive enzyme']},
+  {name:'Betaine HCl',dosePerUnit:650,unit:'mg',form:'capsule',kw:['betaine','hcl','betaine hcl']},
+  {name:'DGL Licorice',dosePerUnit:400,unit:'mg',form:'tablet',kw:['licorice','liquorice','dgl']},
+  {name:'L-Glutamine',dosePerUnit:5000,unit:'mg',form:'powder',kw:['glutamine','l-glutamine','l glutamine']},
+  {name:'NAC',dosePerUnit:600,unit:'mg',form:'capsule',kw:['nac','n-acetyl cysteine']},
+  {name:'Berberine',dosePerUnit:500,unit:'mg',form:'capsule',kw:['berberine']},
+  {name:'Mebeverine',dosePerUnit:135,unit:'mg',form:'tablet',kw:['mebeverine']},
+  {name:'Omeprazole',dosePerUnit:20,unit:'mg',form:'capsule',kw:['omeprazole']},
+  {name:'Lansoprazole',dosePerUnit:30,unit:'mg',form:'capsule',kw:['lansoprazole']},
+  {name:'Creon',dosePerUnit:25000,unit:'IU',form:'capsule',kw:['creon']},
+  {name:'Colestyramine',dosePerUnit:4000,unit:'mg',form:'powder',kw:['colestyramine','cholestyramine']},
+  {name:'Rifaximin',dosePerUnit:550,unit:'mg',form:'tablet',kw:['rifaximin']},
+  {name:'Metronidazole',dosePerUnit:400,unit:'mg',form:'tablet',kw:['metronidazole']},
+  {name:'Amoxicillin',dosePerUnit:500,unit:'mg',form:'capsule',kw:['amoxicillin']},
+  {name:'Co-Amoxiclav',dosePerUnit:625,unit:'mg',form:'tablet',kw:['co-amoxiclav','coamoxiclav','augmentin']}
+];
+
+// All supplement keywords for detection
+const SUPP_KW=SUPPLEMENT_DB.flatMap(s=>s.kw);
+
 // ===== PERSISTENCE =====
-function saveState(){try{const d={meals:S.todayMeals,symptoms:S.symptomLogs,stool:S.stoolLogs,notes:S.noteLogs,water:S.waterLogs,waterTotal:S.water,activities:S.activityLogs,tasks:S.tasks,morningDoneAt:S.morningDoneAt,morningData:S.morningData,theme:S.theme,accent:S.accent,font:S.font,fontSize:S.fontSize,density:S.density,sections:S.sections,targets:S.targets,days:S.days,savedDate:new Date().toISOString().split('T')[0]};localStorage.setItem('soma_data',JSON.stringify(d));}catch(e){}}
-function loadState(){try{const raw=localStorage.getItem('soma_data');if(!raw)return;const d=JSON.parse(raw);const today=new Date().toISOString().split('T')[0];if(d.savedDate===today){S.todayMeals=d.meals||[];S.symptomLogs=d.symptoms||[];S.stoolLogs=d.stool||[];S.noteLogs=d.notes||[];S.waterLogs=d.water||[];S.water=d.waterTotal||0;S.activityLogs=d.activities||[];S.tasks=d.tasks||[];S.morningDoneAt=d.morningDoneAt||null;S.morningData=d.morningData||S.morningData;if(d.days)S.days=d.days;}else{if(d.meals&&d.meals.length>0||d.symptoms&&d.symptoms.length>0||d.activities&&d.activities.length>0){const hist=d.days||[];hist.push({date:d.savedDate,meals:d.meals||[],symptoms:d.symptoms||[],stool:d.stool||[],notes:d.notes||[],water:d.water||[],waterTotal:d.waterTotal||0,morningData:d.morningData,activities:d.activities||[]});S.days=hist;}S.todayMeals=[];S.symptomLogs=[];S.stoolLogs=[];S.noteLogs=[];S.waterLogs=[];S.water=0;S.activityLogs=[];S.morningDoneAt=null;if(d.tasks)S.tasks=d.tasks;}
-if(d.theme)S.theme=d.theme;if(d.accent)S.accent=d.accent;if(d.font)S.font=d.font;if(d.fontSize)S.fontSize=d.fontSize;if(d.density)S.density=d.density;if(d.sections)S.sections={...S.sections,...d.sections};if(d.targets)S.targets={...S.targets,...d.targets};}catch(e){}}
+function saveState(){try{const d={meals:S.todayMeals,symptoms:S.symptomLogs,stool:S.stoolLogs,notes:S.noteLogs,liquids:S.liquidLogs,activities:S.activityLogs,supplements:S.supplementLogs,tasks:S.tasks,morningDoneAt:S.morningDoneAt,morningData:S.morningData,theme:S.theme,accent:S.accent,font:S.font,fontSize:S.fontSize,density:S.density,sections:S.sections,targets:S.targets,days:S.days,supplementDoses:S.supplementDoses,savedDate:new Date().toISOString().split('T')[0]};localStorage.setItem('soma_data',JSON.stringify(d));}catch(e){}}
+
+function loadState(){try{const raw=localStorage.getItem('soma_data');if(!raw)return;const d=JSON.parse(raw);const today=new Date().toISOString().split('T')[0];if(d.savedDate===today){S.todayMeals=d.meals||[];S.symptomLogs=d.symptoms||[];S.stoolLogs=d.stool||[];S.noteLogs=d.notes||[];
+// Backward compat: old waterLogs → liquidLogs
+if(d.liquids)S.liquidLogs=d.liquids;
+else if(d.water)S.liquidLogs=(d.water||[]).map(w=>({ml:w.ml,name:'Water',time:w.time,type:'water'}));
+else S.liquidLogs=[];
+S.activityLogs=d.activities||[];S.supplementLogs=d.supplements||[];S.tasks=d.tasks||[];S.morningDoneAt=d.morningDoneAt||null;S.morningData=d.morningData||S.morningData;if(d.days)S.days=d.days;}else{if(d.meals&&d.meals.length>0||d.symptoms&&d.symptoms.length>0||d.activities&&d.activities.length>0){const hist=d.days||[];const dayLiquids=d.liquids||(d.water||[]).map(w=>({ml:w.ml,name:'Water',time:w.time,type:'water'}));const dayLiquidTotal=dayLiquids.reduce((s,l)=>s+(l.ml||0),0);hist.push({date:d.savedDate,meals:d.meals||[],symptoms:d.symptoms||[],stool:d.stool||[],notes:d.notes||[],liquids:dayLiquids,liquidTotal:dayLiquidTotal,morningData:d.morningData,activities:d.activities||[],supplements:d.supplements||[]});S.days=hist;}S.todayMeals=[];S.symptomLogs=[];S.stoolLogs=[];S.noteLogs=[];S.liquidLogs=[];S.activityLogs=[];S.supplementLogs=[];S.morningDoneAt=null;if(d.tasks)S.tasks=d.tasks;}
+if(d.theme)S.theme=d.theme;if(d.accent)S.accent=d.accent;if(d.font)S.font=d.font;if(d.fontSize)S.fontSize=d.fontSize;if(d.density)S.density=d.density;if(d.sections)S.sections={...S.sections,...d.sections};if(d.targets)S.targets={...S.targets,...d.targets};if(d.supplementDoses)S.supplementDoses=d.supplementDoses;
+// Migrate old days that have water but not liquids
+(S.days||[]).forEach(day=>{
+  if(!day.liquids&&day.water){day.liquids=(day.water||[]).map(w=>({ml:w.ml,name:'Water',time:w.time,type:'water'}));day.liquidTotal=day.liquids.reduce((s,l)=>s+(l.ml||0),0);}
+  if(!day.liquids)day.liquids=[];
+  if(!day.supplements)day.supplements=[];
+  if(!day.activities)day.activities=[];
+});
+}catch(e){}}
 
 // ===== APP STATE =====
 const S={view:'home',theme:'light',accent:'amber',font:'sora',fontSize:'normal',density:'comfortable',
-sections:{quickLog:true,todaySummary:true,meals:true,symptoms:true,stool:true,notes:true,dttInfo:true},
+sections:{quickLog:true,todaySummary:true,meals:true,liquids:true,symptoms:true,supplements:true,stool:true,notes:true,dttInfo:true},
 targets:{calories:2500,protein:105,fat:55,carbs:380,water:2500},
 logActive:false,logText:'',logResult:null,logLoading:false,expandedMeal:null,expandedInsight:null,expandedHistory:null,expandedLibMeal:null,
-water:0,todayMeals:[],chartMetric:'weight',chartRange:'week',chartOverlay:null,
+todayMeals:[],chartMetric:'weight',chartRange:'week',chartOverlay:null,
 libTab:'all',libRange:'today',settingsTab:null,
 morningOpen:false,morningStep:0,morningData:{tongue:false,tsev:5,reflux:false,indigestion:false,nasal:false,weight:'',sleepQ:'Fair'},morningDoneAt:null,
 docOpen:false,docDays:7,searchText:'',moreOpen:false,toastTimer:null,toastUndoFn:null,
-symptomLogs:[],stoolLogs:[],noteLogs:[],waterLogs:[],activityLogs:[],
+symptomLogs:[],stoolLogs:[],noteLogs:[],liquidLogs:[],activityLogs:[],supplementLogs:[],
+supplementDoses:{},
 tasks:[],expandedTask:null,
 days:[],progressRange:'weekly',insightsViewed:false};
 
@@ -114,28 +161,75 @@ const ub=document.getElementById('toast-undo');if(ub)ub.style.color=a.m;
 const COOK_WORDS=['fried','boiled','grilled','steamed','roasted','poached','scrambled','baked','sauteed','mashed','blended','raw','smoked','braised'];
 const CONDIMENTS=new Set(['ghee','olive oil','evoo','coconut oil','butter','extra virgin olive oil','clarified butter']);
 
-const FDB=[{n:'chicken breast',v:[165,31,0,3.6,0,0],a:['chicken','breast'],defG:165},{n:'chicken mince',v:[163,28,0,5,0,0],a:['mince chicken','minced chicken'],defG:150},{n:'chicken thigh',v:[177,24,0,9,0,0],a:['thigh'],defG:150},{n:'turkey',v:[135,30,0,1,0,0],a:['turkey breast','turkey mince'],defG:150},{n:'pollock',v:[92,20,0,1,0,0],a:['pollock fillet'],defG:150},{n:'cod',v:[82,18,0,0.7,0,0],a:['cod fillet'],defG:150},{n:'salmon',v:[208,20,0,13,0,0],a:['salmon fillet'],defG:150},{n:'tuna',v:[132,29,0,1,0,0],a:['tuna steak','canned tuna'],defG:150},{n:'haddock',v:[89,19,0,0.9,0,0],a:[],defG:150},{n:'sea bass',v:[97,18,0,2,0,0],a:['seabass'],defG:150},{n:'mackerel',v:[205,19,0,14,0,0],a:['smoked mackerel'],defG:150},{n:'prawns',v:[99,21,0,1.5,0,0],a:['shrimp','king prawns'],defG:100},{n:'white fish',v:[90,19,0,1,0,0],a:['fish fillet','fish'],defG:150},{n:'egg',v:[155,13,1.1,11,0.6,0],a:['eggs','whole egg','free range egg','medium egg','large egg'],gpu:70,u:'egg',defG:70},{n:'egg white',v:[52,11,0.7,0.2,0.5,0],a:['egg whites'],defG:33},{n:'white rice',v:[130,2.7,28,0.3,0,0.4],a:['rice','basmati','basmati rice','jasmine rice'],cupG:186,defG:185},{n:'brown rice',v:[123,2.6,26,1,0,1.8],a:['brown basmati'],cupG:195,defG:185},{n:'oats',v:[389,17,66,7,0,10],a:['porridge','rolled oats','oatmeal'],cupG:81,defG:40},{n:'pasta',v:[158,5.8,31,0.9,0.6,1.8],a:['spaghetti','penne'],cupG:140,defG:180},{n:'sweet potato',v:[86,1.6,20,0.1,4.2,3],a:['sweet potato mash','sweetpotato'],cupG:200,defG:200},{n:'potato',v:[77,2,17,0.1,0.8,2.2],a:['white potato','mashed potato','boiled potato','potatoes'],cupG:170,defG:200},{n:'courgette',v:[17,1.2,3.1,0.3,2.5,1],a:['zucchini','courgettes'],defG:150},{n:'broccoli',v:[34,2.8,7,0.4,1.7,2.6],a:['broccoli florets'],cupG:90,defG:80},{n:'spinach',v:[23,2.9,3.6,0.4,0.4,2.2],a:['baby spinach'],cupG:30,defG:80},{n:'carrot',v:[41,0.9,10,0.2,4.7,2.8],a:['carrots'],cupG:128,defG:80},{n:'banana',v:[89,1.1,23,0.3,12,2.6],a:['bananas'],defG:120},{n:'avocado',v:[160,2,9,15,0.7,6.7],a:['avocados'],defG:80},{n:'ghee',v:[900,0,0,100,0,0],a:['clarified butter'],gpu:5,u:'tsp',defG:5},{n:'olive oil',v:[884,0,0,100,0,0],a:['evoo','extra virgin olive oil','oil'],gpu:5,u:'tsp',defG:5},{n:'coconut oil',v:[862,0,0,100,0,0],a:[],gpu:5,u:'tsp',defG:5},{n:'butter',v:[717,0.9,0.1,81,0.1,0],a:['unsalted butter'],gpu:5,u:'tsp',defG:5},{n:'honey',v:[304,0.3,82,0,82,0.2],a:['raw honey'],gpu:21,u:'tbsp',defG:21},{n:'whey protein',v:[113,23,4,2,3,0],a:['protein powder','whey'],gpu:30,u:'scoop',defG:30},{n:'bone broth',v:[10,2,0.5,0.1,0,0],a:['stock','chicken stock'],cupG:240,defG:240},{n:'date',v:[277,1.8,75,0.2,63,6.7],a:['dates','medjool date','medjool dates'],gpu:24,u:'date',defG:24},{n:'ginger',v:[80,1.8,18,0.8,1.7,2],a:['fresh ginger'],defG:5},{n:'ginger tea',v:[2,0,0.5,0,0.2,0],a:['ginger tea'],cupG:240,defG:240}];
+const FDB=[
+{n:'chicken breast',v:[165,31,0,3.6,0,0],a:['chicken','breast'],defG:165},
+{n:'chicken mince',v:[163,28,0,5,0,0],a:['mince chicken','minced chicken'],defG:150},
+{n:'chicken thigh',v:[177,24,0,9,0,0],a:['thigh'],defG:150},
+{n:'turkey',v:[135,30,0,1,0,0],a:['turkey breast','turkey mince'],defG:150},
+{n:'pollock',v:[92,20,0,1,0,0],a:['pollock fillet'],defG:150},
+{n:'cod',v:[82,18,0,0.7,0,0],a:['cod fillet'],defG:150},
+{n:'salmon',v:[208,20,0,13,0,0],a:['salmon fillet'],defG:150},
+{n:'tuna',v:[132,29,0,1,0,0],a:['tuna steak','canned tuna'],defG:150},
+{n:'haddock',v:[89,19,0,0.9,0,0],a:[],defG:150},
+{n:'sea bass',v:[97,18,0,2,0,0],a:['seabass'],defG:150},
+{n:'mackerel',v:[205,19,0,14,0,0],a:['smoked mackerel'],defG:150},
+{n:'prawns',v:[99,21,0,1.5,0,0],a:['shrimp','king prawns'],defG:100},
+{n:'white fish',v:[90,19,0,1,0,0],a:['fish fillet','fish'],defG:150},
+// Fix 4: added basa
+{n:'basa',v:[90,18,0,2,0,0],a:['basa fillet','basa fish'],defG:150},
+{n:'egg',v:[155,13,1.1,11,0.6,0],a:['eggs','whole egg','free range egg','medium egg','large egg'],gpu:70,u:'egg',defG:70},
+{n:'egg white',v:[52,11,0.7,0.2,0.5,0],a:['egg whites'],defG:33},
+{n:'white rice',v:[130,2.7,28,0.3,0,0.4],a:['rice','basmati','basmati rice','jasmine rice'],cupG:186,defG:185},
+{n:'brown rice',v:[123,2.6,26,1,0,1.8],a:['brown basmati'],cupG:195,defG:185},
+{n:'oats',v:[389,17,66,7,0,10],a:['porridge','rolled oats','oatmeal'],cupG:81,defG:40},
+{n:'pasta',v:[158,5.8,31,0.9,0.6,1.8],a:['spaghetti','penne'],cupG:140,defG:180},
+{n:'sweet potato',v:[86,1.6,20,0.1,4.2,3],a:['sweet potato mash','sweetpotato'],cupG:200,defG:200},
+// Fix 4: added maris piper aliases
+{n:'potato',v:[77,2,17,0.1,0.8,2.2],a:['white potato','mashed potato','boiled potato','potatoes','maris piper','maris piper potato','maris piper potatoes'],cupG:170,defG:200},
+{n:'courgette',v:[17,1.2,3.1,0.3,2.5,1],a:['zucchini','courgettes'],defG:150},
+{n:'broccoli',v:[34,2.8,7,0.4,1.7,2.6],a:['broccoli florets'],cupG:90,defG:80},
+{n:'spinach',v:[23,2.9,3.6,0.4,0.4,2.2],a:['baby spinach'],cupG:30,defG:80},
+{n:'carrot',v:[41,0.9,10,0.2,4.7,2.8],a:['carrots'],cupG:128,defG:80},
+{n:'banana',v:[89,1.1,23,0.3,12,2.6],a:['bananas'],defG:120},
+{n:'avocado',v:[160,2,9,15,0.7,6.7],a:['avocados'],defG:80},
+{n:'ghee',v:[900,0,0,100,0,0],a:['clarified butter'],gpu:5,u:'tsp',defG:5},
+{n:'olive oil',v:[884,0,0,100,0,0],a:['evoo','extra virgin olive oil','oil'],gpu:5,u:'tsp',defG:5},
+{n:'coconut oil',v:[862,0,0,100,0,0],a:[],gpu:5,u:'tsp',defG:5},
+{n:'butter',v:[717,0.9,0.1,81,0.1,0],a:['unsalted butter'],gpu:5,u:'tsp',defG:5},
+{n:'honey',v:[304,0.3,82,0,82,0.2],a:['raw honey'],gpu:21,u:'tbsp',defG:21},
+{n:'whey protein',v:[113,23,4,2,3,0],a:['protein powder','whey'],gpu:30,u:'scoop',defG:30},
+{n:'bone broth',v:[10,2,0.5,0.1,0,0],a:['stock','chicken stock'],cupG:240,defG:240},
+{n:'date',v:[277,1.8,75,0.2,63,6.7],a:['dates','medjool date','medjool dates'],gpu:24,u:'date',defG:24},
+{n:'ginger',v:[80,1.8,18,0.8,1.7,2],a:['fresh ginger'],defG:5},
+{n:'ginger tea',v:[2,0,0.5,0,0.2,0],a:['ginger tea'],cupG:240,defG:240}
+];
 
 function findFood(w){const s=w.toLowerCase().trim().replace(/s$/,'');let cl=s;COOK_WORDS.forEach(cw=>{cl=cl.replace(new RegExp('\\b'+cw+'\\b','gi'),'').trim();});cl=cl.replace(/\s+/g,' ').trim();if(!cl)return null;return FDB.find(f=>f.n===cl||f.n===s||cl.includes(f.n)||f.n.includes(cl)||(f.a&&f.a.some(a=>a===cl||a===s||cl.includes(a)||a.includes(cl))));}
 function extractCook(text){const l=text.toLowerCase();for(const cw of COOK_WORDS){if(l.includes(cw))return cw.charAt(0).toUpperCase()+cw.slice(1);}return null;}
 function tc(s){return s.replace(/\b\w/g,c=>c.toUpperCase());}
 
+// Fix 4: protected names includes maris piper, prevent substring stripping
 function cleanName(n){
   let c=n.toLowerCase();
-  const protectedNames=['sweet potato','white rice','brown rice','sea bass','bone broth','egg white','white fish','coconut oil','olive oil','ginger tea'];
+  const protectedNames=['sweet potato','white rice','brown rice','sea bass','bone broth','egg white','white fish','coconut oil','olive oil','ginger tea','maris piper'];
   const placeholders={};
   protectedNames.forEach((pn,i)=>{
     const ph='__PROT'+i+'__';
-    if(c.includes(pn)){placeholders[ph]=pn;c=c.replace(new RegExp(pn,'g'),ph);}
+    if(c.includes(pn)){placeholders[ph]=pn;c=c.replace(new RegExp(pn.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'),ph);}
   });
   COOK_WORDS.forEach(cw=>{c=c.replace(new RegExp('\\b'+cw+'\\b','gi'),'').trim();});
   c=c.replace(/\bat\b/gi,'').trim();
   Object.entries(placeholders).forEach(([ph,orig])=>{c=c.replace(new RegExp(ph,'g'),orig);});
-  return tc(c.replace(/\s+/g,' ').trim());
+  let result=tc(c.replace(/\s+/g,' ').trim());
+  // Fix 4: if result is 3 chars or fewer, try to look up full name
+  if(result.length<=3){
+    const fd=findFood(result);
+    if(fd)result=tc(fd.n);
+  }
+  return result;
 }
 
 function calcDTT(m){let b=(m.texture||'')==='Slurry'?1.5:(m.texture||'')==='Mashed'?2:(m.texture||'')==='Soft'?2.5:3;if((m.fat||0)>15)b+=1;else if((m.fat||0)>8)b+=0.5;if((m.cals||0)>600)b+=0.5;return b.toFixed(1);}
-// [5] macroLvl returns vibrant colors, no pill needed
 function macroLvl(mk,v){const T2={calories:[500,300],protein:[35,20],carbs:[60,30],fat:[8,4],sugar:[8,4],fibre:[5,2]};const[hi,md]=T2[mk]||[100,50];return v>=hi?{l:'High',c:'#DC2626'}:v>=md?{l:'Med',c:'#D97706'}:{l:'Low',c:'#16A34A'};}
 
 // ===== STRIP TIME & DATE from text before parsing =====
@@ -148,7 +242,6 @@ function stripTime(text){
     .replace(/\s+/g,' ').trim();
 }
 
-// [3] Strip date references from text
 function stripDateRef(text){
   return text
     .replace(/\b(?:on\s+)?\d{1,2}\s+(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\b/gi,'')
@@ -156,12 +249,10 @@ function stripDateRef(text){
     .replace(/\s+/g,' ').trim();
 }
 
-// [3] Parse target date from text
 function parseTargetDate(text){
   const l=text.toLowerCase();
   const today=new Date();
   const todayStr=today.toISOString().split('T')[0];
-
   if(/\byesterday\b/i.test(l)){
     const yd=new Date(today);yd.setDate(yd.getDate()-1);
     return yd.toISOString().split('T')[0];
@@ -177,10 +268,10 @@ function parseTargetDate(text){
       const target=new Date(year,month,day);
       const tStr=target.toISOString().split('T')[0];
       if(tStr<todayStr)return tStr;
-      if(tStr===todayStr)return null; // today
+      if(tStr===todayStr)return null;
     }
   }
-  return null; // today
+  return null;
 }
 
 // ===== MEAL PARSER (local fallback) =====
@@ -272,23 +363,40 @@ return{name:mealName,ingredients:ings.length>0?ings:['From description: '+text.s
 
 // ===== DETECTION & PARSING =====
 const SKW=['heartburn','cramp','pain','bloat','nausea','reflux','burn','ache','tired','fatigue','fog','coating','dizzy','constip','diarrh','vomit','wind','gas','itch','rash','indigestion','red skin'];
-const MKW=['rice','chicken','fish','pollock','cod','egg','potato','ghee','oil','cup','gram','ate','meal','breakfast','lunch','dinner','cooked','boiled','blended','slurry','mash','salmon','tuna','turkey','sweet','carrot','banana','oats','porridge','pasta','avocado','honey','date','prawn','haddock','mackerel','broccoli','spinach','whey','protein'];
-const WKW=['water','hydrat','drink','glass','bottle'];
+const MKW=['rice','chicken','fish','pollock','cod','egg','potato','ghee','oil','cup','gram','ate','meal','breakfast','lunch','dinner','cooked','boiled','blended','slurry','mash','salmon','tuna','turkey','sweet','carrot','banana','oats','porridge','pasta','avocado','honey','date','prawn','haddock','mackerel','broccoli','spinach','whey','protein','basa'];
+// Fix 5: liquid keywords (expanded from water)
+const LKW=['water','hydrat','drink','glass','bottle','tea','herbal','peppermint','chamomile','fennel tea','liquorice tea','licorice tea','broth','bone broth','juice','squash','infusion','beverage'];
 const STOOL_KW=['stool','bristol','type 1','type 2','type 3','type 4','type 5','type 6','type 7','bowel movement','poo'];
-// [4] Activity keywords
-const AKW=['sauna','steam','walk','swim','exercise','gym','run','meditation','meditate','cold','stress','stressful','breathwork','yoga','stretch'];
+// Fix 6: added walking, hike, hiking
+const AKW=['sauna','steam','walk','walking','swim','exercise','gym','run','meditation','meditate','cold','stress','stressful','breathwork','yoga','stretch','hike','hiking'];
+
+// Fix 1: Supplement detection
+function isSupplementEntry(text){
+  const l=text.toLowerCase();
+  // Check against known supplement keywords
+  if(SUPP_KW.some(kw=>l.includes(kw)))return true;
+  // Generic patterns: dose amounts
+  if(/\b\d+\s*(?:mg|mcg|iu)\b/i.test(l))return true;
+  if(/\bx[1-9]\b/i.test(l)&&SUPP_KW.some(kw=>l.includes(kw)))return true;
+  return false;
+}
 
 function detectType(text){
   const l=text.toLowerCase();
-  const w=WKW.filter(x=>l.includes(x)).length;
+  // Fix 1: check supplement first
+  if(isSupplementEntry(l))return'supplement';
+  const lq=LKW.filter(x=>l.includes(x)).length;
   const st=STOOL_KW.filter(x=>l.includes(x)).length;
   const sm=SKW.filter(x=>l.includes(x)).length;
   const m=MKW.filter(x=>l.includes(x)).length;
   const ac=AKW.filter(x=>l.includes(x)).length;
-  if(w>0&&m===0)return'water';
-  if(w>0&&/\b\d+\s*(?:ml|litre|liter|l\b|glass)/i.test(l)&&l.includes('water'))return'water';
+  // Liquid detection
+  if(lq>0&&m===0){
+    // Check if it's specifically a liquid
+    if(/\b\d+\s*(?:ml|litre|liter|l\b|glass)/i.test(l))return'liquid';
+    if(l.includes('water')||l.includes('tea')||l.includes('broth')||l.includes('juice'))return'liquid';
+  }
   if(st>0&&m===0)return'stool';
-  // [4] Check activity before meal
   if(ac>0&&m===0&&sm===0)return'activity';
   const foodMatch=findFood(stripDateRef(stripTime(text)));
   if(m>0||foodMatch)return'meal';
@@ -297,24 +405,45 @@ function detectType(text){
 }
 
 function parseStool(text){const l=text.toLowerCase();const tm=l.match(/type\s*(\d)/);const type=tm?+tm[1]:4;let color='Brown';['dark brown','green','yellow-brown','yellow','light brown'].forEach(c=>{if(l.includes(c))color=tc(c);});return{type,color,assisted:l.includes('assist')||l.includes('suppository'),note:null,time:new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})};}
-function parseSymptom(text){const l=text.toLowerCase();let sym=null,level=null,duration=null,time=null;
+
+// Fix 3: symptom parser with time range support
+function parseSymptom(text){const l=text.toLowerCase();let sym=null,level=null,duration=null,time=null,timeStart=null,timeEnd=null;
 const symMap={cramping:/cramp/,burn:/burn/,reflux:/reflux|heartburn/,bloating:/bloat/,fatigue:/fatigue|tired/,brainfog:/brain\s*fog|fog/,dryskin:/dry\s*skin|skin/,tongue:/tongue|coating/,indigestion:/indigestion/,nasal:/nasal|congestion/,redskin:/red\s*skin|redness/};
 for(const[k2,re] of Object.entries(symMap)){if(re.test(l)){sym=k2;break;}}
 const lm=l.match(/(\d+(?:\.\d+)?)\s*(?:\/\s*10|out of 10)/);if(lm)level=+lm[1];
 const dm2=l.match(/(?:for\s+)?(\d+)\s*(min|hour|hr)/i);if(dm2)duration=dm2[1]+' '+dm2[2]+(+dm2[1]>1?'s':'');
-const tmm=l.match(/(?:at\s+)?(\d{1,2}(?::\d{2})?\s*(?:am|pm))/i);
-if(tmm){
-  let raw=tmm[1];const ap=raw.match(/(am|pm)/i);let h2=parseInt(raw);const minM=raw.match(/:(\d{2})/);const min=minM?minM[1]:'00';
-  if(ap&&ap[1].toLowerCase()==='pm'&&h2<12)h2+=12;if(ap&&ap[1].toLowerCase()==='am'&&h2===12)h2=0;
-  time=(h2<10?'0':'')+h2+':'+min;
-}else{const tmm2=l.match(/at\s+(\d{1,2}:\d{2})/);if(tmm2)time=tmm2[1];else time=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});}
-return{symptom:sym,level,duration,time,raw:text};}
 
-// [4] Parse activity
+// Fix 3: Time range detection
+const rangeMatch=l.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*[-–to]+\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i);
+if(rangeMatch){
+  let sh=parseInt(rangeMatch[1]),sm2=rangeMatch[2]||'00',sap=rangeMatch[3]||rangeMatch[6];
+  let eh=parseInt(rangeMatch[4]),em2=rangeMatch[5]||'00',eap=rangeMatch[6];
+  if(sap){sap=sap.toLowerCase();if(sap==='pm'&&sh<12)sh+=12;if(sap==='am'&&sh===12)sh=0;}
+  if(eap){eap=eap.toLowerCase();if(eap==='pm'&&eh<12)eh+=12;if(eap==='am'&&eh===12)eh=0;}
+  timeStart=(sh<10?'0':'')+sh+':'+sm2;
+  timeEnd=(eh<10?'0':'')+eh+':'+em2;
+  time=timeStart+'–'+timeEnd;
+  // Compute duration from range
+  const diffMins=(eh*60+parseInt(em2))-(sh*60+parseInt(sm2));
+  if(diffMins>0&&!duration){
+    if(diffMins>=60)duration=Math.floor(diffMins/60)+' hr'+(Math.floor(diffMins/60)>1?'s':'');
+    else duration=diffMins+' mins';
+  }
+}else{
+  const tmm=l.match(/(?:at\s+)?(\d{1,2}(?::\d{2})?\s*(?:am|pm))/i);
+  if(tmm){
+    let raw=tmm[1];const ap=raw.match(/(am|pm)/i);let h2=parseInt(raw);const minM=raw.match(/:(\d{2})/);const min=minM?minM[1]:'00';
+    if(ap&&ap[1].toLowerCase()==='pm'&&h2<12)h2+=12;if(ap&&ap[1].toLowerCase()==='am'&&h2===12)h2=0;
+    time=(h2<10?'0':'')+h2+':'+min;
+  }else{const tmm2=l.match(/at\s+(\d{1,2}:\d{2})/);if(tmm2)time=tmm2[1];else time=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});}
+}
+return{symptom:sym,level,duration,time,timeStart,timeEnd,raw:text};}
+
+// Fix 6: Parse activity with better walk/hike support
 function parseActivity(text){
   const l=text.toLowerCase();
   let activity=null;
-  const actMap={'sauna':/sauna/,'steam room':/steam/,'walk':/walk/,'swim':/swim/,'exercise':/exercise|gym/,'run':/\brun\b/,'meditation':/meditat/,'cold water':/cold/,'breathwork':/breathwork/,'yoga':/yoga/,'stretch':/stretch/,'stressful event':/stress/};
+  const actMap={'sauna':/\bsauna\b/,'steam room':/\bsteam\b/,'walk':/\bwalk(?:ing)?\b/,'hike':/\bhik(?:e|ing)\b/,'swim':/\bswim/,'exercise':/\bexercise|gym\b/,'run':/\brun(?:ning)?\b/,'meditation':/\bmeditat/,'cold water':/\bcold\b/,'breathwork':/\bbreathwork\b/,'yoga':/\byoga\b/,'stretch':/\bstretch/,'stressful event':/\bstress/};
   for(const[k2,re] of Object.entries(actMap)){if(re.test(l)){activity=k2;break;}}
   let duration=null;
   const dm=l.match(/(?:for\s+)?(\d+)\s*(min|hour|hr)/i);
@@ -322,11 +451,64 @@ function parseActivity(text){
   let time=null;
   const tmm=l.match(/(?:at\s+)?(\d{1,2}(?::\d{2})?\s*(?:am|pm))/i);
   if(tmm){let raw=tmm[1];const ap=raw.match(/(am|pm)/i);let h2=parseInt(raw);const minM=raw.match(/:(\d{2})/);const min=minM?minM[1]:'00';if(ap&&ap[1].toLowerCase()==='pm'&&h2<12)h2+=12;if(ap&&ap[1].toLowerCase()==='am'&&h2===12)h2=0;time=(h2<10?'0':'')+h2+':'+min;}
-  if(!time)time=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  if(!time){
+    // Try bare time like "1pm walk"
+    const bare=l.match(/^(\d{1,2})\s*(am|pm)\b/i);
+    if(bare){let h2=parseInt(bare[1]);const ap=bare[2].toLowerCase();if(ap==='pm'&&h2<12)h2+=12;if(ap==='am'&&h2===12)h2=0;time=(h2<10?'0':'')+h2+':00';}
+    else time=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  }
   return{activity:activity?tc(activity):'Activity',duration,time,note:null};
 }
 
-function parseWater(text){const l=text.toLowerCase();const ml=l.match(/(\d+)\s*ml/);if(ml)return+ml[1];const litre=l.match(/(\d+(?:\.\d+)?)\s*(?:litre|liter|l\b)/);if(litre)return Math.round(+litre[1]*1000);const glass=l.match(/(\d+)\s*glass/);if(glass)return+glass[1]*250;return 250;}
+// Fix 1: Parse supplement log
+function parseSupplementLog(text){
+  const l=text.toLowerCase();
+  let matched=null;
+  for(const sup of SUPPLEMENT_DB){
+    if(sup.kw.some(kw=>l.includes(kw))){matched=sup;break;}
+  }
+  if(!matched)return{name:text.trim(),quantity:1,totalDose:'1 unit',time:getNow(),note:null};
+  let quantity=1;
+  const qm=l.match(/x\s*(\d+)/i)||l.match(/(\d+)\s*(?:caps?|tablets?|scoops?)/i);
+  if(qm)quantity=parseInt(qm[1]);
+  const customDose=S.supplementDoses[matched.name];
+  const dosePerUnit=customDose||matched.dosePerUnit;
+  const totalDose=(quantity*dosePerUnit)+matched.unit;
+  let time=null;
+  const tmm=l.match(/(?:at\s+)?(\d{1,2}(?::\d{2})?\s*(?:am|pm))/i);
+  if(tmm){let raw=tmm[1];const ap=raw.match(/(am|pm)/i);let h2=parseInt(raw);const minM=raw.match(/:(\d{2})/);const min=minM?minM[1]:'00';if(ap&&ap[1].toLowerCase()==='pm'&&h2<12)h2+=12;if(ap&&ap[1].toLowerCase()==='am'&&h2===12)h2=0;time=(h2<10?'0':'')+h2+':'+min;}
+  if(!time)time=getNow();
+  return{name:matched.name,quantity,totalDose,time,note:null};
+}
+
+// Fix 5: Parse liquid
+function parseLiquid(text){
+  const l=text.toLowerCase();
+  let ml=250;
+  const mlM=l.match(/(\d+)\s*ml/);if(mlM)ml=+mlM[1];
+  const litreM=l.match(/(\d+(?:\.\d+)?)\s*(?:litre|liter|l\b)/);if(litreM)ml=Math.round(+litreM[1]*1000);
+  const glassM=l.match(/(\d+)\s*glass/);if(glassM)ml=+glassM[1]*250;
+  const cupM=l.match(/(\d+(?:\.\d+)?)\s+cups?\b/);
+  let name='Water';
+  const drinkMap=[
+    [/ginger\s*tea/,'Ginger Tea'],[/peppermint/,'Peppermint Tea'],[/chamomile/,'Chamomile Tea'],
+    [/fennel/,'Fennel Tea'],[/liquorice|licorice/,'Liquorice Tea'],[/bone\s*broth/,'Bone Broth'],
+    [/broth|stock/,'Broth'],[/juice/,'Juice'],[/squash/,'Squash'],[/herbal/,'Herbal Tea'],
+    [/tea/,'Tea'],[/water/,'Water']
+  ];
+  for(const[re,n] of drinkMap){if(re.test(l)){name=n;break;}}
+  // If cups mentioned and we have a FDB entry with cupG, use that
+  if(cupM){
+    const fd=findFood(name.toLowerCase());
+    if(fd&&fd.cupG)ml=Math.round(+cupM[1]*fd.cupG);
+    else ml=Math.round(+cupM[1]*240);
+  }
+  let type='water';
+  if(name!=='Water')type='tea';
+  if(name==='Bone Broth'||name==='Broth')type='broth';
+  if(name==='Juice'||name==='Squash')type='other';
+  return{ml,name,time:getNow(),type};
+}
 
 // ===== CONSTANTS =====
 const SMETA={cramping:{label:'Cramping',pain:true},burn:{label:'Burn',pain:true},reflux:{label:'Reflux',pain:true},bloating:{label:'Bloating',pain:false},fatigue:{label:'Fatigue',pain:false},brainfog:{label:'Brain Fog',pain:false},dryskin:{label:'Dry Skin',pain:false},tongue:{label:'Tongue Coating',pain:false},redskin:{label:'Red Skin',pain:false},indigestion:{label:'Indigestion',pain:true},nasal:{label:'Nasal Congestion',pain:false}};
@@ -339,7 +521,6 @@ const AVOID_FOODS=['Gluten','Dairy (except ghee)','Soy','High-FODMAP','Fructose/
 const INSIGHTS=[{id:1,confidence:'strong',isNew:false,flag:'Gallbladder',title:'High-fat meals correlating with cramping',body:'Meals with >10g fat are followed by cramping 73% of the time within 2–4 hours. Your ALT of 206 confirms acute bile stress. Keep fat below 8g per meal until ALT normalises.'},{id:2,confidence:'strong',isNew:false,flag:'SIBO',title:'Tongue coating predicts same-day bloating',body:'When morning tongue coating is 6+, bloating scores are elevated by +2.3 points that same day.'},{id:3,confidence:'moderate',isNew:false,flag:'Gallbladder',title:'Steam room within 60 mins of eating — high risk',body:'March 16 is your most severe episode. Heat redirects blood from the gut, impairing bile flow. Always wait 3+ hours after eating before any heat exposure.'},{id:4,confidence:'early',isNew:false,flag:'Gallbladder',title:'Cumulative fat load may have triggered March 16',body:'In the 5 days before the crisis you consumed salmon and multiple chicken breasts daily. Cumulative hepatic fat stress over multiple days may be the real mechanism.'},{id:5,confidence:'strong',isNew:false,flag:null,title:'Sweet potato — confirmed safe food',body:'Across logged meals with boiled/mashed sweet potato, no meaningful symptom elevation within 4 hours.'}];
 
 // ===== NAV =====
-// [12] Charts moved to more panel, Tasks replaces it in bottom nav
 const BOTTOM_NAV=[{id:'home',label:'Home',svg:'<path d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><polyline points="9 21 9 14 15 14 15 21"/>'},{id:'progress',label:'Progress',svg:'<path d="M12 20V10M18 20V4M6 20v-4"/>'},{id:'tasks',label:'Tasks',svg:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>'},{id:'more',label:'More',svg:'<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>'}];
 const MORE_NAV=[{id:'charts',label:'Charts',svg:'<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>'},{id:'analysis',label:'Analysis',svg:'<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>'},{id:'history',label:'Daily Log',svg:'<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'},{id:'library',label:'Library',svg:'<path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>'},{id:'settings',label:'Settings',svg:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>'}];
 
@@ -378,62 +559,54 @@ function accentShades(base){const hex=base.replace('#','');const r=parseInt(hex.
 function getLibData(){
   const range=S.libRange||'today';
   if(range==='today'){
-    return{meals:S.todayMeals||[],symptoms:S.symptomLogs||[],stool:S.stoolLogs||[],notes:S.noteLogs||[],water:S.waterLogs||[],activities:S.activityLogs||[]};
+    return{meals:S.todayMeals||[],symptoms:S.symptomLogs||[],stool:S.stoolLogs||[],notes:S.noteLogs||[],liquids:S.liquidLogs||[],activities:S.activityLogs||[],supplements:S.supplementLogs||[]};
   }
   if(range==='yesterday'){
     const yd=S.days.length>0?S.days[S.days.length-1]:null;
-    if(!yd)return{meals:[],symptoms:[],stool:[],notes:[],water:[],activities:[]};
-    return{meals:yd.meals||[],symptoms:yd.symptoms||[],stool:yd.stool||[],notes:yd.notes||[],water:yd.water||[],activities:yd.activities||[]};
+    if(!yd)return{meals:[],symptoms:[],stool:[],notes:[],liquids:[],activities:[],supplements:[]};
+    return{meals:yd.meals||[],symptoms:yd.symptoms||[],stool:yd.stool||[],notes:yd.notes||[],liquids:yd.liquids||[],activities:yd.activities||[],supplements:yd.supplements||[]};
   }
   const now=new Date();
   const cutoff=range==='week'?new Date(now.getTime()-7*86400000):new Date(now.getTime()-30*86400000);
   const cutoffStr=cutoff.toISOString().split('T')[0];
-  let meals=[],symptoms=[],stool=[],notes=[],water=[],activities=[];
-  meals=meals.concat(S.todayMeals||[]);symptoms=symptoms.concat(S.symptomLogs||[]);stool=stool.concat(S.stoolLogs||[]);notes=notes.concat(S.noteLogs||[]);water=water.concat(S.waterLogs||[]);activities=activities.concat(S.activityLogs||[]);
+  let meals=[],symptoms=[],stool=[],notes=[],liquids=[],activities=[],supplements=[];
+  meals=meals.concat(S.todayMeals||[]);symptoms=symptoms.concat(S.symptomLogs||[]);stool=stool.concat(S.stoolLogs||[]);notes=notes.concat(S.noteLogs||[]);liquids=liquids.concat(S.liquidLogs||[]);activities=activities.concat(S.activityLogs||[]);supplements=supplements.concat(S.supplementLogs||[]);
   (S.days||[]).forEach(d=>{
     if(d.date>=cutoffStr){
-      meals=meals.concat(d.meals||[]);symptoms=symptoms.concat(d.symptoms||[]);stool=stool.concat(d.stool||[]);notes=notes.concat(d.notes||[]);water=water.concat(d.water||[]);activities=activities.concat(d.activities||[]);
+      meals=meals.concat(d.meals||[]);symptoms=symptoms.concat(d.symptoms||[]);stool=stool.concat(d.stool||[]);notes=notes.concat(d.notes||[]);liquids=liquids.concat(d.liquids||[]);activities=activities.concat(d.activities||[]);supplements=supplements.concat(d.supplements||[]);
     }
   });
-  return{meals,symptoms,stool,notes,water,activities};
+  return{meals,symptoms,stool,notes,liquids,activities,supplements};
 }
 
-// [1] Helper to delete from any date range
 function deleteFromRange(type,index){
   const range=S.libRange||'today';
   if(range==='today'){
-    if(type==='meals')S.todayMeals.splice(index,1);
-    else if(type==='symptoms')S.symptomLogs.splice(index,1);
-    else if(type==='stool')S.stoolLogs.splice(index,1);
-    else if(type==='water')S.waterLogs.splice(index,1);
-    else if(type==='activities')S.activityLogs.splice(index,1);
-    else if(type==='notes')S.noteLogs.splice(index,1);
+    deleteFromRange_inner('today',type,index);
   }else if(range==='yesterday'){
     const yd=S.days.length>0?S.days[S.days.length-1]:null;
     if(yd){
       if(type==='meals'&&yd.meals)yd.meals.splice(index,1);
       else if(type==='symptoms'&&yd.symptoms)yd.symptoms.splice(index,1);
       else if(type==='stool'&&yd.stool)yd.stool.splice(index,1);
-      else if(type==='water'&&yd.water)yd.water.splice(index,1);
+      else if(type==='liquids'&&yd.liquids)yd.liquids.splice(index,1);
       else if(type==='activities'&&yd.activities)yd.activities.splice(index,1);
+      else if(type==='supplements'&&yd.supplements)yd.supplements.splice(index,1);
       else if(type==='notes'&&yd.notes)yd.notes.splice(index,1);
     }
   }else{
-    // week/month — need to find which day the entry belongs to by counting through
     const now=new Date();
     const cutoff=range==='week'?new Date(now.getTime()-7*86400000):new Date(now.getTime()-30*86400000);
     const cutoffStr=cutoff.toISOString().split('T')[0];
-    // First count today's entries
     let todayCount=0;
     if(type==='meals')todayCount=(S.todayMeals||[]).length;
     else if(type==='symptoms')todayCount=(S.symptomLogs||[]).length;
     else if(type==='stool')todayCount=(S.stoolLogs||[]).length;
-    else if(type==='water')todayCount=(S.waterLogs||[]).length;
+    else if(type==='liquids')todayCount=(S.liquidLogs||[]).length;
     else if(type==='activities')todayCount=(S.activityLogs||[]).length;
+    else if(type==='supplements')todayCount=(S.supplementLogs||[]).length;
     else if(type==='notes')todayCount=(S.noteLogs||[]).length;
-    if(index<todayCount){
-      deleteFromRange_inner('today',type,index);return;
-    }
+    if(index<todayCount){deleteFromRange_inner('today',type,index);saveState();render();return;}
     let offset=todayCount;
     for(const day of S.days){
       if(day.date<cutoffStr)continue;
@@ -441,8 +614,9 @@ function deleteFromRange(type,index){
       if(type==='meals')arr=day.meals||[];
       else if(type==='symptoms')arr=day.symptoms||[];
       else if(type==='stool')arr=day.stool||[];
-      else if(type==='water')arr=day.water||[];
+      else if(type==='liquids')arr=day.liquids||[];
       else if(type==='activities')arr=day.activities||[];
+      else if(type==='supplements')arr=day.supplements||[];
       else if(type==='notes')arr=day.notes||[];
       if(index<offset+arr.length){arr.splice(index-offset,1);break;}
       offset+=arr.length;
@@ -454,13 +628,13 @@ function deleteFromRange_inner(r,type,index){
   if(type==='meals')S.todayMeals.splice(index,1);
   else if(type==='symptoms')S.symptomLogs.splice(index,1);
   else if(type==='stool')S.stoolLogs.splice(index,1);
-  else if(type==='water')S.waterLogs.splice(index,1);
+  else if(type==='liquids')S.liquidLogs.splice(index,1);
   else if(type==='activities')S.activityLogs.splice(index,1);
+  else if(type==='supplements')S.supplementLogs.splice(index,1);
   else if(type==='notes')S.noteLogs.splice(index,1);
 }
 
 // ===== SHARED MEAL CARD BUILDER =====
-// [6] Single function used by both Home and Library
 function buildMealCard(m,i,expandedKey,allowDelete,onDelete){
   const t=T(),a=A(),sz=z();
   const isExp=(expandedKey==='home'?S.expandedMeal:S.expandedLibMeal)===i;
@@ -494,7 +668,6 @@ function buildMealCard(m,i,expandedKey,allowDelete,onDelete){
     const thead=div({display:'grid',gridTemplateColumns:'1fr 70px 58px',background:t.surf2});
     ['Macro','Amount','Level'].forEach(hd=>{const c2=div({padding:'5px 8px',fontSize:'9px',fontWeight:'600',color:t.muted,textTransform:'uppercase'});c2.textContent=hd;thead.appendChild(c2);});
     tbl.appendChild(thead);
-    // [5] Vibrant colours, no pill shape
     [['Calories',m.cals,'kcal','calories'],['Protein',m.protein,'g','protein'],['Carbs',m.carbs,'g','carbs'],['Fat',m.fat,'g','fat'],['Sugar',m.sugar,'g','sugar'],['Fibre',m.fibre,'g','fibre']].forEach(([l,v,u,mk])=>{
       const row=div({display:'grid',gridTemplateColumns:'1fr 70px 58px',borderTop:'0.5px solid '+t.bdr});
       row.appendChild(div({padding:'6px 8px',fontSize:(sz-2)+'px',color:t.sub},[txt(l)]));
@@ -520,7 +693,8 @@ const tCals=todayMeals.reduce((s2,m)=>s2+(m.cals||0),0);
 const tP=todayMeals.reduce((s2,m)=>s2+(m.protein||0),0);
 const tC=todayMeals.reduce((s2,m)=>s2+(m.carbs||0),0);
 const tF=todayMeals.reduce((s2,m)=>s2+(m.fat||0),0);
-const tW=S.waterLogs.reduce((s2,w)=>s2+w.ml,0);
+// Fix 5: total liquids for water bar
+const tW=S.liquidLogs.reduce((s2,l)=>s2+l.ml,0);
 const wrap=div({});
 const shades=accentShades(a.m);
 
@@ -529,27 +703,31 @@ hdr.appendChild(div({fontSize:(sz+8)+'px',fontWeight:'700',letterSpacing:'-0.5px
 hdr.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,marginTop:'2px'},[txt(getTodayLabel())]));
 wrap.appendChild(hdr);
 
+// Fix 2: DTT info — always show if meals exist, use Date objects
 if(S.sections.dttInfo&&todayMeals.length>0){
   const sorted=[...todayMeals].sort((a2,b2)=>{
     const[ah,am2]=(a2.time||'00:00').split(':').map(Number);
     const[bh,bm]=(b2.time||'00:00').split(':').map(Number);
-    return(bh*60+(bm||0))-(ah*60+(am2||0));
+    return(bh*60+(am2||0))-(ah*60+(bm||0));
   });
+  // sorted ascending, last meal = last element
   const lastMeal=sorted[sorted.length-1];
   const[lh,lm]=(lastMeal.time||'00:00').split(':').map(Number);
-  const now2=new Date(),nowMin=now2.getHours()*60+now2.getMinutes(),diff=nowMin-(lh*60+(lm||0));
-  if(diff>0&&diff<600){
-    const dttH=parseFloat(calcDTT(lastMeal));
-    const hrs=Math.floor(diff/60),mins=diff%60;
-    const dttLine=div({fontSize:(sz-2)+'px',color:t.muted,marginTop:'6px',marginBottom:'12px',display:'flex',alignItems:'center',gap:'4px',flexWrap:'wrap'});
-    dttLine.appendChild(txt('Last meal '));
-    dttLine.appendChild(h('span',{style:{color:a.m,fontWeight:'600'}},hrs+'h '+mins+'m ago'));
-    dttLine.appendChild(txt(' ('));
-    dttLine.appendChild(h('span',{style:{color:t.sub}},lastMeal.time));
-    dttLine.appendChild(txt(') · Est. DTT '));
-    dttLine.appendChild(h('span',{style:{color:a.m,fontWeight:'600'}},dttH+' hrs'));
-    wrap.appendChild(dttLine);
-  }
+  const now2=new Date();
+  const mealDate=new Date(now2);mealDate.setHours(lh,lm||0,0,0);
+  const diffMs=now2.getTime()-mealDate.getTime();
+  const diffMin=Math.max(0,Math.floor(diffMs/60000));
+  const dttH=parseFloat(calcDTT(lastMeal));
+  const hrs=Math.floor(diffMin/60),mins=diffMin%60;
+  const agoText=diffMin<1?'< 1 min ago':hrs+'h '+mins+'m ago';
+  const dttLine=div({fontSize:(sz-2)+'px',color:t.muted,marginTop:'6px',marginBottom:'12px',display:'flex',alignItems:'center',gap:'4px',flexWrap:'wrap'});
+  dttLine.appendChild(txt('Last meal '));
+  dttLine.appendChild(h('span',{style:{color:a.m,fontWeight:'600'}},agoText));
+  dttLine.appendChild(txt(' ('));
+  dttLine.appendChild(h('span',{style:{color:t.sub}},lastMeal.time));
+  dttLine.appendChild(txt(') · Est. DTT '));
+  dttLine.appendChild(h('span',{style:{color:a.m,fontWeight:'600'}},dttH+' hrs'));
+  wrap.appendChild(dttLine);
 }
 
 if(!S.morningDoneAt){
@@ -565,7 +743,7 @@ wrap.appendChild(sl('Quick log'));
 const card=div({});card.className='card card-p';
 if(!S.logActive&&!S.logResult&&!S.logLoading){
   const ph=btn({width:'100%',background:t.surf2,border:'0.5px solid '+t.bdr,borderRadius:'10px',padding:'11px 14px',textAlign:'left',color:t.muted,fontSize:(sz-1)+'px',display:'flex',justifyContent:'space-between',alignItems:'center',cursor:'text'},'',()=>{S.logActive=true;render();});
-  ph.appendChild(txt('Meal, symptom, water, stool, activity or note…'));
+  ph.appendChild(txt('Meal, symptom, liquid, supplement, stool, activity…'));
   card.appendChild(ph);
 }else if(S.logLoading){
   const loadBox=div({display:'flex',alignItems:'center',justifyContent:'center',gap:'10px',padding:'20px'});
@@ -575,7 +753,7 @@ if(!S.logActive&&!S.logResult&&!S.logLoading){
   card.appendChild(loadBox);
 }else if(S.logActive){
   const ta=document.createElement('textarea');ta.value=S.logText||'';
-  ta.placeholder='Meal, symptom, water, stool, activity or note…';
+  ta.placeholder='Meal, symptom, liquid, supplement, stool, activity…';
   Object.assign(ta.style,{width:'100%',border:'0.5px solid '+t.bdr,borderRadius:'10px',padding:'11px 13px',fontSize:(sz-1)+'px',minHeight:'76px',fontFamily:'inherit',color:t.text,background:t.surf2,lineHeight:'1.5',boxSizing:'border-box',display:'block'});
   ta.oninput=e=>{S.logText=e.target.value;};
   card.appendChild(ta);
@@ -590,8 +768,7 @@ if(!S.logActive&&!S.logResult&&!S.logLoading){
     resBox.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff',marginBottom:'4px'},[txt('✓ '+lr.meal.name)]));
     if(lr.meal.cals){
       const grid=div({display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'5px'});
-      const items=[['Calories',lr.meal.cals,'kcal'],['Protein',lr.meal.protein,'g'],['Carbs',lr.meal.carbs,'g'],['Fat',lr.meal.fat,'g'],['Sugar',lr.meal.sugar,'g'],['Fibre',lr.meal.fibre,'g']];
-      items.forEach(([l,v,u])=>{
+      [['Calories',lr.meal.cals,'kcal'],['Protein',lr.meal.protein,'g'],['Carbs',lr.meal.carbs,'g'],['Fat',lr.meal.fat,'g'],['Sugar',lr.meal.sugar,'g'],['Fibre',lr.meal.fibre,'g']].forEach(([l,v,u])=>{
         const cell=div({background:'rgba(255,255,255,0.15)',borderRadius:'8px',padding:'6px 8px'});
         cell.appendChild(div({fontSize:'9px',color:'rgba(255,255,255,0.7)'},[txt(l)]));
         cell.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff'},[txt((v!=null?v:'—')+' '+u)]));
@@ -606,12 +783,14 @@ if(!S.logActive&&!S.logResult&&!S.logLoading){
   }else if(lr.type==='symptom'){
     resBox.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff'},[txt('✓ Symptom logged')]));
     resBox.appendChild(div({fontSize:(sz-1)+'px',color:'rgba(255,255,255,0.9)'},[txt(lr.text)]));
-  }else if(lr.type==='water'){
-    resBox.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff'},[txt('✓ '+lr.ml+'ml water logged')]));
+  }else if(lr.type==='liquid'){
+    resBox.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff'},[txt('✓ '+(lr.name||'Liquid')+' — '+lr.ml+'ml')]));
   }else if(lr.type==='stool'){
     resBox.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff'},[txt('✓ Stool logged — Type '+lr.stool.type)]));
   }else if(lr.type==='activity'){
     resBox.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff'},[txt('✓ Activity logged — '+lr.activity)]));
+  }else if(lr.type==='supplement'){
+    resBox.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff'},[txt('✓ '+lr.name+' logged'+(lr.totalDose?' — '+lr.totalDose:''))]));
   }else{
     resBox.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff'},[txt('✓ Note saved')]));
   }
@@ -641,6 +820,44 @@ todayMeals.forEach((m,i)=>{
   wrap.appendChild(buildMealCard(m,i,'home',true,()=>{S.todayMeals.splice(i,1);saveState();render();showToast('Meal deleted',null);}));
 });}
 
+// Fix 5: Today's Liquids
+if(S.sections.liquids){
+wrap.appendChild(sl("Today's Liquids · "+S.liquidLogs.length));
+if(S.liquidLogs.length===0){
+  wrap.appendChild(div({padding:'16px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No liquids logged today.')]));
+}
+S.liquidLogs.forEach((lq,i)=>{
+  const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';
+  const info=div({});
+  info.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text},[txt(lq.name||'Water')]));
+  info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(lq.time+' · '+lq.ml+'ml')]));
+  card.appendChild(info);
+  const del=btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer',flexShrink:'0'},'×',()=>{
+    S.liquidLogs.splice(i,1);saveState();render();showToast('Liquid entry deleted',null);
+  });
+  card.appendChild(del);
+  wrap.appendChild(card);
+});}
+
+// Fix 1: Today's Supplements
+if(S.sections.supplements){
+wrap.appendChild(sl("Today's Supplements · "+S.supplementLogs.length));
+if(S.supplementLogs.length===0){
+  wrap.appendChild(div({padding:'16px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No supplements logged today.')]));
+}
+S.supplementLogs.forEach((sup,i)=>{
+  const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';
+  const info=div({});
+  info.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text},[txt(sup.name+(sup.quantity>1?' x'+sup.quantity:''))]));
+  info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(sup.time+' · '+sup.totalDose)]));
+  card.appendChild(info);
+  const del=btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer',flexShrink:'0'},'×',()=>{
+    S.supplementLogs.splice(i,1);saveState();render();showToast('Supplement entry deleted',null);
+  });
+  card.appendChild(del);
+  wrap.appendChild(card);
+});}
+
 // Symptoms today
 if(S.sections.symptoms){
 wrap.appendChild(sl('Symptoms · '+S.symptomLogs.length));
@@ -653,6 +870,7 @@ S.symptomLogs.forEach((sl2)=>{
   const inner=div({padding:'12px 14px'});
   inner.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text,marginBottom:'4px'},[txt(label+(sl2.level?' — '+sl2.level+'/10':''))]));
   const metaRow=div({display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'});
+  // Fix 3: show full time range
   if(sl2.time)metaRow.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(sl2.time)]));
   if(sl2.duration)metaRow.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(sl2.duration)]));
   if(sl2.level){
@@ -686,15 +904,12 @@ S.noteLogs.forEach(noteText=>{
   wrap.appendChild(note);
 });}
 
-// [14] Activities NOT shown on home screen
-
 return wrap;}
 
 // ===== AI-POWERED LOGGING =====
-// [3] Updated AI system prompt with targetDate and activity support
 const AI_SYSTEM_PROMPT=`You are a nutrition parser for a health tracking app. Parse the user's log entry and return ONLY valid JSON.
 
-Detect type: meal, water, symptom, stool, activity, or note.
+Detect type: meal, liquid, supplement, water, symptom, stool, activity, or note.
 
 For meals, calculate accurate macros using standard nutritional databases. For branded foods use standard values.
 Never include ghee, olive oil, coconut oil, or butter in the meal name — they go in ingredients only.
@@ -723,10 +938,21 @@ Return this exact JSON structure (omit irrelevant fields):
   }
 }
 
-For water: { "type": "water", "ml": 500 }
-For symptom: { "type": "symptom", "symptom": "cramping", "level": 4, "duration": "10 mins", "time": "14:00", "raw": "..." }
+For liquids (water, tea, broth, any beverage):
+{ "type": "liquid", "name": "Ginger Tea", "ml": 300, "time": "14:00", "liquidType": "tea" }
+{ "type": "liquid", "name": "Water", "ml": 500, "time": "09:00", "liquidType": "water" }
+
+For supplements/medications (zinc carnosine, buscopan, famotidine, magnesium, taurine, milk thistle, slippery elm, b complex, vitamins, probiotics, enzymes, HCl, betaine, licorice, glutamine, NAC, berberine, mebeverine, omeprazole, lansoprazole, creon, colestyramine, rifaximin, metronidazole, amoxicillin, co-amoxiclav, whey protein):
+{ "type": "supplement", "name": "L-Taurine", "quantity": 2, "time": "14:00" }
+
+For symptom (support time ranges like "2-4pm"):
+{ "type": "symptom", "symptom": "cramping", "level": 4, "duration": "2 hrs", "time": "14:00", "timeStart": "14:00", "timeEnd": "16:00", "raw": "..." }
+
 For stool: { "type": "stool", "stoolType": 4, "color": "Brown", "assisted": false }
-For activity: { "type": "activity", "activity": "Sauna", "duration": "30 mins", "intensity": "moderate", "note": "went after lunch", "time": "14:00" }
+
+For activity (sauna, steam, walk, walking, hike, swim, exercise, gym, run, meditation, cold water, breathwork, yoga, stretch):
+{ "type": "activity", "activity": "Walk", "duration": "30 mins", "intensity": "moderate", "note": null, "time": "13:00" }
+
 For note: { "type": "note", "text": "..." }
 
 Return ONLY JSON. No markdown. No explanation.`;
@@ -754,20 +980,23 @@ async function aiParse(text){
   }
 }
 
-// [3] Helper to log to a past date
+// Helper to log to a past date
 function logToPastDate(targetDate,type,entry){
   let day=S.days.find(d=>d.date===targetDate);
   if(!day){
-    day={date:targetDate,meals:[],symptoms:[],stool:[],notes:[],water:[],waterTotal:0,activities:[]};
+    day={date:targetDate,meals:[],symptoms:[],stool:[],notes:[],liquids:[],liquidTotal:0,activities:[],supplements:[]};
     S.days.push(day);
     S.days.sort((a,b)=>a.date.localeCompare(b.date));
   }
   if(!day.activities)day.activities=[];
+  if(!day.liquids)day.liquids=[];
+  if(!day.supplements)day.supplements=[];
   if(type==='meal')(day.meals=day.meals||[]).unshift(entry);
   else if(type==='symptom')(day.symptoms=day.symptoms||[]).push(entry);
   else if(type==='stool')(day.stool=day.stool||[]).push(entry);
-  else if(type==='water'){(day.water=day.water||[]).push(entry);day.waterTotal=(day.waterTotal||0)+entry.ml;}
-  else if(type==='activity')(day.activities=day.activities||[]).push(entry);
+  else if(type==='liquid'){(day.liquids=day.liquids||[]).push(entry);day.liquidTotal=(day.liquidTotal||0)+entry.ml;}
+  else if(type==='activity')(day.activities).push(entry);
+  else if(type==='supplement')(day.supplements).push(entry);
   else if(type==='note')(day.notes=day.notes||[]).push(entry);
   showToast('Logged to '+targetDate,null);
 }
@@ -777,7 +1006,6 @@ async function doLog(){
 const text=(S.logText||'').trim();if(!text)return;
 S.logLoading=true;S.logActive=false;S.logText='';render();
 
-// [3] Parse target date from text
 const localTargetDate=parseTargetDate(text);
 
 const aiResult=await aiParse(text);
@@ -794,7 +1022,7 @@ function processAIResult(res,rawText,targetDate){
   const isPast=targetDate&&targetDate!==new Date().toISOString().split('T')[0];
   if(res.type==='meal'&&res.meal){
     const m=res.meal;
-    if(!m.time)m.time=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    if(!m.time)m.time=getNow();
     if(!m.texture)m.texture='Soft';
     if(!m.fatLevel)m.fatLevel=(m.fat||0)>10?'High':(m.fat||0)>5?'Medium':'Low';
     if(!m.cookingMethod)m.cookingMethod='Not specified';
@@ -803,13 +1031,35 @@ function processAIResult(res,rawText,targetDate){
     else{S.todayMeals=[m,...S.todayMeals];}
     S.logResult={type:'meal',meal:m};
     if(!isPast)showToast(m.name+' logged',null);
-  }else if(res.type==='water'){
+  }else if(res.type==='liquid'){
     const ml=res.ml||250;
-    if(isPast){logToPastDate(targetDate,'water',{ml,time:getNow()});}
-    else{S.water+=ml;S.waterLogs.push({ml,time:getNow()});}
-    S.logResult={type:'water',ml};if(!isPast)showToast(ml+'ml water logged',null);
+    const name=res.name||'Water';
+    const ltype=res.liquidType||'water';
+    const entry={ml,name,time:res.time||getNow(),type:ltype};
+    if(isPast){logToPastDate(targetDate,'liquid',entry);}
+    else{S.liquidLogs.push(entry);}
+    S.logResult={type:'liquid',ml,name};if(!isPast)showToast(name+' — '+ml+'ml logged',null);
+  }else if(res.type==='water'){
+    // Backward compat: AI might return 'water' type
+    const ml=res.ml||250;
+    const entry={ml,name:'Water',time:getNow(),type:'water'};
+    if(isPast){logToPastDate(targetDate,'liquid',entry);}
+    else{S.liquidLogs.push(entry);}
+    S.logResult={type:'liquid',ml,name:'Water'};if(!isPast)showToast(ml+'ml water logged',null);
+  }else if(res.type==='supplement'){
+    const sup=findSuppFromAI(res);
+    if(isPast){logToPastDate(targetDate,'supplement',sup);}
+    else{S.supplementLogs.push(sup);}
+    S.logResult={type:'supplement',name:sup.name,totalDose:sup.totalDose};if(!isPast)showToast(sup.name+' logged',null);
   }else if(res.type==='symptom'){
-    const parsed={symptom:res.symptom||null,level:res.level||null,duration:res.duration||null,time:res.time||getNow(),raw:rawText};
+    const parsed={symptom:res.symptom||null,level:res.level||null,duration:res.duration||null,time:res.timeStart&&res.timeEnd?(res.timeStart+'–'+res.timeEnd):(res.time||getNow()),timeStart:res.timeStart||null,timeEnd:res.timeEnd||null,raw:rawText};
+    // Auto-compute duration from time range if not provided
+    if(parsed.timeStart&&parsed.timeEnd&&!parsed.duration){
+      const[sh,sm]=parsed.timeStart.split(':').map(Number);
+      const[eh,em]=parsed.timeEnd.split(':').map(Number);
+      const dm=(eh*60+em)-(sh*60+sm);
+      if(dm>0){parsed.duration=dm>=60?Math.floor(dm/60)+' hr'+(Math.floor(dm/60)>1?'s':''):dm+' mins';}
+    }
     if(isPast){logToPastDate(targetDate,'symptom',parsed);}
     else{S.symptomLogs.push(parsed);}
     S.logResult={type:'symptom',text:rawText,time:parsed.time};if(!isPast)showToast('Symptom logged',null);
@@ -831,6 +1081,20 @@ function processAIResult(res,rawText,targetDate){
   }
 }
 
+// Fix 1: Helper to build supplement entry from AI result
+function findSuppFromAI(res){
+  const name=res.name||'Unknown';
+  const quantity=res.quantity||1;
+  // Try to find in SUPPLEMENT_DB
+  const dbMatch=SUPPLEMENT_DB.find(s=>s.name.toLowerCase()===name.toLowerCase()||s.kw.some(kw=>name.toLowerCase().includes(kw)));
+  if(dbMatch){
+    const customDose=S.supplementDoses[dbMatch.name];
+    const dosePerUnit=customDose||dbMatch.dosePerUnit;
+    return{name:dbMatch.name,quantity,totalDose:(quantity*dosePerUnit)+dbMatch.unit,time:res.time||getNow(),note:null};
+  }
+  return{name,quantity,totalDose:quantity+' unit'+(quantity>1?'s':''),time:res.time||getNow(),note:null};
+}
+
 function processLocalPart(text,targetDate){
   const isPast=targetDate&&targetDate!==new Date().toISOString().split('T')[0];
   const type=detectType(text);
@@ -839,11 +1103,16 @@ function processLocalPart(text,targetDate){
     if(isPast){logToPastDate(targetDate,'meal',meal);}
     else{S.todayMeals=[meal,...S.todayMeals];}
     S.logResult={type:'meal',meal};if(!isPast)showToast(meal.name+' logged',null);
-  }else if(type==='water'){
-    const ml=parseWater(text);
-    if(isPast){logToPastDate(targetDate,'water',{ml,time:getNow()});}
-    else{S.water+=ml;S.waterLogs.push({ml,time:getNow()});}
-    S.logResult={type:'water',ml};if(!isPast)showToast(ml+'ml water logged',null);
+  }else if(type==='liquid'){
+    const liq=parseLiquid(text);
+    if(isPast){logToPastDate(targetDate,'liquid',liq);}
+    else{S.liquidLogs.push(liq);}
+    S.logResult={type:'liquid',ml:liq.ml,name:liq.name};if(!isPast)showToast(liq.name+' — '+liq.ml+'ml logged',null);
+  }else if(type==='supplement'){
+    const sup=parseSupplementLog(text);
+    if(isPast){logToPastDate(targetDate,'supplement',sup);}
+    else{S.supplementLogs.push(sup);}
+    S.logResult={type:'supplement',name:sup.name,totalDose:sup.totalDose};if(!isPast)showToast(sup.name+' logged',null);
   }else if(type==='stool'){
     const stool=parseStool(text);
     if(isPast){logToPastDate(targetDate,'stool',stool);}
@@ -930,7 +1199,7 @@ if(S.days.length===0&&S.todayMeals.length===0){
 wrap.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,marginTop:'12px',lineHeight:'1.5'},[txt('Charts will populate as you log more days of data. Each day\'s data is saved when the next day begins.')]));
 return wrap;}
 
-// ===== [12] TASKS VIEW =====
+// ===== TASKS VIEW =====
 function viewTasks(){
 const t=T(),a=A(),sz=z();
 const wrap=div({});
@@ -945,21 +1214,17 @@ sections.forEach(sec=>{
     const isExp=S.expandedTask===tk.id;
     const card=div({});card.className='card';
     const row=div({display:'flex',alignItems:'center',padding:'12px 14px',gap:'10px',cursor:'pointer'});
-    // Checkbox
     const cb=div({width:'20px',height:'20px',borderRadius:'6px',border:'2px solid '+(tk.completed?a.m:t.bdr),background:tk.completed?a.m:'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:'0',transition:'all .15s',cursor:'pointer'});
     if(tk.completed)cb.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
     cb.onclick=(e)=>{e.stopPropagation();toggleTask(tk.id);};
     row.appendChild(cb);
-    // Title
     const titleEl=div({flex:'1',fontSize:sz+'px',fontWeight:'400',color:tk.completed?t.muted:t.text,textDecoration:tk.completed?'line-through':'none'});
     titleEl.textContent=tk.title;
     titleEl.onclick=()=>{toggleTask(tk.id);};
     row.appendChild(titleEl);
-    // Notification bell
     if(tk.notificationTime){
       row.appendChild(h('span',{style:{fontSize:'11px',color:a.m,flexShrink:'0'}},'🔔 '+tk.notificationTime));
     }
-    // Expand chevron
     const chev=btn({fontSize:'10px',color:t.muted,padding:'4px 2px',flexShrink:'0'},'',()=>{S.expandedTask=isExp?null:tk.id;render();});
     chev.textContent=isExp?'▲':'▼';
     row.appendChild(chev);
@@ -967,7 +1232,6 @@ sections.forEach(sec=>{
 
     if(isExp){
       const exp=div({borderTop:'0.5px solid '+t.bdr,padding:'12px 14px',background:t.surf2});
-      // Description textarea
       exp.appendChild(div({fontSize:'10px',fontWeight:'600',color:t.muted,textTransform:'uppercase',letterSpacing:'0.05em',marginBottom:'4px'},[txt('Description')]));
       const descTA=document.createElement('textarea');
       descTA.value=tk.description||'';
@@ -975,16 +1239,13 @@ sections.forEach(sec=>{
       Object.assign(descTA.style,{width:'100%',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'8px 10px',fontSize:(sz-2)+'px',minHeight:'50px',fontFamily:'inherit',color:t.text,background:t.surf,lineHeight:'1.4',boxSizing:'border-box'});
       descTA.onblur=e=>{tk.description=e.target.value;saveState();};
       exp.appendChild(descTA);
-      // Notification time
       exp.appendChild(div({fontSize:'10px',fontWeight:'600',color:t.muted,textTransform:'uppercase',letterSpacing:'0.05em',marginTop:'10px',marginBottom:'4px'},[txt('Reminder time')]));
       const timeInp=document.createElement('input');timeInp.type='time';timeInp.value=tk.notificationTime||'';
       Object.assign(timeInp.style,{border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'6px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf});
       timeInp.onchange=e=>{tk.notificationTime=e.target.value||null;saveState();scheduleNotification(tk);render();};
       exp.appendChild(timeInp);
-      // Section selector
       exp.appendChild(div({fontSize:'10px',fontWeight:'600',color:t.muted,textTransform:'uppercase',letterSpacing:'0.05em',marginTop:'10px',marginBottom:'4px'},[txt('Section')]));
       exp.appendChild(mkCompactSelect([['Morning','Morning'],['Midday','Midday'],['Evening','Evening']],tk.section,v=>{tk.section=v;saveState();render();}));
-      // Delete
       exp.appendChild(btn({marginTop:'12px',fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'8px',padding:'6px 12px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete task',()=>{
         S.tasks=S.tasks.filter(t2=>t2.id!==tk.id);saveState();render();showToast('Task deleted',null);
       }));
@@ -992,7 +1253,6 @@ sections.forEach(sec=>{
     }
     wrap.appendChild(card);
   });
-  // Add task button
   const addRow=div({padding:'6px 0'});
   addRow.appendChild(btn({width:'100%',padding:'10px 14px',background:t.surf,border:'0.5px dashed '+t.bdr,borderRadius:'10px',color:t.muted,fontSize:(sz-1)+'px',cursor:'pointer',textAlign:'left'},'+  Add task',()=>{
     const title=prompt('Task title:');
@@ -1006,12 +1266,10 @@ sections.forEach(sec=>{
 });
 return wrap;}
 
-// Task toggling with activity auto-log
 function toggleTask(id){
   const tk=S.tasks.find(t=>t.id===id);
   if(!tk)return;
   tk.completed=!tk.completed;
-  // [4] Auto-log activity if task contains activity keywords
   if(tk.completed){
     const l=tk.title.toLowerCase();
     const isActivity=AKW.some(kw=>l.includes(kw));
@@ -1024,7 +1282,6 @@ function toggleTask(id){
   saveState();render();
 }
 
-// Notification scheduling
 const notifTimeouts=new Map();
 function scheduleNotification(tk){
   if(notifTimeouts.has(tk.id)){clearTimeout(notifTimeouts.get(tk.id));notifTimeouts.delete(tk.id);}
@@ -1045,7 +1302,6 @@ function scheduleNotification(tk){
 function scheduleAllNotifications(){S.tasks.forEach(tk=>scheduleNotification(tk));}
 
 // ===== DAILY LOG (History) =====
-// [8] Uniform font, [9] Full macro names
 function viewHistory(){
 const t=T(),a=A(),sz=z();
 const wrap=div({});
@@ -1073,47 +1329,52 @@ if(S.days.length===0){
 
   if(isExp){
     const exp=div({borderTop:'0.5px solid '+t.bdr,padding:'12px 14px',background:t.surf2});
-    // [8] All entries use identical font: (sz-2)px, 400 weight, t.sub color
     const entryStyle={fontSize:(sz-2)+'px',fontWeight:'400',color:t.sub,marginBottom:'4px'};
     const sectionLabel={fontSize:(sz-2)+'px',fontWeight:'600',color:t.muted,textTransform:'uppercase',letterSpacing:'0.05em',marginBottom:'6px'};
-    // Meals
     if(d.meals&&d.meals.length>0){
       exp.appendChild(div(sectionLabel,[txt('Meals')]));
       d.meals.forEach(m=>{
         const mRow=div({...entryStyle,marginBottom:'8px',paddingBottom:'8px',borderBottom:'0.5px solid '+t.bdr});
-        // [9] Full macro names
         mRow.appendChild(txt((m.time||'')+' · '+m.name+' · '+(m.cals||0)+' kcal · Protein: '+(m.protein||0)+'g · Fat: '+(m.fat||0)+'g · Carbs: '+(m.carbs||0)+'g'));
         exp.appendChild(mRow);
       });
     }
-    // Symptoms
     if(d.symptoms&&d.symptoms.length>0){
       exp.appendChild(div({...sectionLabel,marginTop:'8px'},[txt('Symptoms')]));
       d.symptoms.forEach(s2=>{
-        exp.appendChild(div(entryStyle,[txt((s2.symptom?tc(s2.symptom):'Unknown')+' '+(s2.time||'')+(s2.level?' — '+s2.level+'/10':''))]));
+        exp.appendChild(div(entryStyle,[txt((s2.symptom?tc(s2.symptom):'Unknown')+' '+(s2.time||'')+(s2.level?' — '+s2.level+'/10':'')+(s2.duration?' for '+s2.duration:''))]));
       });
     }
-    // Activities
+    // Supplements in history
+    if(d.supplements&&d.supplements.length>0){
+      exp.appendChild(div({...sectionLabel,marginTop:'8px'},[txt('Supplements')]));
+      d.supplements.forEach(sup=>{
+        exp.appendChild(div(entryStyle,[txt((sup.time||'')+' · '+sup.name+(sup.quantity>1?' x'+sup.quantity:'')+' · '+sup.totalDose)]));
+      });
+    }
     if(d.activities&&d.activities.length>0){
       exp.appendChild(div({...sectionLabel,marginTop:'8px'},[txt('Activities')]));
       d.activities.forEach(ac=>{
         exp.appendChild(div(entryStyle,[txt((ac.time||'')+' · '+(ac.activity||'Activity')+(ac.duration?' · '+ac.duration:'')+(ac.note?' · '+ac.note:''))]));
       });
     }
-    // Water
-    const wTotal=d.waterTotal||(d.water?d.water.reduce((s2,w)=>s2+(w.ml||0),0):0);
-    if(wTotal>0){
-      exp.appendChild(div({...sectionLabel,marginTop:'8px'},[txt('Water')]));
-      exp.appendChild(div(entryStyle,[txt(wTotal+'ml')]));
+    // Liquids in history
+    const liqTotal=d.liquidTotal||(d.liquids?d.liquids.reduce((s2,l)=>s2+(l.ml||0),0):0);
+    if(liqTotal>0||d.liquids&&d.liquids.length>0){
+      exp.appendChild(div({...sectionLabel,marginTop:'8px'},[txt('Liquids')]));
+      if(d.liquids&&d.liquids.length>0){
+        d.liquids.forEach(l=>{
+          exp.appendChild(div(entryStyle,[txt((l.time||'')+' · '+(l.name||'Water')+' · '+l.ml+'ml')]));
+        });
+      }
+      exp.appendChild(div(entryStyle,[txt('Total: '+liqTotal+'ml')]));
     }
-    // Stool
     if(d.stool&&d.stool.length>0){
       exp.appendChild(div({...sectionLabel,marginTop:'8px'},[txt('Stool')]));
       d.stool.forEach(s2=>{
         exp.appendChild(div(entryStyle,[txt('Type '+s2.type+' · '+s2.color+(s2.assisted?' · Assisted':''))]));
       });
     }
-    // Notes
     if(d.notes&&d.notes.length>0){
       exp.appendChild(div({...sectionLabel,marginTop:'8px'},[txt('Notes')]));
       d.notes.forEach(n=>{
@@ -1127,15 +1388,13 @@ if(S.days.length===0){
 return wrap;}
 
 // ===== LIBRARY VIEW =====
-// [2] Category first, then timeframe. [7] "All" tab. [1] Delete from any day. [6] Meals match home.
 function viewLibrary(){
 const t=T(),a=A(),sz=z();
 const wrap=div({});
 wrap.appendChild(div({fontSize:(sz+8)+'px',fontWeight:'700',letterSpacing:'-0.5px',color:t.text},[txt('Library')]));
 
-// [2] Category selector FIRST, then timeframe — compact
 const selRow=div({display:'flex',gap:'8px',marginTop:'10px',marginBottom:'4px',alignItems:'center'});
-selRow.appendChild(mkCompactSelect([['all','All'],['meals','Meals'],['symptoms','Symptoms'],['activities','Activities'],['water','Water'],['stool','Stool'],['supplements','Supplements'],['foods','Safe & Avoid']],S.libTab,v=>{S.libTab=v;render();}));
+selRow.appendChild(mkCompactSelect([['all','All'],['meals','Meals'],['liquids','Liquids'],['supplements','Supplements'],['symptoms','Symptoms'],['activities','Activities'],['stool','Stool'],['suppInfo','Supp. Doses'],['foods','Safe & Avoid']],S.libTab,v=>{S.libTab=v;render();}));
 selRow.appendChild(mkCompactSelect([['today','Today'],['yesterday','Yesterday'],['week','This Week'],['month','This Month']],S.libRange,v=>{S.libRange=v;render();}));
 wrap.appendChild(selRow);
 wrap.appendChild(div({height:'8px'}));
@@ -1143,22 +1402,22 @@ wrap.appendChild(div({height:'8px'}));
 const ld=getLibData();
 const rangeLabel=S.libRange==='today'?'today':S.libRange==='yesterday'?'yesterday':S.libRange==='week'?'this week':'this month';
 
-// [7] ALL tab
+// ALL tab
 if(S.libTab==='all'){
   const allEntries=[];
   (ld.meals||[]).forEach((m,i)=>allEntries.push({cat:'meal',data:m,time:m.time||'00:00',idx:i}));
-  (ld.symptoms||[]).forEach((s2,i)=>allEntries.push({cat:'symptom',data:s2,time:s2.time||'00:00',idx:i}));
+  (ld.symptoms||[]).forEach((s2,i)=>allEntries.push({cat:'symptom',data:s2,time:(s2.timeStart||s2.time||'00:00').split('–')[0],idx:i}));
   (ld.activities||[]).forEach((ac,i)=>allEntries.push({cat:'activity',data:ac,time:ac.time||'00:00',idx:i}));
-  (ld.water||[]).forEach((w,i)=>allEntries.push({cat:'water',data:w,time:w.time||'00:00',idx:i}));
+  (ld.liquids||[]).forEach((l,i)=>allEntries.push({cat:'liquid',data:l,time:l.time||'00:00',idx:i}));
+  (ld.supplements||[]).forEach((sup,i)=>allEntries.push({cat:'supplement',data:sup,time:sup.time||'00:00',idx:i}));
   (ld.stool||[]).forEach((st,i)=>allEntries.push({cat:'stool',data:st,time:st.time||'00:00',idx:i}));
   (ld.notes||[]).forEach((n,i)=>allEntries.push({cat:'note',data:n,time:'00:00',idx:i}));
   allEntries.sort((a2,b2)=>b2.time.localeCompare(a2.time));
 
   if(allEntries.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('Nothing logged '+rangeLabel+'.')]));return wrap;}
 
-  const catColors={meal:{bg:a.bg,c:a.t,label:'Meal'},symptom:{bg:'#FEF2F2',c:'#DC2626',label:'Symptom'},activity:{bg:'#F0FDFA',c:'#0F766E',label:'Activity'},water:{bg:'#EFF6FF',c:'#1D4ED8',label:'Water'},stool:{bg:'#FFFBEB',c:'#92400E',label:'Stool'},note:{bg:'#F3F4F6',c:'#6B7280',label:'Note'}};
+  const catColors={meal:{bg:a.bg,c:a.t,label:'Meal'},symptom:{bg:'#FEF2F2',c:'#DC2626',label:'Symptom'},activity:{bg:'#F0FDFA',c:'#0F766E',label:'Activity'},liquid:{bg:'#EFF6FF',c:'#1D4ED8',label:'Liquid'},supplement:{bg:'#F5F3FF',c:'#5B21B6',label:'Supp'},stool:{bg:'#FFFBEB',c:'#92400E',label:'Stool'},note:{bg:'#F3F4F6',c:'#6B7280',label:'Note'}};
 
-  // Group by time of day
   const groups={Morning:[],Afternoon:[],Evening:[],Night:[]};
   allEntries.forEach(e=>{
     const h2=parseInt(e.time.split(':')[0])||0;
@@ -1181,13 +1440,16 @@ if(S.libTab==='all'){
         info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(e.time+' · '+(e.data.cals||0)+' kcal')]));
       }else if(e.cat==='symptom'){
         info.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt(e.data.symptom?tc(e.data.symptom):'Symptom')]));
-        info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(e.time+(e.data.level?' · '+e.data.level+'/10':''))]));
+        info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt((e.data.time||e.time)+(e.data.level?' · '+e.data.level+'/10':'')+(e.data.duration?' · '+e.data.duration:''))]));
       }else if(e.cat==='activity'){
         info.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt(e.data.activity||'Activity')]));
         info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(e.time+(e.data.duration?' · '+e.data.duration:''))]));
-      }else if(e.cat==='water'){
-        info.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt(e.data.ml+'ml water')]));
-        info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(e.time)]));
+      }else if(e.cat==='liquid'){
+        info.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt(e.data.name||'Water')]));
+        info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(e.time+' · '+e.data.ml+'ml')]));
+      }else if(e.cat==='supplement'){
+        info.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt(e.data.name+(e.data.quantity>1?' x'+e.data.quantity:''))]));
+        info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(e.time+' · '+e.data.totalDose)]));
       }else if(e.cat==='stool'){
         info.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt('Type '+e.data.type+' · '+e.data.color)]));
         info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(e.time)]));
@@ -1195,9 +1457,8 @@ if(S.libTab==='all'){
         info.appendChild(div({fontSize:(sz-1)+'px',color:t.text},[txt(typeof e.data==='string'?e.data.slice(0,60):e.data)]));
       }
       card.appendChild(info);
-      // Delete button for all ranges
+      const typeMap={meal:'meals',symptom:'symptoms',activity:'activities',liquid:'liquids',supplement:'supplements',stool:'stool',note:'notes'};
       const delBtn=btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer',flexShrink:'0'},'×',()=>{
-        const typeMap={meal:'meals',symptom:'symptoms',activity:'activities',water:'water',stool:'stool',note:'notes'};
         deleteFromRange(typeMap[e.cat],e.idx);showToast('Deleted',null);
       });
       card.appendChild(delBtn);
@@ -1210,16 +1471,70 @@ if(S.libTab==='all'){
 if(S.libTab==='meals'){
   const allMeals=ld.meals;
   if(allMeals.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No meals logged '+rangeLabel+'.')]));return wrap;}
-  // [6] Use same meal card as home
   allMeals.forEach((m,i)=>{
     wrap.appendChild(buildMealCard(m,i,'lib',true,()=>{
       deleteFromRange('meals',i);showToast('Meal deleted',null);
     }));
   });
+}else if(S.libTab==='liquids'){
+  const lqs=ld.liquids;
+  const totalL=lqs.reduce((s2,l)=>s2+(l.ml||0),0);
+  if(lqs.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No liquids logged '+rangeLabel+'.')]));return wrap;}
+  wrap.appendChild(div({fontSize:(sz-1)+'px',color:t.muted,marginBottom:'10px'},[txt('Total: '+totalL+'ml')]));
+  lqs.forEach((lq,i)=>{
+    const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';
+    const info=div({});
+    info.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text},[txt(lq.name||'Water')]));
+    info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt((lq.time||'')+' · '+lq.ml+'ml')]));
+    card.appendChild(info);
+    const del=btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{
+      deleteFromRange('liquids',i);showToast('Liquid deleted',null);
+    });
+    card.appendChild(del);
+    wrap.appendChild(card);
+  });
 }else if(S.libTab==='supplements'){
+  const sups=ld.supplements;
+  if(sups.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No supplements logged '+rangeLabel+'.')]));return wrap;}
+  sups.forEach((sup,i)=>{
+    const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';
+    const info=div({});
+    info.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text},[txt(sup.name+(sup.quantity>1?' x'+sup.quantity:''))]));
+    info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt((sup.time||'')+' · '+sup.totalDose)]));
+    card.appendChild(info);
+    const del=btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{
+      deleteFromRange('supplements',i);showToast('Supplement deleted',null);
+    });
+    card.appendChild(del);
+    wrap.appendChild(card);
+  });
+}else if(S.libTab==='suppInfo'){
+  // Fix 1: Editable supplement doses
+  wrap.appendChild(div({fontSize:(sz-1)+'px',color:t.muted,marginBottom:'10px',lineHeight:'1.5'},[txt('Customise dose per unit for each supplement. These are used when logging.')]));
+  SUPPLEMENT_DB.forEach(sup=>{
+    const card=div({display:'flex',justifyContent:'space-between',alignItems:'center',gap:'8px'});card.className='card card-p';
+    const info=div({flex:'1'});
+    info.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text},[txt(sup.name)]));
+    info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(sup.form+' · default: '+sup.dosePerUnit+sup.unit)]));
+    card.appendChild(info);
+    const inp=document.createElement('input');inp.type='number';
+    inp.value=S.supplementDoses[sup.name]||sup.dosePerUnit;
+    inp.placeholder=sup.dosePerUnit;
+    Object.assign(inp.style,{width:'70px',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'6px 8px',fontSize:(sz-2)+'px',color:t.text,background:t.surf2,textAlign:'right'});
+    inp.onchange=e=>{
+      const v=parseInt(e.target.value);
+      if(v&&v!==sup.dosePerUnit)S.supplementDoses[sup.name]=v;
+      else delete S.supplementDoses[sup.name];
+      saveState();
+    };
+    const unitLabel=div({fontSize:(sz-2)+'px',color:t.muted,flexShrink:'0'});unitLabel.textContent=sup.unit;
+    card.appendChild(inp);card.appendChild(unitLabel);
+    wrap.appendChild(card);
+  });
+  // Also show the old supplement protocol info
+  wrap.appendChild(sl('Protocol status'));
   const active=SUPPS.filter(s2=>s2.active);const paused=SUPPS.filter(s2=>!s2.active);
   if(active.length>0){
-    wrap.appendChild(sl('Active'));
     active.forEach(s2=>{
       const card=div({});card.className='card card-p';
       const row=div({display:'flex',justifyContent:'space-between',alignItems:'flex-start'});
@@ -1232,7 +1547,6 @@ if(S.libTab==='meals'){
     });
   }
   if(paused.length>0){
-    wrap.appendChild(sl('Paused'));
     wrap.appendChild(div({background:'#FEF2F2',border:'0.5px solid #FECACA',borderRadius:'10px',padding:'9px 13px',marginBottom:'10px',fontSize:(sz-2)+'px',color:'#DC2626'},[txt('All supplements paused — ALT elevated.')]));
     paused.forEach(s2=>{
       const card=div({});card.className='card card-p';
@@ -1280,20 +1594,6 @@ if(S.libTab==='meals'){
     card.appendChild(del);
     wrap.appendChild(card);
   });
-}else if(S.libTab==='water'){
-  const wLogs=ld.water;
-  const totalW=wLogs.reduce((s2,w)=>s2+(w.ml||0),0);
-  if(wLogs.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No water logged '+rangeLabel+'.')]));return wrap;}
-  wrap.appendChild(div({fontSize:(sz-1)+'px',color:t.muted,marginBottom:'10px'},[txt('Total: '+totalW+'ml')]));
-  wLogs.forEach((wl,i)=>{
-    const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';
-    card.appendChild(div({fontSize:sz+'px',color:t.text},[txt(wl.ml+'ml at '+wl.time)]));
-    const del=btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{
-      deleteFromRange('water',i);showToast('Water entry deleted',null);
-    });
-    card.appendChild(del);
-    wrap.appendChild(card);
-  });
 }else if(S.libTab==='stool'){
   const sLogs=ld.stool;
   if(sLogs.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No stool logged '+rangeLabel+'.')]));return wrap;}
@@ -1323,10 +1623,11 @@ wrap.appendChild(div({fontSize:(sz+8)+'px',fontWeight:'700',letterSpacing:'-0.5p
 const tCals=S.todayMeals.reduce((s2,m)=>s2+(m.cals||0),0);
 const tP=S.todayMeals.reduce((s2,m)=>s2+(m.protein||0),0);
 const tF=S.todayMeals.reduce((s2,m)=>s2+(m.fat||0),0);
+const tW=S.liquidLogs.reduce((s2,l)=>s2+l.ml,0);
 
 wrap.appendChild(sl('Today'));
 const sg=div({display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',marginBottom:'10px'});
-[[tCals+' kcal','Calories'],[S.todayMeals.length,'Meals logged'],[S.symptomLogs.length,'Symptoms'],[S.stoolLogs.length,'Stool logs'],[tP+'g','Protein'],[tF+'g','Fat']].forEach(([v,l])=>{
+[[tCals+' kcal','Calories'],[S.todayMeals.length,'Meals logged'],[S.symptomLogs.length,'Symptoms'],[tW+'ml','Liquids'],[tP+'g','Protein'],[tF+'g','Fat'],[S.supplementLogs.length,'Supplements'],[S.stoolLogs.length,'Stool logs']].forEach(([v,l])=>{
   const cell=div({textAlign:'center'});cell.className='card card-p';
   cell.appendChild(div({fontSize:(sz+4)+'px',fontWeight:'700',color:a.m},[txt(v)]));
   cell.appendChild(div({fontSize:'10px',color:t.muted,marginTop:'2px'},[txt(l)]));
@@ -1383,7 +1684,7 @@ const ds=div({display:'flex',gap:'6px',marginBottom:'12px'});
 
 wrap.appendChild(sl('Home screen sections'));
 const sec=div({});sec.className='card card-p';
-[['quickLog','Quick Log'],['todaySummary','Macros Summary'],['meals',"Today's Meals"],['symptoms','Symptoms'],['stool','Stool Log'],['notes','Journal Notes'],['dttInfo','DTT Info']].forEach(([k2,label],i,arr)=>{
+[['quickLog','Quick Log'],['todaySummary','Macros Summary'],['meals',"Today's Meals"],['liquids',"Today's Liquids"],['supplements',"Today's Supplements"],['symptoms','Symptoms'],['stool','Stool Log'],['notes','Journal Notes'],['dttInfo','DTT Info']].forEach(([k2,label],i,arr)=>{
   const row=div({display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 0',borderBottom:i<arr.length-1?'0.5px solid '+t.bdr:'none'});
   row.appendChild(div({fontSize:sz+'px',color:t.sub},[txt(label)]));
   const tog=document.createElement('button');tog.className='tog'+(S.sections[k2]?' on':'');tog.onclick=()=>{S.sections[k2]=!S.sections[k2];saveState();render();};
@@ -1392,7 +1693,7 @@ const sec=div({});sec.className='card card-p';
 
 wrap.appendChild(sl('Daily targets'));
 const tgt=div({});tgt.className='card card-p';
-[['calories','Calories',500,4000,100,' kcal'],['protein','Protein',50,200,5,'g'],['fat','Fat limit',20,120,5,'g'],['carbs','Carbs',100,500,10,'g'],['water','Water',500,5000,100,'ml']].forEach(([k2,label,min,max,step,unit])=>{
+[['calories','Calories',500,4000,100,' kcal'],['protein','Protein',50,200,5,'g'],['fat','Fat limit',20,120,5,'g'],['carbs','Carbs',100,500,10,'g'],['water','Water / Liquids',500,5000,100,'ml']].forEach(([k2,label,min,max,step,unit])=>{
   const row=div({marginBottom:'12px'});
   const top=div({display:'flex',justifyContent:'space-between',marginBottom:'4px'});
   top.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(label)]));
@@ -1436,8 +1737,8 @@ const cond=div({});cond.className='card card-p';
 wrap.appendChild(sl('Data'));
 const dataCard=div({});dataCard.className='card card-p';
 dataCard.appendChild(btn({width:'100%',padding:'11px',background:'#FEF2F2',border:'0.5px solid #FECACA',borderRadius:'10px',color:'#DC2626',fontWeight:'500',fontSize:sz+'px',cursor:'pointer'},'Clear all today\'s data',()=>{
-  if(confirm('This will clear all of today\'s logged meals, symptoms, stool, water, activities, and notes. Are you sure?')){
-    S.todayMeals=[];S.symptomLogs=[];S.stoolLogs=[];S.noteLogs=[];S.waterLogs=[];S.water=0;S.activityLogs=[];S.morningDoneAt=null;saveState();render();showToast('All data cleared',null);
+  if(confirm('This will clear all of today\'s logged meals, symptoms, stool, liquids, supplements, activities, and notes. Are you sure?')){
+    S.todayMeals=[];S.symptomLogs=[];S.stoolLogs=[];S.noteLogs=[];S.liquidLogs=[];S.activityLogs=[];S.supplementLogs=[];S.morningDoneAt=null;saveState();render();showToast('All data cleared',null);
   }
 }));
 wrap.appendChild(dataCard);
@@ -1450,7 +1751,6 @@ const mc=document.getElementById('modal-container');mc.innerHTML='';
 if(S.morningOpen){mc.appendChild(buildMorningModal());return;}
 if(S.docOpen){mc.appendChild(buildDocModal());return;}}
 
-// [11] Morning check-in with skip button on every step
 function buildMorningModal(){
 const t=T(),a=A(),sz=z();
 const bg=div({position:'fixed',inset:'0',background:'rgba(0,0,0,0.35)',zIndex:'150',display:'flex',alignItems:'flex-end',maxWidth:'430px',margin:'0 auto'});
@@ -1486,9 +1786,7 @@ if(S.morningStep===0){
 }
 sheet.appendChild(content);
 
-// [11] Button row with Skip
 const btns=div({display:'flex',gap:'8px',marginTop:'20px',alignItems:'center'});
-// Skip button (prominent on weight step)
 const skipStyle=S.morningStep===4?{padding:'12px 16px',borderRadius:'12px',border:'0.5px solid '+t.bdr,background:t.surf2,color:t.muted,fontSize:sz+'px',cursor:'pointer',fontWeight:'500'}:{padding:'8px 12px',background:'none',border:'none',color:t.muted,fontSize:(sz-2)+'px',cursor:'pointer'};
 btns.appendChild(btn(skipStyle,'Skip',()=>{
   if(S.morningStep<5){S.morningStep++;renderModal();}else{
@@ -1503,10 +1801,9 @@ btns.appendChild(btn({flex:'2',padding:'12px',borderRadius:'12px',border:'none',
   }
 }));sheet.appendChild(btns);bg.appendChild(sheet);return bg;}
 
-// [15] Doctor report includes activities
 function buildDocModal(){
 const t=T(),a=A(),sz=z();
-const totalW=S.waterLogs.reduce((s2,w)=>s2+w.ml,0);
+const totalLiq=S.liquidLogs.reduce((s2,l)=>s2+l.ml,0);
 const tCals=S.todayMeals.reduce((s2,m)=>s2+(m.cals||0),0);
 const tP=S.todayMeals.reduce((s2,m)=>s2+(m.protein||0),0);
 const tF=S.todayMeals.reduce((s2,m)=>s2+(m.fat||0),0);
@@ -1540,14 +1837,17 @@ S.morningDoneAt?[
 'MEALS LOGGED ('+S.todayMeals.length+'):',
 ...(S.todayMeals.length>0?S.todayMeals.map(m=>'  '+m.time+': '+m.name+' ('+m.cals+' kcal, P:'+m.protein+'g F:'+m.fat+'g C:'+m.carbs+'g)'+'\n    Ingredients: '+(m.ingredients||[]).join(', ')):['  None logged']),
 '',
+'SUPPLEMENTS LOGGED ('+S.supplementLogs.length+'):',
+...(S.supplementLogs.length>0?S.supplementLogs.map(sup=>'  '+(sup.time||'')+': '+sup.name+(sup.quantity>1?' x'+sup.quantity:'')+' — '+sup.totalDose):['  None logged']),
+'',
 'SYMPTOMS LOGGED ('+S.symptomLogs.length+'):',
-...(S.symptomLogs.length>0?S.symptomLogs.map(s2=>'  '+(s2.symptom?tc(s2.symptom):'Unknown')+' at '+s2.time+(s2.level?' — '+s2.level+'/10':'')+(s2.duration?' for '+s2.duration:'')):['  None logged']),
+...(S.symptomLogs.length>0?S.symptomLogs.map(s2=>'  '+(s2.symptom?tc(s2.symptom):'Unknown')+' at '+(s2.time||'')+(s2.level?' — '+s2.level+'/10':'')+(s2.duration?' for '+s2.duration:'')):['  None logged']),
 '',
 'ACTIVITIES LOGGED ('+S.activityLogs.length+'):',
 ...(S.activityLogs.length>0?S.activityLogs.map(ac=>'  '+(ac.time||'')+' · '+(ac.activity||'Activity')+(ac.duration?' · '+ac.duration:'')+(ac.note?' · '+ac.note:'')):['  None logged']),
 '',
-'WATER INTAKE: '+totalW+'ml (target: '+S.targets.water+'ml)',
-...(S.waterLogs.length>0?S.waterLogs.map(w=>'  '+w.ml+'ml at '+w.time):[]),
+'LIQUIDS INTAKE: '+totalLiq+'ml (target: '+S.targets.water+'ml)',
+...(S.liquidLogs.length>0?S.liquidLogs.map(l=>'  '+(l.name||'Water')+': '+l.ml+'ml at '+(l.time||'')):['  None logged']),
 '',
 'STOOL LOG ('+S.stoolLogs.length+'):',
 ...(S.stoolLogs.length>0?S.stoolLogs.map(s2=>'  Type '+s2.type+' · '+s2.color+(s2.assisted?' · Assisted':'')+' — '+BRISTOL[s2.type-1]):['  None logged']),
