@@ -518,7 +518,7 @@ const SUPPS=[{name:'Milk Thistle',dose:'1 cap',timing:'Morning with food',note:'
 const SAFE_FOODS=['White basmati rice','Pollock','Cod','Boiled sweet potato','Chicken breast (moderate)','Egg whites','Ghee (≤1 tsp)','Boiled potato'];
 const AVOID_FOODS=['Gluten','Dairy (except ghee)','Soy','High-FODMAP','Fructose/sorbitol','Fat >10g per meal','Salmon (suspect)','Red meat','Dates / dried fruit'];
 
-const INSIGHTS=[{id:1,confidence:'strong',isNew:false,flag:'Gallbladder',title:'High-fat meals correlating with cramping',body:'Meals with >10g fat are followed by cramping 73% of the time within 2–4 hours. Your ALT of 206 confirms acute bile stress. Keep fat below 8g per meal until ALT normalises.'},{id:2,confidence:'strong',isNew:false,flag:'SIBO',title:'Tongue coating predicts same-day bloating',body:'When morning tongue coating is 6+, bloating scores are elevated by +2.3 points that same day.'},{id:3,confidence:'moderate',isNew:false,flag:'Gallbladder',title:'Steam room within 60 mins of eating — high risk',body:'March 16 is your most severe episode. Heat redirects blood from the gut, impairing bile flow. Always wait 3+ hours after eating before any heat exposure.'},{id:4,confidence:'early',isNew:false,flag:'Gallbladder',title:'Cumulative fat load may have triggered March 16',body:'In the 5 days before the crisis you consumed salmon and multiple chicken breasts daily. Cumulative hepatic fat stress over multiple days may be the real mechanism.'},{id:5,confidence:'strong',isNew:false,flag:null,title:'Sweet potato — confirmed safe food',body:'Across logged meals with boiled/mashed sweet potato, no meaningful symptom elevation within 4 hours.'}];
+const INSIGHTS=[];
 
 // ===== NAV =====
 const BOTTOM_NAV=[{id:'home',label:'Home',svg:'<path d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><polyline points="9 21 9 14 15 14 15 21"/>'},{id:'progress',label:'Progress',svg:'<path d="M12 20V10M18 20V4M6 20v-4"/>'},{id:'tasks',label:'Tasks',svg:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>'},{id:'more',label:'More',svg:'<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>'}];
@@ -1743,6 +1743,43 @@ dataCard.appendChild(btn({width:'100%',padding:'11px',background:'#FEF2F2',borde
 }));
 wrap.appendChild(dataCard);
 
+    wrap.appendChild(sl('Backup'));
+
+const backupCard = div({});
+backupCard.className = 'card card-p';
+
+backupCard.appendChild(
+  btn({
+    width:'100%',
+    padding:'11px',
+    border:'0.5px solid '+t.bdr,
+    borderRadius:'10px',
+    fontSize:sz+'px',
+    cursor:'pointer',
+    marginBottom:'8px'
+  }, 'Export Data', exportData)
+);
+
+const importInput = document.createElement('input');
+importInput.type = 'file';
+importInput.accept = 'application/json';
+importInput.style.display = 'none';
+importInput.onchange = importData;
+backupCard.appendChild(importInput);
+
+backupCard.appendChild(
+  btn({
+    width:'100%',
+    padding:'11px',
+    border:'0.5px solid '+t.bdr,
+    borderRadius:'10px',
+    fontSize:sz+'px',
+    cursor:'pointer'
+  }, 'Import Data', () => importInput.click())
+);
+
+wrap.appendChild(backupCard);
+
 return wrap;}
 
 // ===== MODALS =====
@@ -1909,5 +1946,55 @@ applyTheme();renderContent();renderBottomNav();renderMorePanel();
 // Init
 loadState();render();scheduleAllNotifications();
 </script>
+
+function exportData(){
+  try{
+    const data = localStorage.getItem('soma_data');
+    if(!data){
+      alert('No data to export');
+      return;
+    }
+
+    const blob = new Blob([data], { type:'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    const date = new Date().toISOString().split('T')[0];
+    a.href = url;
+    a.download = `soma-backup-${date}.json`;
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }catch(e){
+    alert('Export failed');
+  }
+}
+
+
+// ===== IMPORT DATA =====
+function importData(event){
+  const file = event.target.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function(e){
+    try{
+      const imported = JSON.parse(e.target.result);
+
+      // overwrite existing data
+      localStorage.setItem('soma_data', JSON.stringify(imported));
+
+      alert('Data imported. Reloading...');
+      location.reload();
+    }catch(err){
+      alert('Invalid JSON file');
+    }
+  };
+
+  reader.readAsText(file);
+}
 </body>
 </html>
