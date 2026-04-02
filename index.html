@@ -74,7 +74,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
       <div id="mp-sub" style="font-size:11px;color:var(--muted);margin-top:2px"></div>
     </div>
     <div id="mp-nav" style="flex:1;padding:10px;overflow-y:auto"></div>
-    <div style="padding:12px 18px;border-top:0.5px solid var(--bdr);font-size:9px;color:var(--muted);letter-spacing:.02em">soma v5.3</div>
+    <div style="padding:12px 18px;border-top:0.5px solid var(--bdr);font-size:9px;color:var(--muted);letter-spacing:.02em">soma v5.4</div>
   </div>
   <div id="hdr">
     <span style="font-size:20px;font-weight:700;color:var(--ac);letter-spacing:-.8px">soma</span>
@@ -89,7 +89,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 // ===== THEMES & ACCENTS =====
 const FONTS={'sora':['Sora','sans-serif'],'dm-sans':['DM Sans','sans-serif'],'jakarta':['Plus Jakarta Sans','sans-serif'],'outfit':['Outfit','sans-serif'],'nunito':['Nunito Sans','sans-serif'],'inter':['Inter','sans-serif']};
 const THEMES={light:{bg:'#F0EFEC',surf:'#FFFFFF',surf2:'#F7F7F6',text:'#1C1917',sub:'#44403C',muted:'#9CA3AF',bdr:'#E5E5E4'},dark:{bg:'#161615',surf:'#1E1D1C',surf2:'#272625',text:'#F5F5F4',sub:'#D6D3D1',muted:'#78716C',bdr:'#333230'},warm:{bg:'#FDF8F0',surf:'#FFFBF5',surf2:'#F5ECD9',text:'#2C1810',sub:'#5C3D2E',muted:'#9C7060',bdr:'#E8D5C0'},cool:{bg:'#F0F4F8',surf:'#FFFFFF',surf2:'#E8EFF6',text:'#1E2A3A',sub:'#354A60',muted:'#6B82A0',bdr:'#CDD8E5'}};
-const ACCENTS={amber:{m:'#F59E0B',bg:'#FFFBEB',bdr:'#FDE68A',t:'#92400E'},teal:{m:'#14B8A6',bg:'#F0FDFA',bdr:'#99F6E4',t:'#0F766E'},blue:{m:'#3B82F6',bg:'#EFF6FF',bdr:'#BFDBFE',t:'#1D4ED8'},coral:{m:'#F97316',bg:'#FFF7ED',bdr:'#FED7AA',t:'#C2410C'},purple:{m:'#8B5CF6',bg:'#F5F3FF',bdr:'#DDD6FE',t:'#5B21B6'},green:{m:'#22C55E',bg:'#F0FDF4',bdr:'#BBF7D0',t:'#15803D'},rose:{m:'#F43F5E',bg:'#FFF1F2',bdr:'#FECDD3',t:'#BE123C'},slate:{m:'#64748B',bg:'#F8FAFC',bdr:'#CBD5E1',t:'#334155'},gold:{m:'#CA8A04',bg:'#FEFCE8',bdr:'#FEF08A',t:'#713F12'},mint:{m:'#34D399',bg:'#ECFDF5',bdr:'#A7F3D0',t:'#065F46'},crimson:{m:'#DC2626',bg:'#FEF2F2',bdr:'#FECACA',t:'#991B1B'},indigo:{m:'#6366F1',bg:'#EEF2FF',bdr:'#C7D2FE',t:'#3730A3'}};
+const ACCENTS={amber:{m:'#F59E0B',bg:'#FFFBEB',bdr:'#FDE68A',t:'#92400E'},teal:{m:'#14B8A6',bg:'#F0FDFA',bdr:'#99F6E4',t:'#0F766E'},blue:{m:'#3B82F6',bg:'#EFF6FF',bdr:'#BFDBFE',t:'#1D4ED8'},coral:{m:'#F97316',bg:'#FFF7ED',bdr:'#FED7AA',t:'#C2410C'},purple:{m:'#8B5CF6',bg:'#F5F3FF',bdr:'#DDD6FE',t:'#5B21B6'},green:{m:'#22C55E',bg:'#F0FDF4',bdr:'#BBF7D0',t:'#15803D'},rose:{m:'#F43F5E',bg:'#FFF1F2',bdr:'#FECDD3',t:'#BE123C'},slate:{m:'#64748B',bg:'#F8FAFC',bdr:'#CBD5E1',t:'#334155'},gold:{m:'#CA8A04',bg:'#FEFCE8',bdr:'#FEF08A',t:'#713F12'},mint:{m:'#34D399',bg:'#ECFDF5',bdr:'#A7F3D0',t:'#065F46'},crimson:{m:'#DC2626',bg:'#FEF2F2',bdr:'#FECACA',t:'#991B1B'},indigo:{m:'#6366F1',bg:'#EEF2FF',bdr:'#C7D2FE',t:'#3730A3'},ocean:{m:'#0EA5E9',bg:'#F0F9FF',bdr:'#BAE6FD',t:'#0369A1'},peach:{m:'#FB923C',bg:'#FFF7ED',bdr:'#FED7AA',t:'#9A3412'},olive:{m:'#84CC16',bg:'#F7FEE7',bdr:'#D9F99D',t:'#3F6212'},magenta:{m:'#D946EF',bg:'#FDF4FF',bdr:'#F5D0FE',t:'#86198F'},sky:{m:'#38BDF8',bg:'#F0F9FF',bdr:'#BAE6FD',t:'#0C4A6E'},copper:{m:'#C2724E',bg:'#FDF5F0',bdr:'#E8C4AD',t:'#7C3A1D'}};
 
 // ===== SUPPLEMENT DATABASE (expanded with all protocol supps) =====
 const SUPPLEMENT_DB=[
@@ -183,7 +183,7 @@ targets:{calories:2500,protein:105,fat:55,carbs:380,water:2500},
 logActive:false,logText:'',logResult:null,logLoading:false,logDismissTimer:null,expandedMeal:null,expandedInsight:null,expandedHistory:null,expandedLibMeal:null,
 todayMeals:[],chartMetric:'weight',chartRange:'week',chartOverlay:null,
 libTab:'all',libRange:'today',settingsTab:null,
-morningOpen:false,morningStep:0,morningData:{tongue:false,tsev:5,reflux:false,indigestion:false,nasal:false,weight:'',sleepQ:'Fair'},morningDoneAt:null,
+morningOpen:false,morningStep:0,morningData:{tongue:false,tsev:5,nasal:false,brainfog:false,sleepTime:'',wokeTime:'',nightWakes:[],sleepQ:'Fair',weight:''},morningDoneAt:null,
 docOpen:false,docDays:7,searchText:'',moreOpen:false,toastTimer:null,toastUndoFn:null,
 symptomLogs:[],stoolLogs:[],noteLogs:[],liquidLogs:[],activityLogs:[],supplementLogs:[],
 supplementDoses:{},
@@ -192,7 +192,7 @@ dbTab:'foods',dbSearch:'',expandedDB:null,editingDB:null,
 days:[],progressRange:'weekly',insightsViewed:false,
 // Manual log mode
 logMode:'quick',manualType:'ingredients',manualIngredients:[],manualSupplements:[],manualLiquids:[],manualActivities:[],manualSymptoms:[],
-manualTime:null,manualDate:null,
+manualTime:null,manualDate:null,selectedIngredient:null,libraryEditMode:false,settingsCollapsed:{},
 addingFood:false,addingSupp:false,addingTask:false};
 
 function T(){return THEMES[S.theme]||THEMES.light;}
@@ -494,7 +494,7 @@ const SKW=['heartburn','cramp','pain','bloat','nausea','reflux','burn','ache','t
 const MKW=['rice','chicken','fish','pollock','cod','egg','potato','ghee','oil','cup','gram','ate','meal','breakfast','lunch','dinner','cooked','boiled','blended','slurry','mash','salmon','tuna','turkey','sweet','carrot','banana','oats','porridge','pasta','avocado','honey','date','prawn','haddock','mackerel','broccoli','spinach','whey','protein','basa'];
 const LKW=['water','hydrat','drink','glass','bottle','tea','herbal','peppermint','chamomile','fennel tea','liquorice tea','licorice tea','broth','bone broth','juice','squash','infusion','beverage','coconut water','coconut'];
 const STOOL_KW=['stool','bristol','type 1','type 2','type 3','type 4','type 5','type 6','type 7','bowel movement','poo'];
-const AKW=['sauna','steam','walk','walking','swim','exercise','gym','run','meditation','meditate','cold','stress','stressful','breathwork','yoga','stretch','hike','hiking','lymph'];
+const AKW=['sauna','steam','walk','walking','swim','exercise','gym','run','meditation','meditate','cold','stress','stressful','breathwork','yoga','stretch','hike','hiking','lymph','weed'];
 
 // Supplement detection — uses prefix matching
 function isSupplementEntry(text){
@@ -555,7 +555,7 @@ return{symptom:sym,level,duration,time,timeStart,timeEnd,raw:text};}
 
 function parseActivity(text){
   const l=text.toLowerCase();let activity=null;
-  const actMap={'sauna':/\bsauna\b/,'steam room':/\bsteam\b/,'walk':/\bwalk(?:ing)?\b/,'hike':/\bhik(?:e|ing)\b/,'swim':/\bswim/,'exercise':/\bexercise|gym\b/,'run':/\brun(?:ning)?\b/,'meditation':/\bmeditat/,'cold water':/\bcold\b/,'breathwork':/\bbreathwork\b/,'yoga':/\byoga\b/,'stretch':/\bstretch/,'lymph workout':/\blymph\b/,'stressful event':/\bstress/};
+  const actMap={'sauna':/\bsauna\b/,'steam room':/\bsteam\b/,'walk':/\bwalk(?:ing)?\b/,'hike':/\bhik(?:e|ing)\b/,'swim':/\bswim/,'exercise':/\bexercise|gym\b/,'run':/\brun(?:ning)?\b/,'meditation':/\bmeditat/,'cold water':/\bcold\b/,'breathwork':/\bbreathwork\b/,'yoga':/\byoga\b/,'stretch':/\bstretch/,'lymph workout':/\blymph\b/,'stressful event':/\bstress/,'weed':/\bweed\b/};
   for(const[k2,re] of Object.entries(actMap)){if(re.test(l)){activity=k2;break;}}
   let duration=null;const dm=l.match(/(?:for\s+)?(\d+)\s*(min|hour|hr)/i);if(dm)duration=dm[1]+' '+dm[2]+(+dm[1]>1?'s':'');
   let time=null;
@@ -620,13 +620,13 @@ const AVOID_FOODS=['Gluten','Dairy (except ghee)','Soy','High-FODMAP','Fructose/
 // Liquid DB for manual log
 const LIQUID_DB=['Water','Coconut Water','Ginger Tea','Peppermint Tea','Chamomile Tea','Fennel Tea','Liquorice Tea','Bone Broth','Herbal Tea','Tea','Juice','Squash'];
 // Activity DB for manual log
-const ACTIVITY_DB=['Walk','Hike','Run','Swim','Sauna','Steam Room','Exercise','Gym','Meditation','Breathwork','Yoga','Stretch','Lymph Workout','Cold Water','Stressful Event'];
+const ACTIVITY_DB=['Walk','Hike','Run','Swim','Sauna','Steam Room','Exercise','Gym','Meditation','Breathwork','Yoga','Stretch','Lymph Workout','Cold Water','Stressful Event','Weed','Stool – Type 1','Stool – Type 2','Stool – Type 3','Stool – Type 4','Stool – Type 5','Stool – Type 6','Stool – Type 7'];
 // Symptom DB for manual log
 const SYMPTOM_DB=['Cramping','Burn','Reflux','Bloating','Fatigue','Brain Fog','Dry Skin','Tongue Coating','Red Skin','Indigestion','Nasal Congestion','Nausea','Dizziness','Constipation','Diarrhoea','Wind','Vomiting'];
 
 // ===== NAV =====
-const BOTTOM_NAV=[{id:'home',label:'Home',svg:'<path d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><polyline points="9 21 9 14 15 14 15 21"/>'},{id:'progress',label:'Progress',svg:'<path d="M12 20V10M18 20V4M6 20v-4"/>'},{id:'tasks',label:'Tasks',svg:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>'},{id:'more',label:'More',svg:'<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>'}];
-const MORE_NAV=[{id:'charts',label:'Charts',svg:'<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>'},{id:'analysis',label:'Analysis',svg:'<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>'},{id:'history',label:'Daily Log',svg:'<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'},{id:'library',label:'Library',svg:'<path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>'},{id:'database',label:'Database',svg:'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>'},{id:'settings',label:'Settings',svg:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>'}];
+const BOTTOM_NAV=[{id:'home',label:'Today',svg:'<path d="M3 10.5L12 3l9 7.5V21a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><polyline points="9 21 9 14 15 14 15 21"/>'},{id:'progress',label:'Progress',svg:'<path d="M12 20V10M18 20V4M6 20v-4"/>'},{id:'tasks',label:'Tasks',svg:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>'},{id:'more',label:'More',svg:'<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>'}];
+const MORE_NAV=[{id:'charts',label:'Charts',svg:'<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>'},{id:'analysis',label:'Analysis',svg:'<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>'},{id:'history',label:'Library',svg:'<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'},{id:'database',label:'Database',svg:'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>'},{id:'settings',label:'Settings',svg:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>'}];
 
 // ===== TOAST =====
 let toastTimer=null;
@@ -656,7 +656,7 @@ function bristolSVG(type,size){size=size||26;const col=type===3||type===4?'#22C5
 
 function getGreeting(){const h2=new Date().getHours();if(h2<12)return'Good morning';if(h2<17)return'Good afternoon';return'Good evening';}
 function getNow(){return new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});}
-function getTodayLabel(){const d=new Date();return d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'});}
+function getTodayLabel(){const d=new Date();return d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});}
 function accentShades(base){const hex=base.replace('#','');const r=parseInt(hex.substr(0,2),16),g=parseInt(hex.substr(2,2),16),b=parseInt(hex.substr(4,2),16);return['rgb('+r+','+g+','+b+')','rgb('+Math.min(255,r+30)+','+Math.min(255,g+30)+','+Math.min(255,b+30)+')','rgb('+Math.min(255,r+60)+','+Math.min(255,g+60)+','+Math.min(255,b+60)+')','rgb('+Math.min(255,r+90)+','+Math.min(255,g+90)+','+Math.min(255,b+90)+')','rgb('+Math.min(255,r+40)+','+Math.min(255,g+50)+','+Math.min(255,b+60)+')'];}
 // Sort by time descending (latest first)
 function sortByTimeDesc(arr){return[...arr].sort((a2,b2)=>{const ta=(a2.time||'00:00').split('–')[0];const tb=(b2.time||'00:00').split('–')[0];return tb.localeCompare(ta);});}
@@ -777,7 +777,7 @@ if(S.sections.dttInfo&&(S.todayMeals||[]).length>0){
   dttLine.appendChild(txt('Last meal '));
   dttLine.appendChild(h('span',{style:{color:a.m,fontWeight:'600'}},agoText));
   dttLine.appendChild(txt(' ('));
-  dttLine.appendChild(h('span',{style:{color:t.sub}},dttSourceName+' at '+dttTimeLabel));
+  dttLine.appendChild(h('span',{style:{color:t.sub}},dttTimeLabel));
   dttLine.appendChild(txt(') · Est. DTT '));
   dttLine.appendChild(h('span',{style:{color:a.m,fontWeight:'600'}},dttH+' hrs'));
   wrap.appendChild(dttLine);
@@ -818,16 +818,16 @@ if(!S.logActive&&!S.logResult&&!S.logLoading){
     // Time & Date picker row
     const pickerRow=div({display:'flex',gap:'6px',marginTop:'6px'});
     const dateInp=document.createElement('input');dateInp.type='date';dateInp.value=S.manualDate||new Date().toISOString().split('T')[0];
-    Object.assign(dateInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 8px',fontSize:(sz-2)+'px',color:t.text,background:t.surf2});
+    Object.assign(dateInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'5px 8px',fontSize:(sz-3)+'px',color:t.text,background:t.surf2});
     dateInp.onchange=e=>{S.manualDate=e.target.value;};pickerRow.appendChild(dateInp);
     const timeInp=document.createElement('input');timeInp.type='time';timeInp.value=S.manualTime||getNow();
-    Object.assign(timeInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 8px',fontSize:(sz-2)+'px',color:t.text,background:t.surf2});
+    Object.assign(timeInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'5px 8px',fontSize:(sz-3)+'px',color:t.text,background:t.surf2});
     timeInp.onchange=e=>{S.manualTime=e.target.value;};pickerRow.appendChild(timeInp);
     card.appendChild(pickerRow);
 
     const btns=div({display:'flex',gap:'6px',marginTop:'7px'});
-    btns.appendChild(btn({flex:'1',background:a.m,border:'none',borderRadius:'10px',padding:'10px',color:'#fff',fontWeight:'600',fontSize:sz+'px',cursor:'pointer'},'Log',doLog));
     btns.appendChild(btn({background:'none',border:'0.5px solid '+t.bdr,borderRadius:'10px',padding:'10px 14px',color:t.muted,fontSize:sz+'px',cursor:'pointer'},'Cancel',()=>{S.logActive=false;S.logText='';S.logResult=null;S.manualTime=null;S.manualDate=null;render();}));
+    btns.appendChild(btn({flex:'1',background:a.m,border:'none',borderRadius:'10px',padding:'10px',color:'#fff',fontWeight:'600',fontSize:sz+'px',cursor:'pointer'},'Log',doLog));
     card.appendChild(btns);
   }else{
     // ===== MANUAL LOG MODE =====
@@ -858,6 +858,9 @@ if(!S.logActive&&!S.logResult&&!S.logLoading){
   }else{resBox.appendChild(div({fontSize:sz+'px',fontWeight:'600',color:'#fff'},[txt('✓ Note saved')]));
   }
   card.appendChild(resBox);
+  // Clear button
+  const clearBtn=btn({width:'100%',padding:'8px',background:'none',border:'0.5px solid '+t.bdr,borderRadius:'10px',color:t.muted,fontSize:(sz-1)+'px',cursor:'pointer',marginTop:'6px'},'Clear',()=>{clearTimeout(S.logDismissTimer);S.logDismissTimer=null;S.logResult=null;render();});
+  card.appendChild(clearBtn);
   // Auto-dismiss after 30 seconds
   if(!S.logDismissTimer){S.logDismissTimer=setTimeout(()=>{S.logResult=null;S.logDismissTimer=null;render();},30000);}
 }
@@ -874,16 +877,14 @@ card.appendChild(mbar('Fat',tF,S.targets.fat,shades[3],'g'));
 card.appendChild(mbar('Water',tW,S.targets.water,shades[4]||'#3B82F6','ml'));
 wrap.appendChild(card);}
 
-// Today's Meals (sorted, no delete buttons)
+// Meals (sorted, no delete buttons)
 if(S.sections.meals){
-wrap.appendChild(sl("Today's Meals · "+todayMeals.length));
-if(todayMeals.length===0){wrap.appendChild(div({padding:'16px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No meals logged yet. Tap + to log your first meal.')]));}
+wrap.appendChild(sl("Meals · "+todayMeals.length));
 todayMeals.forEach((m,i)=>{wrap.appendChild(buildMealCard(m,i,'home',false,null));});}
 
-// Today's Liquids (sorted, no delete)
+// Liquids (sorted, no delete)
 if(S.sections.liquids){
-wrap.appendChild(sl("Today's Liquids · "+S.liquidLogs.length));
-if(S.liquidLogs.length===0){wrap.appendChild(div({padding:'16px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No liquids logged today.')]));}
+wrap.appendChild(sl("Liquids · "+S.liquidLogs.length));
 sortByTimeDesc(S.liquidLogs).forEach((lq,i)=>{
   const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';
   const info=div({});
@@ -892,10 +893,9 @@ sortByTimeDesc(S.liquidLogs).forEach((lq,i)=>{
   card.appendChild(info);wrap.appendChild(card);
 });}
 
-// Today's Supplements (sorted, no delete)
+// Supplements (sorted, no delete)
 if(S.sections.supplements){
-wrap.appendChild(sl("Today's Supplements · "+S.supplementLogs.length));
-if(S.supplementLogs.length===0){wrap.appendChild(div({padding:'16px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No supplements logged today.')]));}
+wrap.appendChild(sl("Supplements · "+S.supplementLogs.length));
 sortByTimeDesc(S.supplementLogs).forEach((sup,i)=>{
   const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';
   const info=div({});
@@ -904,10 +904,9 @@ sortByTimeDesc(S.supplementLogs).forEach((sup,i)=>{
   card.appendChild(info);wrap.appendChild(card);
 });}
 
-// Today's Activities (NEW section, sorted, no delete)
+// Activities (sorted, no delete)
 if(S.sections.activities){
-wrap.appendChild(sl("Today's Activities · "+S.activityLogs.length));
-if(S.activityLogs.length===0){wrap.appendChild(div({padding:'16px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No activities logged today.')]));}
+wrap.appendChild(sl("Activities · "+S.activityLogs.length));
 sortByTimeDesc(S.activityLogs).forEach((ac,i)=>{
   const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';
   const info=div({});
@@ -919,7 +918,6 @@ sortByTimeDesc(S.activityLogs).forEach((ac,i)=>{
 // Symptoms (sorted, no delete)
 if(S.sections.symptoms){
 wrap.appendChild(sl('Symptoms · '+S.symptomLogs.length));
-if(S.symptomLogs.length===0){wrap.appendChild(div({padding:'16px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No symptoms logged today.')]));}
 sortByTimeDesc(S.symptomLogs).forEach((sl2)=>{
   const label=sl2.symptom?tc(sl2.symptom):sl2.raw;
   const card=div({});card.className='card';
@@ -972,20 +970,20 @@ function buildManualLogUI(){
   else if(S.manualType==='activities'){wrap.appendChild(buildManualActivities());}
   else if(S.manualType==='symptoms'){wrap.appendChild(buildManualSymptoms());}
 
-  // Time & Date
+  // Time & Date (compact)
   const pickerRow=div({display:'flex',gap:'6px',marginTop:'8px'});
   const dateInp=document.createElement('input');dateInp.type='date';dateInp.value=S.manualDate||new Date().toISOString().split('T')[0];
-  Object.assign(dateInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 8px',fontSize:(sz-2)+'px',color:t.text,background:t.surf2});
+  Object.assign(dateInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'5px 8px',fontSize:(sz-3)+'px',color:t.text,background:t.surf2});
   dateInp.onchange=e=>{S.manualDate=e.target.value;};pickerRow.appendChild(dateInp);
   const timeInp=document.createElement('input');timeInp.type='time';timeInp.value=S.manualTime||getNow();
-  Object.assign(timeInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 8px',fontSize:(sz-2)+'px',color:t.text,background:t.surf2});
+  Object.assign(timeInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'5px 8px',fontSize:(sz-3)+'px',color:t.text,background:t.surf2});
   timeInp.onchange=e=>{S.manualTime=e.target.value;};pickerRow.appendChild(timeInp);
   wrap.appendChild(pickerRow);
 
-  // Log + Cancel
+  // Cancel + Log (Cancel left, Log right)
   const btns=div({display:'flex',gap:'6px',marginTop:'7px'});
+  btns.appendChild(btn({background:'none',border:'0.5px solid '+t.bdr,borderRadius:'10px',padding:'10px 14px',color:t.muted,fontSize:sz+'px',cursor:'pointer'},'Cancel',()=>{S.logActive=false;S.logText='';S.logResult=null;S.manualIngredients=[];S.manualSupplements=[];S.manualLiquids=[];S.manualActivities=[];S.manualSymptoms=[];S.manualTime=null;S.manualDate=null;S.selectedIngredient=null;render();}));
   btns.appendChild(btn({flex:'1',background:a.m,border:'none',borderRadius:'10px',padding:'10px',color:'#fff',fontWeight:'600',fontSize:sz+'px',cursor:'pointer'},'Log',doManualLog));
-  btns.appendChild(btn({background:'none',border:'0.5px solid '+t.bdr,borderRadius:'10px',padding:'10px 14px',color:t.muted,fontSize:sz+'px',cursor:'pointer'},'Cancel',()=>{S.logActive=false;S.logText='';S.logResult=null;S.manualIngredients=[];S.manualSupplements=[];S.manualLiquids=[];S.manualActivities=[];S.manualSymptoms=[];S.manualTime=null;S.manualDate=null;render();}));
   wrap.appendChild(btns);
   return wrap;
 }
@@ -1026,37 +1024,47 @@ function buildManualIngredients(){
   });
   // Search and select
   const allFoods=FDB.map(f=>({label:tc(f.n),value:f}));
-  let selectedFood=null;
-  const searchWrap=buildSearchableList(allFoods,item=>{
-    selectedFood=item.value;
-    // Show fields
-    const fields=document.getElementById('ml-ing-fields');
-    if(fields){fields.style.display='block';const nameEl=document.getElementById('ml-ing-name');if(nameEl)nameEl.textContent=tc(item.value.n);}
-  },'Search ingredients...');
+  const searchWrap=div({});
+  const search=document.createElement('input');search.className='ml-search-inp';search.placeholder='Search ingredients...';
+  const list=div({});list.className='ml-list';list.style.display='none';
+  function updateList(filter){
+    list.innerHTML='';
+    const f=filter.toLowerCase();
+    const filtered=allFoods.filter(it=>it.label.toLowerCase().includes(f));
+    if(filtered.length===0||!f){list.style.display='none';return;}
+    list.style.display='block';
+    filtered.slice(0,8).forEach(it=>{
+      const item=div({});item.className='ml-list-item';item.textContent=it.label;
+      item.onclick=()=>{S.selectedIngredient=it.value;search.value='';list.style.display='none';render();};
+      list.appendChild(item);
+    });
+  }
+  search.oninput=()=>updateList(search.value);
+  search.onfocus=()=>{if(search.value)updateList(search.value);};
+  searchWrap.appendChild(search);searchWrap.appendChild(list);
   wrap.appendChild(searchWrap);
 
-  const fields=div({display:'none',id:'ml-ing-fields'});
-  const nameLabel=div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text,marginBottom:'4px',id:'ml-ing-name'});
-  fields.appendChild(nameLabel);
-  const fieldRow=div({display:'flex',gap:'6px'});
-  const gramsInp=document.createElement('input');gramsInp.type='number';gramsInp.placeholder='Grams';gramsInp.id='ml-ing-grams';
-  Object.assign(gramsInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf});
-  fieldRow.appendChild(gramsInp);
-  const methodInp=document.createElement('input');methodInp.type='text';methodInp.placeholder='Method (optional)';methodInp.id='ml-ing-method';
-  Object.assign(methodInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf});
-  fieldRow.appendChild(methodInp);
-  fields.appendChild(fieldRow);
-  fields.appendChild(btn({marginTop:'6px',padding:'8px',background:a.bg,border:'0.5px solid '+a.bdr,borderRadius:'8px',color:a.t,fontSize:(sz-2)+'px',fontWeight:'500',cursor:'pointer',width:'100%'},'+ Add ingredient',()=>{
-    const nameEl=document.getElementById('ml-ing-name');
-    const gInp=document.getElementById('ml-ing-grams');
-    const mInp=document.getElementById('ml-ing-method');
-    if(!nameEl||!nameEl.textContent)return;
-    const fd=findFood(nameEl.textContent);
-    const grams=parseInt(gInp.value)||(fd?fd.defG:100);
-    S.manualIngredients.push({name:nameEl.textContent.toLowerCase(),grams,method:mInp.value||'Not specified',fd});
-    render();
-  }));
-  wrap.appendChild(fields);
+  // Show fields if ingredient selected
+  if(S.selectedIngredient){
+    const selFood=S.selectedIngredient;
+    const fieldRow=div({display:'flex',gap:'6px',alignItems:'center',marginTop:'4px'});
+    fieldRow.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text,minWidth:'60px',flexShrink:'0'},[txt(tc(selFood.n))]));
+    const gramsInp=document.createElement('input');gramsInp.type='number';gramsInp.placeholder='Grams';gramsInp.id='ml-ing-grams';gramsInp.value=selFood.defG||100;
+    Object.assign(gramsInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf,minWidth:'0'});
+    fieldRow.appendChild(gramsInp);
+    const methodInp=document.createElement('input');methodInp.type='text';methodInp.placeholder='Method';methodInp.id='ml-ing-method';
+    Object.assign(methodInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf,minWidth:'0'});
+    fieldRow.appendChild(methodInp);
+    wrap.appendChild(fieldRow);
+    wrap.appendChild(btn({marginTop:'6px',padding:'8px',background:a.bg,border:'0.5px solid '+a.bdr,borderRadius:'8px',color:a.t,fontSize:(sz-2)+'px',fontWeight:'500',cursor:'pointer',width:'100%'},'+ Add ingredient',()=>{
+      const gInp=document.getElementById('ml-ing-grams');
+      const mInp=document.getElementById('ml-ing-method');
+      const grams=parseInt(gInp.value)||selFood.defG||100;
+      S.manualIngredients.push({name:selFood.n,grams,method:mInp.value||'Not specified',fd:selFood});
+      S.selectedIngredient=null;
+      render();
+    }));
+  }
   return wrap;
 }
 
@@ -1071,17 +1079,19 @@ function buildManualLiquids(){
   const searchWrap=buildSearchableList(LIQUID_DB,item=>{
     const name=typeof item==='string'?item:item;
     S.manualLiquids.push({name,ml:250});render();
-  },'Search drinks...');
+  },'Search liquids...');
   wrap.appendChild(searchWrap);
-  // Editable amounts for last added
+  // Editable amounts for last added — inline
   if(S.manualLiquids.length>0){
     const last=S.manualLiquids[S.manualLiquids.length-1];
     const row=div({display:'flex',gap:'6px',alignItems:'center',marginTop:'4px'});
-    row.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,minWidth:'30px'},[txt('ml:')]));
-    const inp=document.createElement('input');inp.type='number';inp.value=last.ml;
-    Object.assign(inp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf});
+    row.appendChild(div({fontSize:(sz-2)+'px',color:t.text,flexShrink:'0'},[txt(last.name)]));
+    const inp=document.createElement('input');inp.type='number';inp.value=last.ml;inp.placeholder='ml';
+    Object.assign(inp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf,minWidth:'0'});
     inp.onchange=e=>{last.ml=parseInt(e.target.value)||250;};
-    row.appendChild(inp);wrap.appendChild(row);
+    row.appendChild(inp);
+    row.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,flexShrink:'0'},[txt('ml')]));
+    wrap.appendChild(row);
   }
   return wrap;
 }
@@ -1090,7 +1100,7 @@ function buildManualSupplements(){
   const t=T(),a=A(),sz=z();const wrap=div({});
   S.manualSupplements.forEach((sup,i)=>{
     const row=div({});row.className='ml-added';
-    row.appendChild(div({flex:'1',color:t.text},[txt(sup.name+' · '+sup.dose+sup.unit)]));
+    row.appendChild(div({flex:'1',color:t.text},[txt(sup.name+' x'+sup.quantity+' · '+sup.dose+sup.unit)]));
     row.appendChild(btn({color:'#DC2626',fontSize:'12px',background:'none',border:'none',cursor:'pointer',padding:'2px 6px'},'×',()=>{S.manualSupplements.splice(i,1);render();}));
     wrap.appendChild(row);
   });
@@ -1101,6 +1111,18 @@ function buildManualSupplements(){
     S.manualSupplements.push({name:s.name,dose:customDose||s.dosePerUnit,unit:s.unit,quantity:1});render();
   },'Search supplements...');
   wrap.appendChild(searchWrap);
+  // Editable quantity for last added — inline
+  if(S.manualSupplements.length>0){
+    const last=S.manualSupplements[S.manualSupplements.length-1];
+    const row=div({display:'flex',gap:'6px',alignItems:'center',marginTop:'4px'});
+    row.appendChild(div({fontSize:(sz-2)+'px',color:t.text,flexShrink:'0'},[txt(last.name)]));
+    const qtyInp=document.createElement('input');qtyInp.type='number';qtyInp.min='1';qtyInp.value=last.quantity;qtyInp.placeholder='Qty';
+    Object.assign(qtyInp.style,{width:'50px',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf});
+    qtyInp.onchange=e=>{last.quantity=parseInt(e.target.value)||1;render();};
+    row.appendChild(qtyInp);
+    row.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,flexShrink:'0'},[txt('x '+last.dose+last.unit)]));
+    wrap.appendChild(row);
+  }
   return wrap;
 }
 
@@ -1119,9 +1141,9 @@ function buildManualActivities(){
   if(S.manualActivities.length>0){
     const last=S.manualActivities[S.manualActivities.length-1];
     const row=div({display:'flex',gap:'6px',alignItems:'center',marginTop:'4px'});
-    row.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,minWidth:'55px'},[txt('Duration:')]));
+    row.appendChild(div({fontSize:(sz-2)+'px',color:t.text,flexShrink:'0'},[txt(last.activity)]));
     const inp=document.createElement('input');inp.type='text';inp.value=last.duration||'';inp.placeholder='e.g. 30 mins';
-    Object.assign(inp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf});
+    Object.assign(inp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf,minWidth:'0'});
     inp.onchange=e=>{last.duration=e.target.value||null;};
     row.appendChild(inp);wrap.appendChild(row);
   }
@@ -1132,22 +1154,23 @@ function buildManualSymptoms(){
   const t=T(),a=A(),sz=z();const wrap=div({});
   S.manualSymptoms.forEach((sym,i)=>{
     const row=div({});row.className='ml-added';
-    row.appendChild(div({flex:'1',color:t.text},[txt(sym.symptom+(sym.level?' · '+sym.level+'/10':'')+(sym.duration?' · '+sym.duration:''))]));
+    row.appendChild(div({flex:'1',color:t.text},[txt(tc(sym.symptom)+(sym.level?' · '+sym.level+'/10':'')+(sym.duration?' · '+sym.duration:''))]));
     row.appendChild(btn({color:'#DC2626',fontSize:'12px',background:'none',border:'none',cursor:'pointer',padding:'2px 6px'},'×',()=>{S.manualSymptoms.splice(i,1);render();}));
     wrap.appendChild(row);
   });
   const searchWrap=buildSearchableList(SYMPTOM_DB,item=>{
-    S.manualSymptoms.push({symptom:item.toLowerCase(),level:null,duration:null});render();
+    S.manualSymptoms.push({symptom:item,level:null,duration:null});render();
   },'Search symptoms...');
   wrap.appendChild(searchWrap);
   if(S.manualSymptoms.length>0){
     const last=S.manualSymptoms[S.manualSymptoms.length-1];
-    const row=div({display:'flex',gap:'6px',marginTop:'4px'});
-    const sevInp=document.createElement('input');sevInp.type='number';sevInp.min='1';sevInp.max='10';sevInp.value=last.level||'';sevInp.placeholder='Severity /10';
-    Object.assign(sevInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf});
+    const row=div({display:'flex',gap:'6px',alignItems:'center',marginTop:'4px'});
+    row.appendChild(div({fontSize:(sz-2)+'px',color:t.text,flexShrink:'0'},[txt(tc(last.symptom))]));
+    const sevInp=document.createElement('input');sevInp.type='number';sevInp.min='1';sevInp.max='10';sevInp.value=last.level||'';sevInp.placeholder='/10';
+    Object.assign(sevInp.style,{width:'50px',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf});
     sevInp.onchange=e=>{last.level=parseInt(e.target.value)||null;};row.appendChild(sevInp);
-    const durInp=document.createElement('input');durInp.type='text';durInp.value=last.duration||'';durInp.placeholder='Duration (mins)';
-    Object.assign(durInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf});
+    const durInp=document.createElement('input');durInp.type='text';durInp.value=last.duration||'';durInp.placeholder='Duration';
+    Object.assign(durInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf,minWidth:'0'});
     durInp.onchange=e=>{const v=parseInt(e.target.value);last.duration=v?v+' mins':e.target.value||null;};row.appendChild(durInp);
     wrap.appendChild(row);
   }
@@ -1197,7 +1220,7 @@ function doManualLog(){
     });
     S.logResult={type:'symptom',text:S.manualSymptoms[0].symptom,time};if(!isPast)showToast('Symptom logged',null);
   }else{showToast('Nothing to log',null);return;}
-  S.logActive=false;S.manualIngredients=[];S.manualSupplements=[];S.manualLiquids=[];S.manualActivities=[];S.manualSymptoms=[];S.manualTime=null;S.manualDate=null;
+  S.logActive=false;S.manualIngredients=[];S.manualSupplements=[];S.manualLiquids=[];S.manualActivities=[];S.manualSymptoms=[];S.manualTime=null;S.manualDate=null;S.selectedIngredient=null;
   saveState();render();
 }
 
@@ -1400,18 +1423,15 @@ sections.forEach(sec=>{
     form.appendChild(div({fontSize:'10px',fontWeight:'600',color:t.muted,textTransform:'uppercase',letterSpacing:'0.04em',marginBottom:'4px'},[txt('New Task')]));
     const titleInp=document.createElement('input');titleInp.type='text';titleInp.placeholder='Task title';titleInp.id='task-title-'+sec;form.appendChild(titleInp);
     const descInp=document.createElement('input');descInp.type='text';descInp.placeholder='Description (optional)';descInp.id='task-desc-'+sec;form.appendChild(descInp);
-    const timeRow=div({display:'flex',gap:'6px'});
-    const timeInp=document.createElement('input');timeInp.type='time';timeInp.id='task-time-'+sec;timeInp.placeholder='Reminder';
-    Object.assign(timeInp.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'8px 10px',fontSize:'12px',color:t.text,background:'var(--surf)',marginBottom:'6px'});
-    timeRow.appendChild(timeInp);
+    const secRow=div({display:'flex',gap:'6px'});
     const secSel=document.createElement('select');secSel.id='task-sec-'+sec;
     Object.assign(secSel.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'8px 10px',fontSize:'12px',color:t.text,background:'var(--surf)',marginBottom:'6px'});
     ['Morning','Midday','Evening'].forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;if(s===sec)o.selected=true;secSel.appendChild(o);});
-    timeRow.appendChild(secSel);form.appendChild(timeRow);
+    secRow.appendChild(secSel);form.appendChild(secRow);
     const btnsRow=div({display:'flex',gap:'6px'});
     btnsRow.appendChild(btn({flex:'1',padding:'8px',background:a.m,border:'none',borderRadius:'8px',color:'#fff',fontWeight:'500',fontSize:(sz-2)+'px',cursor:'pointer'},'Add',()=>{
-      const title=document.getElementById('task-title-'+sec);const desc=document.getElementById('task-desc-'+sec);const time=document.getElementById('task-time-'+sec);const secEl=document.getElementById('task-sec-'+sec);
-      if(title&&title.value.trim()){const id='task_'+Date.now()+'_'+Math.random().toString(36).substr(2,5);S.tasks.push({id,title:title.value.trim(),section:secEl?secEl.value:sec,description:desc?desc.value:'',completed:false,notificationTime:time&&time.value?time.value:null,createdAt:new Date().toISOString()});S.addingTask=false;saveState();render();showToast('Task added',null);}
+      const title=document.getElementById('task-title-'+sec);const desc=document.getElementById('task-desc-'+sec);const secEl=document.getElementById('task-sec-'+sec);
+      if(title&&title.value.trim()){const id='task_'+Date.now()+'_'+Math.random().toString(36).substr(2,5);S.tasks.push({id,title:title.value.trim(),section:secEl?secEl.value:sec,description:desc?desc.value:'',completed:false,notificationTime:null,createdAt:new Date().toISOString()});S.addingTask=false;saveState();render();showToast('Task added',null);}
     }));
     btnsRow.appendChild(btn({padding:'8px 12px',background:'none',border:'0.5px solid '+t.bdr,borderRadius:'8px',color:t.muted,fontSize:(sz-2)+'px',cursor:'pointer'},'Cancel',()=>{S.addingTask=false;render();}));
     form.appendChild(btnsRow);wrap.appendChild(form);
@@ -1431,7 +1451,18 @@ function scheduleAllNotifications(){S.tasks.forEach(tk=>scheduleNotification(tk)
 // ===== DAILY LOG (History) =====
 function viewHistory(){
 const t=T(),a=A(),sz=z();const wrap=div({});
-wrap.appendChild(div({fontSize:(sz+8)+'px',fontWeight:'700',letterSpacing:'-0.5px',color:t.text},[txt('Daily Log')]));wrap.appendChild(div({height:'16px'}));
+const hdrRow=div({display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'4px'});
+hdrRow.appendChild(div({fontSize:(sz+8)+'px',fontWeight:'700',letterSpacing:'-0.5px',color:t.text},[txt('Library')]));
+hdrRow.appendChild(btn({padding:'8px 14px',background:S.libraryEditMode?a.m:a.bg,border:'0.5px solid '+(S.libraryEditMode?a.m:a.bdr),borderRadius:'10px',color:S.libraryEditMode?'#fff':a.t,fontSize:(sz-1)+'px',fontWeight:'500',cursor:'pointer'},S.libraryEditMode?'Done':'Edit',()=>{S.libraryEditMode=!S.libraryEditMode;render();}));
+wrap.appendChild(hdrRow);
+
+if(S.libraryEditMode){
+  // Show editable today's entries (old Library view)
+  wrap.appendChild(buildEditableLibrary());
+  return wrap;
+}
+
+wrap.appendChild(div({height:'16px'}));
 if(S.days.length===0){wrap.appendChild(div({padding:'40px 20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px',lineHeight:'1.6',marginTop:'40px'},[txt('Daily history appears here. Logs are archived at the start of each new day.')]));return wrap;}
 [...S.days].reverse().forEach((d,i)=>{
   const isExp=S.expandedHistory===i;const card=div({});card.className='card';
@@ -1460,14 +1491,31 @@ if(S.days.length===0){wrap.appendChild(div({padding:'40px 20px',textAlign:'cente
 return wrap;}
 
 // ===== LIBRARY VIEW =====
-function viewLibrary(){
+function buildEditableLibrary(){
 const t=T(),a=A(),sz=z();const wrap=div({});
-wrap.appendChild(div({fontSize:(sz+8)+'px',fontWeight:'700',letterSpacing:'-0.5px',color:t.text},[txt('Library')]));
 const selRow=div({display:'flex',gap:'8px',marginTop:'10px',marginBottom:'4px',alignItems:'center'});
 selRow.appendChild(mkCompactSelect([['all','All'],['meals','Meals'],['liquids','Liquids'],['supplements','Supplements'],['symptoms','Symptoms'],['activities','Activities'],['stool','Stool'],['notes','Notes']],S.libTab,v=>{S.libTab=v;render();}));
 selRow.appendChild(mkCompactSelect([['today','Today'],['yesterday','Yesterday'],['week','This Week'],['month','This Month']],S.libRange,v=>{S.libRange=v;render();}));
 wrap.appendChild(selRow);wrap.appendChild(div({height:'8px'}));
 const ld=getLibData();const rangeLabel=S.libRange==='today'?'today':S.libRange==='yesterday'?'yesterday':S.libRange==='week'?'this week':'this month';
+
+function editEntryModal(type,data,index){
+  S.editingEntry={type,data:{...data},index};render();
+}
+
+function buildEntryCard(catLabel,catBg,catCol,name,subtitle,type,idx,data){
+  const card=div({display:'flex',alignItems:'center',gap:'10px'});card.className='card card-p';
+  card.appendChild(chip(catLabel,catBg,catCol));
+  const info=div({flex:'1'});
+  info.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt(name)]));
+  if(subtitle)info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(subtitle)]));
+  card.appendChild(info);
+  const btnRow=div({display:'flex',gap:'6px',flexShrink:'0'});
+  btnRow.appendChild(btn({fontSize:'10px',color:a.t,background:a.bg,borderRadius:'6px',padding:'4px 8px',border:'0.5px solid '+a.bdr,cursor:'pointer'},'Edit',()=>{editEntryModal(type,data,idx);}));
+  btnRow.appendChild(btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{const typeMap={meal:'meals',symptom:'symptoms',activity:'activities',liquid:'liquids',supplement:'supplements',stool:'stool',note:'notes'};deleteFromRange(typeMap[type],idx);showToast('Deleted',null);}));
+  card.appendChild(btnRow);
+  return card;
+}
 
 if(S.libTab==='all'){
   const allEntries=[];
@@ -1481,47 +1529,41 @@ if(S.libTab==='all'){
   allEntries.sort((a2,b2)=>b2.time.localeCompare(a2.time));
   if(allEntries.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('Nothing logged '+rangeLabel+'.')]));return wrap;}
   const catColors={meal:{bg:a.bg,c:a.t,label:'Meal'},symptom:{bg:'#FEF2F2',c:'#DC2626',label:'Symptom'},activity:{bg:'#F0FDFA',c:'#0F766E',label:'Activity'},liquid:{bg:'#EFF6FF',c:'#1D4ED8',label:'Liquid'},supplement:{bg:'#F5F3FF',c:'#5B21B6',label:'Supp'},stool:{bg:'#FFFBEB',c:'#92400E',label:'Stool'},note:{bg:'#F3F4F6',c:'#6B7280',label:'Note'}};
-  // Reversed order: Night first, Morning last
   const groups={Night:[],Evening:[],Afternoon:[],Morning:[]};
   allEntries.forEach(e=>{const h2=parseInt(e.time.split(':')[0])||0;if(h2<12)groups.Morning.push(e);else if(h2<17)groups.Afternoon.push(e);else if(h2<21)groups.Evening.push(e);else groups.Night.push(e);});
   Object.entries(groups).forEach(([period,entries])=>{
     if(entries.length===0)return;wrap.appendChild(sl(period));
     entries.forEach(e=>{
-      const cc=catColors[e.cat];const card=div({display:'flex',alignItems:'center',gap:'10px'});card.className='card card-p';
-      card.appendChild(chip(cc.label,cc.bg,cc.c));
-      const info=div({flex:'1'});
-      if(e.cat==='meal'){info.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt(e.data.name)]));info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(e.time+' · '+(e.data.cals||0)+' kcal')]));}
-      else if(e.cat==='symptom'){info.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt(e.data.symptom?tc(e.data.symptom):'Symptom')]));info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt((e.data.time||e.time)+(e.data.level?' · '+e.data.level+'/10':'')+(e.data.duration?' · '+e.data.duration:''))]));}
-      else if(e.cat==='activity'){info.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt(e.data.activity||'Activity')]));info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(e.time+(e.data.duration?' · '+e.data.duration:''))]));}
-      else if(e.cat==='liquid'){info.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt(e.data.name||'Water')]));info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(e.time+' · '+e.data.ml+'ml')]));}
-      else if(e.cat==='supplement'){info.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt(e.data.name+(e.data.quantity>1?' x'+e.data.quantity:''))]));info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(e.time+' · '+e.data.totalDose)]));}
-      else if(e.cat==='stool'){info.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt('Type '+e.data.type+' · '+e.data.color)]));info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(e.time)]));}
-      else{info.appendChild(div({fontSize:(sz-1)+'px',color:t.text},[txt(typeof e.data==='string'?e.data.slice(0,60):e.data)]));}
-      card.appendChild(info);
-      const typeMap={meal:'meals',symptom:'symptoms',activity:'activities',liquid:'liquids',supplement:'supplements',stool:'stool',note:'notes'};
-      card.appendChild(btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer',flexShrink:'0'},'×',()=>{deleteFromRange(typeMap[e.cat],e.idx);showToast('Deleted',null);}));
-      wrap.appendChild(card);
+      const cc=catColors[e.cat];
+      let name='',subtitle='';
+      if(e.cat==='meal'){name=e.data.name;subtitle=e.time+' · '+(e.data.cals||0)+' kcal';}
+      else if(e.cat==='symptom'){name=e.data.symptom?tc(e.data.symptom):'Symptom';subtitle=(e.data.time||e.time)+(e.data.level?' · '+e.data.level+'/10':'')+(e.data.duration?' · '+e.data.duration:'');}
+      else if(e.cat==='activity'){name=e.data.activity||'Activity';subtitle=e.time+(e.data.duration?' · '+e.data.duration:'');}
+      else if(e.cat==='liquid'){name=e.data.name||'Water';subtitle=e.time+' · '+e.data.ml+'ml';}
+      else if(e.cat==='supplement'){name=e.data.name+(e.data.quantity>1?' x'+e.data.quantity:'');subtitle=e.time+' · '+e.data.totalDose;}
+      else if(e.cat==='stool'){name='Type '+e.data.type+' · '+e.data.color;subtitle=e.time;}
+      else{name=typeof e.data==='string'?e.data.slice(0,60):e.data;subtitle='';}
+      wrap.appendChild(buildEntryCard(cc.label,cc.bg,cc.c,name,subtitle,e.cat,e.idx,e.data));
     });
   });
   return wrap;
 }
-if(S.libTab==='meals'){const allMeals=ld.meals;if(allMeals.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No meals logged '+rangeLabel+'.')]));return wrap;}allMeals.forEach((m,i)=>{wrap.appendChild(buildMealCard(m,i,'lib',true,()=>{deleteFromRange('meals',i);showToast('Meal deleted',null);}));});}
-else if(S.libTab==='liquids'){const lqs=ld.liquids;const totalL=lqs.reduce((s2,l)=>s2+(l.ml||0),0);if(lqs.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No liquids logged '+rangeLabel+'.')]));return wrap;}wrap.appendChild(div({fontSize:(sz-1)+'px',color:t.muted,marginBottom:'10px'},[txt('Total: '+totalL+'ml')]));lqs.forEach((lq,i)=>{const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';const info=div({});info.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text},[txt(lq.name||'Water')]));info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt((lq.time||'')+' · '+lq.ml+'ml')]));card.appendChild(info);card.appendChild(btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{deleteFromRange('liquids',i);showToast('Liquid deleted',null);}));wrap.appendChild(card);});}
-else if(S.libTab==='supplements'){const sups=ld.supplements;if(sups.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No supplements logged '+rangeLabel+'.')]));return wrap;}sups.forEach((sup,i)=>{const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';const info=div({});info.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text},[txt(sup.name+(sup.quantity>1?' x'+sup.quantity:''))]));info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt((sup.time||'')+' · '+sup.totalDose)]));card.appendChild(info);card.appendChild(btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{deleteFromRange('supplements',i);showToast('Supplement deleted',null);}));wrap.appendChild(card);});}
-else if(S.libTab==='symptoms'){const syms=ld.symptoms;if(syms.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No symptoms logged '+rangeLabel+'.')]));return wrap;}syms.forEach((sl2,i)=>{const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';const info=div({});info.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text},[txt(sl2.symptom?tc(sl2.symptom):'Unknown')]));info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt((sl2.time||'')+(sl2.level?' · '+sl2.level+'/10':'')+(sl2.duration?' · '+sl2.duration:''))]));card.appendChild(info);card.appendChild(btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{deleteFromRange('symptoms',i);showToast('Symptom deleted',null);}));wrap.appendChild(card);});}
-else if(S.libTab==='activities'){const acts=ld.activities;if(acts.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No activities logged '+rangeLabel+'.')]));return wrap;}acts.forEach((ac,i)=>{const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';const info=div({});info.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text},[txt(ac.activity||'Activity')]));info.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt((ac.time||'')+(ac.duration?' · '+ac.duration:'')+(ac.note?' · '+ac.note:''))]));card.appendChild(info);card.appendChild(btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{deleteFromRange('activities',i);showToast('Activity deleted',null);}));wrap.appendChild(card);});}
-else if(S.libTab==='stool'){const sLogs=ld.stool;if(sLogs.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No stool logged '+rangeLabel+'.')]));return wrap;}sLogs.forEach((sl2,i)=>{const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';const info=div({display:'flex',alignItems:'center',gap:'8px'});info.appendChild(bristolSVG(sl2.type,24));const txt2=div({});txt2.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text},[txt('Type '+sl2.type+' · '+sl2.color)]));txt2.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(BRISTOL[sl2.type-1])]));info.appendChild(txt2);card.appendChild(info);card.appendChild(btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer'},'Delete',()=>{deleteFromRange('stool',i);showToast('Stool entry deleted',null);}));wrap.appendChild(card);});}
-else if(S.libTab==='notes'){
-  const notes=ld.notes;
-  if(notes.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('No notes logged '+rangeLabel+'.')]));return wrap;}
-  notes.forEach((n,i)=>{
-    const card=div({display:'flex',justifyContent:'space-between',alignItems:'center'});card.className='card card-p';
-    card.appendChild(div({flex:'1',fontSize:(sz-1)+'px',color:t.text,lineHeight:'1.5'},[txt(typeof n==='string'?n:JSON.stringify(n))]));
-    card.appendChild(btn({fontSize:'10px',color:'#DC2626',background:'#FEF2F2',borderRadius:'6px',padding:'4px 8px',border:'0.5px solid #FECACA',cursor:'pointer',flexShrink:'0',marginLeft:'8px'},'×',()=>{deleteFromRange('notes',i);showToast('Note deleted',null);}));
-    wrap.appendChild(card);
-  });
+// Category-specific tabs
+const tabConfig={meals:{arr:ld.meals,empty:'No meals logged '+rangeLabel+'.',build:(m,i)=>buildEntryCard('Meal',a.bg,a.t,m.name,(m.time||'')+' · '+(m.cals||0)+' kcal','meal',i,m)},
+liquids:{arr:ld.liquids,empty:'No liquids logged '+rangeLabel+'.',build:(l,i)=>buildEntryCard('Liquid','#EFF6FF','#1D4ED8',l.name||'Water',(l.time||'')+' · '+l.ml+'ml','liquid',i,l)},
+supplements:{arr:ld.supplements,empty:'No supplements logged '+rangeLabel+'.',build:(s,i)=>buildEntryCard('Supp','#F5F3FF','#5B21B6',s.name+(s.quantity>1?' x'+s.quantity:''),(s.time||'')+' · '+s.totalDose,'supplement',i,s)},
+symptoms:{arr:ld.symptoms,empty:'No symptoms logged '+rangeLabel+'.',build:(s,i)=>buildEntryCard('Symptom','#FEF2F2','#DC2626',s.symptom?tc(s.symptom):'Unknown',(s.time||'')+(s.level?' · '+s.level+'/10':'')+(s.duration?' · '+s.duration:''),'symptom',i,s)},
+activities:{arr:ld.activities,empty:'No activities logged '+rangeLabel+'.',build:(ac,i)=>buildEntryCard('Activity','#F0FDFA','#0F766E',ac.activity||'Activity',(ac.time||'')+(ac.duration?' · '+ac.duration:''),'activity',i,ac)},
+stool:{arr:ld.stool,empty:'No stool logged '+rangeLabel+'.',build:(s,i)=>buildEntryCard('Stool','#FFFBEB','#92400E','Type '+s.type+' · '+s.color,BRISTOL[s.type-1],'stool',i,s)},
+notes:{arr:ld.notes,empty:'No notes logged '+rangeLabel+'.',build:(n,i)=>buildEntryCard('Note','#F3F4F6','#6B7280',typeof n==='string'?n.slice(0,60):n,'','note',i,n)}};
+const cfg=tabConfig[S.libTab];
+if(cfg){
+  if(!cfg.arr||cfg.arr.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt(cfg.empty)]));return wrap;}
+  cfg.arr.forEach((item,i)=>{wrap.appendChild(cfg.build(item,i));});
 }
 return wrap;}
+
+function viewLibrary(){return viewHistory();}
 
 // ===== DATABASE VIEW =====
 function viewDatabase(){
@@ -1530,7 +1572,7 @@ function viewDatabase(){
   wrap.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,marginTop:'2px',marginBottom:'8px'},[txt('Food & supplement reference data')]));
   const dbTab=S.dbTab||'foods';
   const selRow=div({display:'flex',gap:'8px',marginBottom:'12px'});
-  selRow.appendChild(mkCompactSelect([['foods','Food Database'],['suppDoses','Supplements'],['safeAvoid','Safe & Avoid']],dbTab,v=>{S.dbTab=v;render();}));
+  selRow.appendChild(mkCompactSelect([['foods','Food'],['suppDoses','Supplements'],['safeAvoid','Safe & Avoid']],dbTab,v=>{S.dbTab=v;render();}));
   wrap.appendChild(selRow);
 
   if(dbTab==='foods'){
@@ -1689,69 +1731,81 @@ function viewSettings(){
 const t=T(),a=A(),sz=z();const wrap=div({});
 wrap.appendChild(div({fontSize:(sz+8)+'px',fontWeight:'700',letterSpacing:'-0.5px',color:t.text},[txt('Settings')]));
 
-wrap.appendChild(sl('Theme'));
-const tg=div({display:'grid',gridTemplateColumns:'1fr 1fr',gap:'6px',marginBottom:'12px'});
+function collapsibleSection(title,key,contentFn){
+  const isOpen=S.settingsCollapsed[key]!==false;
+  const header=btn({width:'100%',display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 0',borderBottom:'0.5px solid '+t.bdr,background:'none',border:'none',cursor:'pointer',marginTop:'8px'},'',()=>{S.settingsCollapsed[key]=isOpen?false:true;render();});
+  header.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'600',color:t.muted,letterSpacing:'.04em',textTransform:'uppercase'},[txt(title)]));
+  header.appendChild(h('span',{style:{fontSize:'10px',color:t.muted}},isOpen?'▲':'▼'));
+  wrap.appendChild(header);
+  if(isOpen){contentFn();}
+}
+
+collapsibleSection('Theme','theme',()=>{
+const tg=div({display:'grid',gridTemplateColumns:'1fr 1fr',gap:'6px',marginBottom:'12px',marginTop:'8px'});
 [['light','Light','#F0EFEC','#E5E5E4'],['dark','Dark','#161615','#333230'],['warm','Warm','#FDF8F0','#E8D5C0'],['cool','Cool','#F0F4F8','#CDD8E5']].forEach(([th,lbl,bg2,bdr2])=>{
   const b=btn({padding:'9px',borderRadius:'10px',border:'0.5px solid '+(S.theme===th?a.m:t.bdr),background:S.theme===th?a.bg:t.surf,color:S.theme===th?a.t:t.muted,fontSize:(sz-2)+'px',fontWeight:S.theme===th?'500':'400',cursor:'pointer',display:'flex',alignItems:'center',gap:'8px'},'',()=>{S.theme=th;applyTheme();saveState();render();});
   b.appendChild(div({width:'14px',height:'14px',borderRadius:'4px',background:bg2,border:'1px solid '+bdr2,flexShrink:'0'}));b.appendChild(txt(lbl));tg.appendChild(b);
 });wrap.appendChild(tg);
+});
 
-wrap.appendChild(sl('Accent'));
-const ac=div({display:'grid',gridTemplateColumns:'repeat(6,1fr)',gap:'6px',marginBottom:'12px'});
+collapsibleSection('Accent','accent',()=>{
+const ac=div({display:'grid',gridTemplateColumns:'repeat(6,1fr)',gap:'6px',marginBottom:'12px',marginTop:'8px'});
 Object.entries(ACCENTS).forEach(([name,acc])=>{const b=document.createElement('button');b.title=tc(name);Object.assign(b.style,{height:'28px',borderRadius:'8px',border:S.accent===name?'2px solid '+t.text:'0.5px solid '+t.bdr,background:acc.m,cursor:'pointer',opacity:S.accent===name?'1':'0.5',transition:'all .15s'});b.onclick=()=>{S.accent=name;applyTheme();saveState();render();};ac.appendChild(b);});wrap.appendChild(ac);
+});
 
-wrap.appendChild(sl('Font'));
-const fg=div({display:'grid',gridTemplateColumns:'1fr 1fr',gap:'6px',marginBottom:'12px'});
+collapsibleSection('Font','font',()=>{
+const fg=div({display:'grid',gridTemplateColumns:'1fr 1fr',gap:'6px',marginBottom:'12px',marginTop:'8px'});
 [['sora','Sora'],['dm-sans','DM Sans'],['jakarta','Jakarta Sans'],['outfit','Outfit'],['nunito','Nunito Sans'],['inter','Inter']].forEach(([fk,fl])=>{fg.appendChild(btn({padding:'9px',borderRadius:'10px',border:'0.5px solid '+(S.font===fk?a.m:t.bdr),background:S.font===fk?a.bg:t.surf,color:S.font===fk?a.t:t.muted,fontSize:(sz-2)+'px',fontFamily:FONTS[fk][0]+',sans-serif',fontWeight:S.font===fk?'500':'400',cursor:'pointer'},fl,()=>{S.font=fk;applyTheme();saveState();render();}));});wrap.appendChild(fg);
+});
 
-wrap.appendChild(sl('Text size'));
-const fs=div({display:'flex',gap:'6px',marginBottom:'12px'});
+collapsibleSection('Text size','textSize',()=>{
+const fs=div({display:'flex',gap:'6px',marginBottom:'12px',marginTop:'8px'});
 [['small','Small'],['normal','Normal'],['large','Large']].forEach(([size,lbl])=>{fs.appendChild(btn({flex:'1',padding:'8px',borderRadius:'10px',border:'0.5px solid '+(S.fontSize===size?a.m:t.bdr),background:S.fontSize===size?a.bg:t.surf,color:S.fontSize===size?a.t:t.muted,fontSize:size==='large'?'14px':size==='small'?'11px':'12px',fontWeight:S.fontSize===size?'500':'400',cursor:'pointer'},lbl,()=>{S.fontSize=size;applyTheme();saveState();render();}));});wrap.appendChild(fs);
+});
 
-wrap.appendChild(sl('Density'));
-const ds=div({display:'flex',gap:'6px',marginBottom:'12px'});
+collapsibleSection('Density','density',()=>{
+const ds=div({display:'flex',gap:'6px',marginBottom:'12px',marginTop:'8px'});
 [['compact','Compact'],['comfortable','Comfortable'],['spacious','Spacious']].forEach(([d2,lbl])=>{ds.appendChild(btn({flex:'1',padding:'8px',borderRadius:'10px',border:'0.5px solid '+(S.density===d2?a.m:t.bdr),background:S.density===d2?a.bg:t.surf,color:S.density===d2?a.t:t.muted,fontSize:(sz-2)+'px',fontWeight:S.density===d2?'500':'400',cursor:'pointer'},lbl,()=>{S.density=d2;applyTheme();saveState();render();}));});wrap.appendChild(ds);
+});
 
-wrap.appendChild(sl('Home screen sections'));
-const sec=div({});sec.className='card card-p';
-[['quickLog','Quick Log'],['todaySummary','Macros Summary'],['meals',"Today's Meals"],['liquids',"Today's Liquids"],['supplements',"Today's Supplements"],['activities',"Today's Activities"],['symptoms','Symptoms'],['stool','Stool Log'],['notes','Journal Notes'],['dttInfo','DTT Info']].forEach(([k2,label],i,arr)=>{
+collapsibleSection('Home screen sections','sections',()=>{
+const sec=div({marginTop:'8px'});sec.className='card card-p';
+[['quickLog','Quick Log'],['todaySummary','Macros Summary'],['meals','Meals'],['liquids','Liquids'],['supplements','Supplements'],['activities','Activities'],['symptoms','Symptoms'],['stool','Stool Log'],['notes','Journal Notes'],['dttInfo','DTT Info']].forEach(([k2,label],i,arr)=>{
   const row=div({display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 0',borderBottom:i<arr.length-1?'0.5px solid '+t.bdr:'none'});row.appendChild(div({fontSize:sz+'px',color:t.sub},[txt(label)]));
   const tog=document.createElement('button');tog.className='tog'+(S.sections[k2]?' on':'');tog.onclick=()=>{S.sections[k2]=!S.sections[k2];saveState();render();};row.appendChild(tog);sec.appendChild(row);
 });wrap.appendChild(sec);
+});
 
-wrap.appendChild(sl('Daily targets'));
-const tgt=div({});tgt.className='card card-p';
+collapsibleSection('Daily targets','targets',()=>{
+const tgt=div({marginTop:'8px'});tgt.className='card card-p';
 [['calories','Calories',500,4000,100,' kcal'],['protein','Protein',50,200,5,'g'],['fat','Fat limit',20,120,5,'g'],['carbs','Carbs',100,500,10,'g'],['water','Water / Liquids',500,5000,100,'ml']].forEach(([k2,label,min,max,step,unit])=>{
   const row=div({marginBottom:'12px'});const top=div({display:'flex',justifyContent:'space-between',marginBottom:'4px'});top.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt(label)]));top.appendChild(div({fontSize:(sz-2)+'px',fontWeight:'600',color:a.m},[txt(S.targets[k2]+unit)]));row.appendChild(top);
   const inp=document.createElement('input');inp.type='range';inp.min=min;inp.max=max;inp.step=step;inp.value=S.targets[k2];inp.style.accentColor=a.m;inp.oninput=e=>{S.targets[k2]=+e.target.value;saveState();render();};row.appendChild(inp);tgt.appendChild(row);
 });wrap.appendChild(tgt);
+});
 
-wrap.appendChild(sl('Bristol stool scale'));
-const bsc=div({});bsc.className='card card-p';
+collapsibleSection('Bristol stool scale','bristol',()=>{
+const bsc=div({marginTop:'8px'});bsc.className='card card-p';
 BRISTOL.forEach((b,i)=>{const row=div({display:'flex',alignItems:'center',gap:'9px',padding:'5px 0',borderBottom:i<6?'0.5px solid '+t.bdr:'none'});row.appendChild(bristolSVG(i+1,20));row.appendChild(div({flex:'1',fontSize:(sz-1)+'px',color:t.text},[txt('Type '+(i+1)+' — '+b)]));if(i===2||i===3)row.appendChild(chip('Ideal','#DCFCE7','#15803D'));bsc.appendChild(row);});wrap.appendChild(bsc);
+});
 
-wrap.appendChild(sl('Doctor report'));
-const dr=div({});dr.className='card card-p';
+collapsibleSection('Doctor report','doctorReport',()=>{
+const dr=div({marginTop:'8px'});dr.className='card card-p';
 dr.appendChild(btn({width:'100%',padding:'11px',background:a.bg,border:'0.5px solid '+a.bdr,borderRadius:'10px',color:a.t,fontWeight:'500',fontSize:sz+'px',cursor:'pointer'},'Generate report →',()=>{S.docOpen=true;renderModal();}));wrap.appendChild(dr);
+});
 
-// Import / Export
-wrap.appendChild(sl('Backup & Restore'));
-const backupCard=div({});backupCard.className='card card-p';
+collapsibleSection('Backup & Restore','backup',()=>{
+const backupCard=div({marginTop:'8px'});backupCard.className='card card-p';
 backupCard.appendChild(btn({width:'100%',padding:'11px',background:a.bg,border:'0.5px solid '+a.bdr,borderRadius:'10px',color:a.t,fontWeight:'500',fontSize:sz+'px',cursor:'pointer',marginBottom:'8px'},'Export data (JSON)',exportData));
 backupCard.appendChild(btn({width:'100%',padding:'11px',background:t.surf2,border:'0.5px solid '+t.bdr,borderRadius:'10px',color:t.sub,fontWeight:'500',fontSize:sz+'px',cursor:'pointer'},'Import data (JSON)',importData));
 wrap.appendChild(backupCard);
+});
 
-wrap.appendChild(sl('Profile'));
-const prof=div({});prof.className='card card-p';
-[['Name','Sean'],['Age','24'],['Height','5\'11" (180cm)'],['Goal weight','70 kg']].forEach(([k2,v],i,arr)=>{const row=div({display:'flex',justifyContent:'space-between',padding:'7px 0',borderBottom:i<arr.length-1?'0.5px solid '+t.bdr:'none'});row.appendChild(div({fontSize:(sz-1)+'px',color:t.muted},[txt(k2)]));row.appendChild(div({fontSize:(sz-1)+'px',fontWeight:'500',color:t.text},[txt(v)]));prof.appendChild(row);});wrap.appendChild(prof);
-
-wrap.appendChild(sl('Conditions'));
-const cond=div({});cond.className='card card-p';
-['Suspected SIBO (Hydrogen/Methane)','Suspected SIFO (Fungal)','Biliary/Gallbladder dysfunction','Elevated ALT (206 — active)','Neutropenia (0.7 — monitor)','Anterior pelvic tilt','Tight pelvic floor'].forEach((c2,i,arr)=>{cond.appendChild(div({fontSize:(sz-1)+'px',color:t.sub,padding:'6px 0',borderBottom:i<arr.length-1?'0.5px solid '+t.bdr:'none'},[txt(c2)]));});wrap.appendChild(cond);
-
-wrap.appendChild(sl('Data'));
-const dataCard=div({});dataCard.className='card card-p';
+collapsibleSection('Data','data',()=>{
+const dataCard=div({marginTop:'8px'});dataCard.className='card card-p';
 dataCard.appendChild(btn({width:'100%',padding:'11px',background:'#FEF2F2',border:'0.5px solid #FECACA',borderRadius:'10px',color:'#DC2626',fontWeight:'500',fontSize:sz+'px',cursor:'pointer'},'Clear all today\'s data',()=>{if(confirm('This will clear all of today\'s logged data. Are you sure?')){S.todayMeals=[];S.symptomLogs=[];S.stoolLogs=[];S.noteLogs=[];S.liquidLogs=[];S.activityLogs=[];S.supplementLogs=[];S.morningDoneAt=null;saveState();render();showToast('All data cleared',null);}}));wrap.appendChild(dataCard);
+});
+
 return wrap;}
 
 // ===== MODALS =====
@@ -1764,25 +1818,92 @@ const sheet=div({background:t.surf,borderRadius:'20px 20px 0 0',padding:'24px 20
 const hdr=div({display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'6px'});
 hdr.appendChild(div({fontSize:(sz+4)+'px',fontWeight:'600',color:t.text},[txt('Morning check-in')]));
 hdr.appendChild(btn({background:'none',border:'none',fontSize:'20px',color:t.muted,cursor:'pointer'},'×',()=>{S.morningOpen=false;renderModal();}));sheet.appendChild(hdr);
-const prog=div({height:'3px',background:t.surf2,borderRadius:'999px',marginBottom:'20px'});prog.appendChild(div({height:'100%',width:((S.morningStep+1)/6*100)+'%',background:a.m,borderRadius:'999px',transition:'width .3s'}));sheet.appendChild(prog);
-const steps=['Tongue coating?','Reflux overnight?','Indigestion?','Nasal congestion?','Weight this morning?','Sleep quality?'];
+const totalSteps=7;
+const prog=div({height:'3px',background:t.surf2,borderRadius:'999px',marginBottom:'20px'});prog.appendChild(div({height:'100%',width:((S.morningStep+1)/totalSteps*100)+'%',background:a.m,borderRadius:'999px',transition:'width .3s'}));sheet.appendChild(prog);
+const steps=['Tongue coating?','Nasal congestion?','Brain fog?','What time did you fall asleep?','What time did you wake up?','Sleep quality?','Weight this morning?'];
 sheet.appendChild(div({fontSize:sz+'px',fontWeight:'500',color:t.text,marginBottom:'14px'},[txt(steps[S.morningStep])]));
 const content=div({});const d=S.morningData;
-if(S.morningStep===0){const row=div({display:'flex',gap:'8px',marginBottom:'12px'});['No','Yes'].forEach((l,i)=>{row.appendChild(btn({flex:'1',padding:'14px',borderRadius:'12px',border:'0.5px solid '+(d.tongue===(i===1)?a.m:t.bdr),background:d.tongue===(i===1)?a.bg:t.surf,color:d.tongue===(i===1)?a.t:t.muted,fontSize:sz+'px',fontWeight:'500',cursor:'pointer'},l,()=>{S.morningData.tongue=(i===1);renderModal();}));});content.appendChild(row);if(d.tongue){content.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,marginBottom:'6px'},[txt('Severity')]));const r=document.createElement('input');r.type='range';r.min=1;r.max=10;r.value=d.tsev;r.style.accentColor=a.m;r.oninput=e=>{S.morningData.tsev=+e.target.value;renderModal();};content.appendChild(r);content.appendChild(div({fontSize:(sz-1)+'px',color:t.text,textAlign:'center',marginTop:'4px'},[txt(d.tsev+'/10')]));}}
-else if(S.morningStep>=1&&S.morningStep<=3){const key2=['reflux','indigestion','nasal'][S.morningStep-1];['No','Yes'].forEach((l,i)=>{content.appendChild(btn({width:'100%',padding:'13px',borderRadius:'12px',border:'0.5px solid '+(d[key2]===(i===1)?a.m:t.bdr),background:d[key2]===(i===1)?a.bg:t.surf,color:d[key2]===(i===1)?a.t:t.muted,fontSize:sz+'px',fontWeight:'500',cursor:'pointer',textAlign:'left',display:'block',marginBottom:'8px'},(d[key2]===(i===1)?'✓ ':'')+l,()=>{S.morningData[key2]=(i===1);renderModal();}));});}
-else if(S.morningStep===4){const inp=document.createElement('input');inp.type='number';inp.step='0.1';inp.value=d.weight||'';inp.placeholder='65.1';Object.assign(inp.style,{width:'100%',fontSize:(sz+6)+'px',fontWeight:'600',textAlign:'center',border:'0.5px solid '+t.bdr,borderRadius:'12px',padding:'16px',boxSizing:'border-box',background:t.surf2,color:t.text});inp.oninput=e=>{S.morningData.weight=e.target.value;};content.appendChild(inp);content.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,textAlign:'center',marginTop:'6px'},[txt('kg')]));setTimeout(()=>inp.focus(),50);}
-else{const row=div({display:'flex',gap:'6px'});SLEEP_LABELS.forEach(label=>{row.appendChild(btn({flex:'1',padding:'12px 4px',borderRadius:'12px',border:'0.5px solid '+(d.sleepQ===label?a.m:t.bdr),background:d.sleepQ===label?a.bg:t.surf,color:d.sleepQ===label?a.t:t.muted,fontSize:(sz-2)+'px',fontWeight:'500',cursor:'pointer'},label,()=>{S.morningData.sleepQ=label;renderModal();}));});content.appendChild(row);}
+
+if(S.morningStep===0){
+  // Tongue coating
+  const row=div({display:'flex',gap:'8px',marginBottom:'12px'});
+  ['No','Yes'].forEach((l,i)=>{row.appendChild(btn({flex:'1',padding:'14px',borderRadius:'12px',border:'0.5px solid '+(d.tongue===(i===1)?a.m:t.bdr),background:d.tongue===(i===1)?a.bg:t.surf,color:d.tongue===(i===1)?a.t:t.muted,fontSize:sz+'px',fontWeight:'500',cursor:'pointer'},l,()=>{S.morningData.tongue=(i===1);renderModal();}));});
+  content.appendChild(row);
+  if(d.tongue){content.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,marginBottom:'6px'},[txt('Severity')]));const r=document.createElement('input');r.type='range';r.min=1;r.max=10;r.value=d.tsev;r.style.accentColor=a.m;r.oninput=e=>{S.morningData.tsev=+e.target.value;renderModal();};content.appendChild(r);content.appendChild(div({fontSize:(sz-1)+'px',color:t.text,textAlign:'center',marginTop:'4px'},[txt(d.tsev+'/10')]));}
+}
+else if(S.morningStep===1){
+  // Nasal congestion
+  ['No','Yes'].forEach((l,i)=>{content.appendChild(btn({width:'100%',padding:'13px',borderRadius:'12px',border:'0.5px solid '+(d.nasal===(i===1)?a.m:t.bdr),background:d.nasal===(i===1)?a.bg:t.surf,color:d.nasal===(i===1)?a.t:t.muted,fontSize:sz+'px',fontWeight:'500',cursor:'pointer',textAlign:'left',display:'block',marginBottom:'8px'},(d.nasal===(i===1)?'✓ ':'')+l,()=>{S.morningData.nasal=(i===1);renderModal();}));});
+}
+else if(S.morningStep===2){
+  // Brain fog
+  ['No','Yes'].forEach((l,i)=>{content.appendChild(btn({width:'100%',padding:'13px',borderRadius:'12px',border:'0.5px solid '+(d.brainfog===(i===1)?a.m:t.bdr),background:d.brainfog===(i===1)?a.bg:t.surf,color:d.brainfog===(i===1)?a.t:t.muted,fontSize:sz+'px',fontWeight:'500',cursor:'pointer',textAlign:'left',display:'block',marginBottom:'8px'},(d.brainfog===(i===1)?'✓ ':'')+l,()=>{S.morningData.brainfog=(i===1);renderModal();}));});
+}
+else if(S.morningStep===3){
+  // Sleep - time fell asleep
+  const inp=document.createElement('input');inp.type='time';inp.value=d.sleepTime||'';
+  Object.assign(inp.style,{width:'100%',fontSize:(sz+6)+'px',fontWeight:'600',textAlign:'center',border:'0.5px solid '+t.bdr,borderRadius:'12px',padding:'16px',boxSizing:'border-box',background:t.surf2,color:t.text});
+  inp.onchange=e=>{S.morningData.sleepTime=e.target.value;};
+  content.appendChild(inp);
+  setTimeout(()=>inp.focus(),50);
+}
+else if(S.morningStep===4){
+  // Woke - time woke up
+  const inp=document.createElement('input');inp.type='time';inp.value=d.wokeTime||'';
+  Object.assign(inp.style,{width:'100%',fontSize:(sz+6)+'px',fontWeight:'600',textAlign:'center',border:'0.5px solid '+t.bdr,borderRadius:'12px',padding:'16px',boxSizing:'border-box',background:t.surf2,color:t.text,marginBottom:'12px'});
+  inp.onchange=e=>{S.morningData.wokeTime=e.target.value;};
+  content.appendChild(inp);
+  // Night wakes
+  if(!d.nightWakes)d.nightWakes=[];
+  content.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,marginBottom:'6px',marginTop:'4px'},[txt('Night wakes')]));
+  d.nightWakes.forEach((nw,i)=>{
+    const nwRow=div({display:'flex',gap:'6px',alignItems:'center',marginBottom:'4px'});
+    nwRow.appendChild(div({fontSize:(sz-2)+'px',color:t.sub,flex:'1'},[txt(nw.time+' · '+nw.duration+' mins')]));
+    nwRow.appendChild(btn({fontSize:'10px',color:'#DC2626',background:'none',border:'none',cursor:'pointer'},'×',()=>{d.nightWakes.splice(i,1);renderModal();}));
+    content.appendChild(nwRow);
+  });
+  // Add night wake
+  const addRow=div({display:'flex',gap:'6px',alignItems:'center'});
+  const nwTime=document.createElement('input');nwTime.type='time';nwTime.id='nw-time';nwTime.placeholder='Time';
+  Object.assign(nwTime.style,{flex:'1',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf});
+  addRow.appendChild(nwTime);
+  const nwDur=document.createElement('input');nwDur.type='number';nwDur.id='nw-dur';nwDur.placeholder='Mins';
+  Object.assign(nwDur.style,{width:'60px',border:'0.5px solid '+t.bdr,borderRadius:'8px',padding:'7px 10px',fontSize:(sz-2)+'px',color:t.text,background:t.surf});
+  addRow.appendChild(nwDur);
+  addRow.appendChild(btn({padding:'7px 10px',background:a.bg,border:'0.5px solid '+a.bdr,borderRadius:'8px',color:a.t,fontSize:(sz-2)+'px',cursor:'pointer',flexShrink:'0'},'+ Add',()=>{
+    const tEl=document.getElementById('nw-time');const dEl=document.getElementById('nw-dur');
+    if(tEl&&tEl.value&&dEl&&dEl.value){d.nightWakes.push({time:tEl.value,duration:parseInt(dEl.value)||0});renderModal();}
+  }));
+  content.appendChild(addRow);
+  setTimeout(()=>inp.focus(),50);
+}
+else if(S.morningStep===5){
+  // Sleep quality
+  const row=div({display:'flex',gap:'6px'});
+  SLEEP_LABELS.forEach(label=>{row.appendChild(btn({flex:'1',padding:'12px 4px',borderRadius:'12px',border:'0.5px solid '+(d.sleepQ===label?a.m:t.bdr),background:d.sleepQ===label?a.bg:t.surf,color:d.sleepQ===label?a.t:t.muted,fontSize:(sz-2)+'px',fontWeight:'500',cursor:'pointer'},label,()=>{S.morningData.sleepQ=label;renderModal();}));});
+  content.appendChild(row);
+}
+else if(S.morningStep===6){
+  // Weight
+  const inp=document.createElement('input');inp.type='number';inp.step='0.1';inp.value=d.weight||'';inp.placeholder='00.0 kg';
+  Object.assign(inp.style,{width:'100%',fontSize:(sz+6)+'px',fontWeight:'600',textAlign:'center',border:'0.5px solid '+t.bdr,borderRadius:'12px',padding:'16px',boxSizing:'border-box',background:t.surf2,color:t.text});
+  inp.oninput=e=>{S.morningData.weight=e.target.value;};
+  content.appendChild(inp);
+  setTimeout(()=>inp.focus(),50);
+}
+
 sheet.appendChild(content);
+const lastStep=totalSteps-1;
 const btns=div({display:'flex',gap:'8px',marginTop:'20px',alignItems:'center'});
-btns.appendChild(btn(S.morningStep===4?{padding:'12px 16px',borderRadius:'12px',border:'0.5px solid '+t.bdr,background:t.surf2,color:t.muted,fontSize:sz+'px',cursor:'pointer',fontWeight:'500'}:{padding:'8px 12px',background:'none',border:'none',color:t.muted,fontSize:(sz-2)+'px',cursor:'pointer'},'Skip',()=>{if(S.morningStep<5){S.morningStep++;renderModal();}else{S.morningOpen=false;S.morningDoneAt=Date.now();saveState();renderModal();render();showToast('Morning check-in saved ✓',null);}}));
+btns.appendChild(btn(S.morningStep===6?{padding:'12px 16px',borderRadius:'12px',border:'0.5px solid '+t.bdr,background:t.surf2,color:t.muted,fontSize:sz+'px',cursor:'pointer',fontWeight:'500'}:{padding:'8px 12px',background:'none',border:'none',color:t.muted,fontSize:(sz-2)+'px',cursor:'pointer'},'Skip',()=>{if(S.morningStep<lastStep){S.morningStep++;renderModal();}else{S.morningOpen=false;S.morningDoneAt=Date.now();saveState();renderModal();render();showToast('Morning check-in saved ✓',null);}}));
 if(S.morningStep>0)btns.appendChild(btn({flex:'1',padding:'12px',borderRadius:'12px',border:'0.5px solid '+t.bdr,background:t.surf,color:t.muted,fontSize:sz+'px',cursor:'pointer'},'Back',()=>{S.morningStep--;renderModal();}));
-btns.appendChild(btn({flex:'2',padding:'12px',borderRadius:'12px',border:'none',background:a.m,color:'#fff',fontSize:sz+'px',fontWeight:'600',cursor:'pointer'},S.morningStep<5?'Continue':'Done',()=>{if(S.morningStep<5){S.morningStep++;renderModal();}else{S.morningOpen=false;S.morningDoneAt=Date.now();saveState();renderModal();render();showToast('Morning check-in saved ✓',null);}}));
+btns.appendChild(btn({flex:'2',padding:'12px',borderRadius:'12px',border:'none',background:a.m,color:'#fff',fontSize:sz+'px',fontWeight:'600',cursor:'pointer'},S.morningStep<lastStep?'Continue':'Done',()=>{if(S.morningStep<lastStep){S.morningStep++;renderModal();}else{S.morningOpen=false;S.morningDoneAt=Date.now();saveState();renderModal();render();showToast('Morning check-in saved ✓',null);}}));
 sheet.appendChild(btns);bg.appendChild(sheet);return bg;}
 
 function buildDocModal(){
 const t=T(),a=A(),sz=z();
 const totalLiq=S.liquidLogs.reduce((s2,l)=>s2+l.ml,0);const tCals=S.todayMeals.reduce((s2,m)=>s2+(m.cals||0),0);const tP=S.todayMeals.reduce((s2,m)=>s2+(m.protein||0),0);const tF=S.todayMeals.reduce((s2,m)=>s2+(m.fat||0),0);const tC=S.todayMeals.reduce((s2,m)=>s2+(m.carbs||0),0);const todayDate=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-const report=['SOMA HEALTH EXPORT — Sean, 24yo, Male, 5\'11"','Date: '+todayDate,'','BLOOD MARKERS (most recent):','  ALT: 71 (07 Feb) → 206 (15 Mar)','  Neutrophils: 0.9 → 0.7','  WBC: 2.7 → 3.0 | Platelets: 99 → 105','  Iron, B12, Ferritin, Folate: All normal','','MORNING CHECK-IN:',S.morningDoneAt?['  Tongue coating: '+(S.morningData.tongue?'Yes ('+S.morningData.tsev+'/10)':'No'),'  Overnight reflux: '+(S.morningData.reflux?'Yes':'No'),'  Indigestion: '+(S.morningData.indigestion?'Yes':'No'),'  Nasal congestion: '+(S.morningData.nasal?'Yes':'No'),'  Weight: '+(S.morningData.weight?S.morningData.weight+'kg':'Not recorded'),'  Sleep quality: '+S.morningData.sleepQ].join('\n'):'  Not completed today','','TODAY\'S MACROS:','  Calories: '+tCals+' kcal (target: '+S.targets.calories+')','  Protein: '+tP+'g | Fat: '+tF+'g | Carbs: '+tC+'g','','MEALS LOGGED ('+S.todayMeals.length+'):',
+const report=['SOMA HEALTH EXPORT — Sean, 24yo, Male, 5\'11"','Date: '+todayDate,'','BLOOD MARKERS (most recent):','  ALT: 71 (07 Feb) → 206 (15 Mar)','  Neutrophils: 0.9 → 0.7','  WBC: 2.7 → 3.0 | Platelets: 99 → 105','  Iron, B12, Ferritin, Folate: All normal','','MORNING CHECK-IN:',S.morningDoneAt?['  Tongue coating: '+(S.morningData.tongue?'Yes ('+S.morningData.tsev+'/10)':'No'),'  Nasal congestion: '+(S.morningData.nasal?'Yes':'No'),'  Brain fog: '+(S.morningData.brainfog?'Yes':'No'),'  Sleep (fell asleep): '+(S.morningData.sleepTime||'Not recorded'),'  Woke: '+(S.morningData.wokeTime||'Not recorded')+(S.morningData.nightWakes&&S.morningData.nightWakes.length>0?' | Night wakes: '+S.morningData.nightWakes.map(nw=>nw.time+' ('+nw.duration+'min)').join(', '):''),'  Sleep quality: '+S.morningData.sleepQ,'  Weight: '+(S.morningData.weight?S.morningData.weight+'kg':'Not recorded')].join('\n'):'  Not completed today','','TODAY\'S MACROS:','  Calories: '+tCals+' kcal (target: '+S.targets.calories+')','  Protein: '+tP+'g | Fat: '+tF+'g | Carbs: '+tC+'g','','MEALS LOGGED ('+S.todayMeals.length+'):',
 ...(S.todayMeals.length>0?S.todayMeals.map(m=>'  '+m.time+': '+m.name+' ('+m.cals+' kcal, P:'+m.protein+'g F:'+m.fat+'g C:'+m.carbs+'g)'+'\n    Ingredients: '+(m.ingredients||[]).join(', ')):['  None logged']),'',
 'SUPPLEMENTS LOGGED ('+S.supplementLogs.length+'):',
 ...(S.supplementLogs.length>0?S.supplementLogs.map(sup=>'  '+(sup.time||'')+': '+sup.name+(sup.quantity>1?' x'+sup.quantity:'')+' — '+sup.totalDose):['  None logged']),'',
