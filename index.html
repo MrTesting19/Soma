@@ -1538,7 +1538,8 @@ const selRow=div({display:'flex',gap:'8px',marginTop:'10px',marginBottom:'4px',a
 selRow.appendChild(mkCompactSelect([['all','All'],['meals','Meals'],['liquids','Liquids'],['supplements','Supplements'],['symptoms','Symptoms'],['activities','Activities'],['stool','Stool'],['notes','Notes'],['morning','Morning']],S.libTab,v=>{S.libTab=v;render();}));
 selRow.appendChild(mkCompactSelect([['today','Today'],['yesterday','Yesterday'],['week','This Week'],['month','This Month']],S.libRange,v=>{S.libRange=v;render();}));
 wrap.appendChild(selRow);wrap.appendChild(div({height:'8px'}));
-const ld=getLibData();const rangeLabel=S.libRange==='today'?'today':S.libRange==='yesterday'?'yesterday':S.libRange==='week'?'this week':'this month';
+const range=S.libRange||'today';
+const rangeLabel=range==='today'?'today':range==='yesterday'?'yesterday':range==='week'?'this week':'this month';
 
 function editEntryModal(type,data,index){S.editingEntry={type,data:{...data},index};render();}
 
@@ -1555,25 +1556,7 @@ function buildEntryCard(catLabel,catBg,catCol,name,subtitle,type,idx,data){
   card.appendChild(btnRow);return card;
 }
 
-if(S.libTab==='all'){
-  const allEntries=[];
-  (ld.meals||[]).forEach((m,i)=>allEntries.push({cat:'meal',data:m,time:m.time||'00:00',idx:i}));
-  (ld.symptoms||[]).forEach((s2,i)=>allEntries.push({cat:'symptom',data:s2,time:(s2.timeStart||s2.time||'00:00').split('–')[0],idx:i}));
-  (ld.activities||[]).forEach((ac,i)=>allEntries.push({cat:'activity',data:ac,time:ac.time||'00:00',idx:i}));
-  (ld.liquids||[]).forEach((l,i)=>allEntries.push({cat:'liquid',data:l,time:l.time||'00:00',idx:i}));
-  (ld.supplements||[]).forEach((sup,i)=>allEntries.push({cat:'supplement',data:sup,time:sup.time||'00:00',idx:i}));
-  (ld.stool||[]).forEach((st,i)=>allEntries.push({cat:'stool',data:st,time:st.time||'00:00',idx:i}));
-  (ld.notes||[]).forEach((n,i)=>allEntries.push({cat:'note',data:n,time:'00:00',idx:i}));
-  // Morning check-in entries
-  if(S.morningDoneAt&&(S.libRange==='today'||S.libRange==='week'||S.libRange==='month')){const md=S.morningData;getMorningEntries(md).forEach(me=>allEntries.push({cat:'morning',data:me,time:md.wokeTime||'07:00',idx:me.key}));}
-  allEntries.sort((a2,b2)=>b2.time.localeCompare(a2.time));
-  if(allEntries.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('Nothing logged '+rangeLabel+'.')]));return wrap;}
-  const catColors={meal:{bg:a.bg,c:a.t,label:'Meal'},symptom:{bg:'#FEF2F2',c:'#DC2626',label:'Symptom'},activity:{bg:'#F0FDFA',c:'#0F766E',label:'Activity'},liquid:{bg:'#EFF6FF',c:'#1D4ED8',label:'Liquid'},supplement:{bg:'#F5F3FF',c:'#5B21B6',label:'Supp'},stool:{bg:'#FFFBEB',c:'#92400E',label:'Stool'},note:{bg:'#F3F4F6',c:'#6B7280',label:'Note'},morning:{bg:'#FFF7ED',c:'#C2410C',label:'AM'}};
-  const groups={Night:[],Evening:[],Afternoon:[],Morning:[]};
-  allEntries.forEach(e=>{const h2=parseInt(e.time.split(':')[0])||0;if(h2<12)groups.Morning.push(e);else if(h2<17)groups.Afternoon.push(e);else if(h2<21)groups.Evening.push(e);else groups.Night.push(e);});
-  Object.entries(groups).forEach(([period,entries])=>{if(entries.length===0)return;wrap.appendChild(sl(period));entries.forEach(e=>{const cc=catColors[e.cat];let name='',subtitle='';if(e.cat==='meal'){name=e.data.name;subtitle=e.time+' · '+(e.data.cals||0)+' kcal';}else if(e.cat==='symptom'){name=e.data.symptom?tc(e.data.symptom):'Symptom';subtitle=(e.data.time||e.time)+(e.data.level?' · '+e.data.level+'/10':'')+(e.data.duration?' · '+e.data.duration:'');}else if(e.cat==='activity'){name=e.data.activity||'Activity';subtitle=e.time+(e.data.duration?' · '+e.data.duration:'');}else if(e.cat==='liquid'){name=e.data.name||'Water';subtitle=e.time+' · '+e.data.ml+'ml';}else if(e.cat==='supplement'){name=e.data.name+(e.data.quantity>1?' x'+e.data.quantity:'');subtitle=e.time+' · '+e.data.totalDose;}else if(e.cat==='stool'){name='Type '+e.data.type+' · '+e.data.color;subtitle=e.time;}else if(e.cat==='morning'){name=e.data.label;subtitle=e.data.value;}else{name=typeof e.data==='string'?e.data.slice(0,60):e.data;subtitle='';}wrap.appendChild(buildEntryCard(cc.label,cc.bg,cc.c,name,subtitle,e.cat,e.idx,e.data));});});
-  return wrap;
-}
+// Morning tab — unchanged
 if(S.libTab==='morning'){
   if(!S.morningDoneAt){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('Morning check-in not completed today.')]));return wrap;}
   const md=S.morningData;const morningEntries=getMorningEntries(md);
@@ -1591,15 +1574,87 @@ if(S.libTab==='morning'){
   });
   return wrap;
 }
-const tabConfig={meals:{arr:ld.meals,empty:'No meals logged '+rangeLabel+'.',build:(m,i)=>buildEntryCard('Meal',a.bg,a.t,m.name,(m.time||'')+' · '+(m.cals||0)+' kcal','meal',i,m)},
-liquids:{arr:ld.liquids,empty:'No liquids logged '+rangeLabel+'.',build:(l,i)=>buildEntryCard('Liquid','#EFF6FF','#1D4ED8',l.name||'Water',(l.time||'')+' · '+l.ml+'ml','liquid',i,l)},
-supplements:{arr:ld.supplements,empty:'No supplements logged '+rangeLabel+'.',build:(s,i)=>buildEntryCard('Supp','#F5F3FF','#5B21B6',s.name+(s.quantity>1?' x'+s.quantity:''),(s.time||'')+' · '+s.totalDose,'supplement',i,s)},
-symptoms:{arr:ld.symptoms,empty:'No symptoms logged '+rangeLabel+'.',build:(s,i)=>buildEntryCard('Symptom','#FEF2F2','#DC2626',s.symptom?tc(s.symptom):'Unknown',(s.time||'')+(s.level?' · '+s.level+'/10':'')+(s.duration?' · '+s.duration:''),'symptom',i,s)},
-activities:{arr:ld.activities,empty:'No activities logged '+rangeLabel+'.',build:(ac,i)=>buildEntryCard('Activity','#F0FDFA','#0F766E',ac.activity||'Activity',(ac.time||'')+(ac.duration?' · '+ac.duration:''),'activity',i,ac)},
-stool:{arr:ld.stool,empty:'No stool logged '+rangeLabel+'.',build:(s,i)=>buildEntryCard('Stool','#FFFBEB','#92400E','Type '+s.type+' · '+s.color,BRISTOL[s.type-1],'stool',i,s)},
-notes:{arr:ld.notes,empty:'No notes logged '+rangeLabel+'.',build:(n,i)=>buildEntryCard('Note','#F3F4F6','#6B7280',typeof n==='string'?n.slice(0,60):n,'','note',i,n)}};
-const cfg=tabConfig[S.libTab];
-if(cfg){if(!cfg.arr||cfg.arr.length===0){wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt(cfg.empty)]));return wrap;}cfg.arr.forEach((item,i)=>{wrap.appendChild(cfg.build(item,i));});}
+
+// Date-grouped display: newest day at top, entries sorted by time desc within each day
+const catColors={meal:{bg:a.bg,c:a.t,label:'Meal'},symptom:{bg:'#FEF2F2',c:'#DC2626',label:'Symptom'},activity:{bg:'#F0FDFA',c:'#0F766E',label:'Activity'},liquid:{bg:'#EFF6FF',c:'#1D4ED8',label:'Liquid'},supplement:{bg:'#F5F3FF',c:'#5B21B6',label:'Supp'},stool:{bg:'#FFFBEB',c:'#92400E',label:'Stool'},note:{bg:'#F3F4F6',c:'#6B7280',label:'Note'}};
+const tabCats=S.libTab==='all'?['meal','symptom','liquid','supplement','activity','stool','note']:
+  S.libTab==='meals'?['meal']:S.libTab==='liquids'?['liquid']:S.libTab==='supplements'?['supplement']:
+  S.libTab==='symptoms'?['symptom']:S.libTab==='activities'?['activity']:S.libTab==='stool'?['stool']:['note'];
+
+function getCatArr(cat,dayObj){
+  const isToday=dayObj==='today';
+  if(cat==='meal')return isToday?S.todayMeals:dayObj.meals||[];
+  if(cat==='symptom')return isToday?S.symptomLogs:dayObj.symptoms||[];
+  if(cat==='liquid')return isToday?S.liquidLogs:dayObj.liquids||[];
+  if(cat==='supplement')return isToday?S.supplementLogs:dayObj.supplements||[];
+  if(cat==='activity')return isToday?S.activityLogs:dayObj.activities||[];
+  if(cat==='stool')return isToday?S.stoolLogs:dayObj.stool||[];
+  if(cat==='note')return isToday?S.noteLogs:dayObj.notes||[];
+  return[];
+}
+
+function entryLabel(e){
+  let name='',subtitle='';
+  if(e.cat==='meal'){name=e.data.name;subtitle=(e.data.time||e.time)+' · '+(e.data.cals||0)+' kcal';}
+  else if(e.cat==='symptom'){name=e.data.symptom?tc(e.data.symptom):'Symptom';subtitle=(e.data.time||e.time)+(e.data.level?' · '+e.data.level+'/10':'')+(e.data.duration?' · '+e.data.duration:'');}
+  else if(e.cat==='activity'){name=e.data.activity||'Activity';subtitle=e.time+(e.data.duration?' · '+e.data.duration:'');}
+  else if(e.cat==='liquid'){name=e.data.name||'Water';subtitle=e.time+' · '+e.data.ml+'ml';}
+  else if(e.cat==='supplement'){name=e.data.name+(e.data.quantity>1?' x'+e.data.quantity:'');subtitle=e.time+' · '+e.data.totalDose;}
+  else if(e.cat==='stool'){name='Type '+e.data.type+' · '+(e.data.color||'');subtitle=e.time;}
+  else{name=typeof e.data==='string'?e.data.slice(0,60):String(e.data||'');subtitle='';}
+  return{name,subtitle};
+}
+
+const todayDateStr=new Date().toISOString().split('T')[0];
+const dateGroups=[];
+
+// Today group (flat idx = position in today arrays)
+if(range==='today'||range==='week'||range==='month'){
+  const te=[];
+  tabCats.forEach(cat=>{getCatArr(cat,'today').forEach((item,i)=>te.push({cat,data:item,flatIdx:i,time:item.time||'00:00'}));});
+  if(te.length>0){te.sort((a2,b2)=>b2.time.localeCompare(a2.time));dateGroups.push({label:'Today',entries:te});}
+}
+
+// Yesterday group
+if(range==='yesterday'){
+  const yd=S.days.length>0?S.days[S.days.length-1]:null;
+  if(yd){
+    const ye=[];
+    tabCats.forEach(cat=>{getCatArr(cat,yd).forEach((item,i)=>ye.push({cat,data:item,flatIdx:i,time:item.time||'00:00'}));});
+    if(ye.length>0){ye.sort((a2,b2)=>b2.time.localeCompare(a2.time));dateGroups.push({label:formatLibDate(yd.date),entries:ye});}
+  }
+}
+
+// Week/month — track flat indices (today counts as base offset)
+if(range==='week'||range==='month'){
+  const now2=new Date();const cutoff=range==='week'?new Date(now2.getTime()-7*86400000):new Date(now2.getTime()-30*86400000);const cutoffStr2=cutoff.toISOString().split('T')[0];
+  const offsets={};tabCats.forEach(cat=>{offsets[cat]=(getCatArr(cat,'today')||[]).length;});
+  const histGroups=[];
+  (S.days||[]).forEach(d=>{
+    const inRange=d.date>=cutoffStr2;
+    const de=[];
+    tabCats.forEach(cat=>{
+      const arr=getCatArr(cat,d);
+      if(inRange){arr.forEach((item,i)=>de.push({cat,data:item,flatIdx:offsets[cat]+i,time:item.time||'00:00'}));}
+      offsets[cat]+=(arr||[]).length;
+    });
+    if(inRange&&de.length>0){de.sort((a2,b2)=>b2.time.localeCompare(a2.time));histGroups.push({label:formatLibDate(d.date),entries:de});}
+  });
+  histGroups.reverse().forEach(g=>dateGroups.push(g));
+}
+
+if(dateGroups.length===0||dateGroups.every(g=>g.entries.length===0)){
+  wrap.appendChild(div({padding:'20px',textAlign:'center',color:t.muted,fontSize:(sz-1)+'px'},[txt('Nothing logged '+rangeLabel+'.')]));return wrap;
+}
+dateGroups.forEach(group=>{
+  if(group.entries.length===0)return;
+  wrap.appendChild(sl(group.label));
+  group.entries.forEach(e=>{
+    const cc=catColors[e.cat]||{bg:'#F3F4F6',c:'#6B7280',label:'Log'};
+    const{name,subtitle}=entryLabel(e);
+    wrap.appendChild(buildEntryCard(cc.label,cc.bg,cc.c,name,subtitle,e.cat,e.flatIdx,e.data));
+  });
+});
 return wrap;}
 
 function viewLibrary(){return viewHistory();}
