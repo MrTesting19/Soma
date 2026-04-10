@@ -2431,7 +2431,7 @@ const cb=btn({width:'100%',padding:'13px',background:a.m,border:'none',borderRad
 sheet.appendChild(cb);bg.appendChild(sheet);return bg;}
 
 // ===== RENDER =====
-function renderContent(){const con=document.getElementById('content');con.innerHTML='';const views={home:viewHome,analysis:viewAnalysis,charts:viewCharts,history:viewHistory,library:viewLibrary,database:viewDatabase,progress:viewProgress,settings:viewSettings,tasks:viewTasks};const vfn=views[S.view];if(vfn)con.appendChild(vfn());if(S.editingEntry){renderModal();}}
+function renderContent(){const con=document.getElementById('content');con.innerHTML='';const views={home:viewHome,analysis:viewAnalysis,charts:viewCharts,history:viewHistory,library:viewLibrary,database:viewDatabase,progress:viewProgress,settings:viewSettings,tasks:viewTasks};const vfn=views[S.view];if(vfn)con.appendChild(vfn());renderModal();}
 
 function renderBottomNav(){const nav=document.getElementById('bottomnav');nav.innerHTML='';BOTTOM_NAV.forEach(n=>{const b=document.createElement('button');b.className=S.view===n.id||(n.id==='more'&&['analysis','history','library','database','settings','charts'].includes(S.view))?'active':'';b.innerHTML='<svg viewBox="0 0 24 24">'+n.svg+'</svg><span>'+n.label+'</span>';b.onclick=()=>navTo(n.id);nav.appendChild(b);});}
 
