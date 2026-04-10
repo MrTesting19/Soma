@@ -1124,7 +1124,7 @@ function buildManualLogUI(){
   const typeRow=div({marginBottom:'12px'});
   const typeSel=document.createElement('select');typeSel.className='dropdown';
   Object.assign(typeSel.style,{width:'100%',fontSize:(sz-1)+'px'});
-  [{id:'ingredients',label:'Ingredients'},{id:'liquids',label:'Liquids'},{id:'supplements',label:'Supplements'},{id:'activities',label:'Activities'},{id:'symptoms',label:'Symptoms'},{id:'notes',label:'Notes'}].forEach(tp=>{
+  [{id:'ingredients',label:'Ingredients'},{id:'liquids',label:'Liquids'},{id:'supplements',label:'Supplements'},{id:'activities',label:'Activities'},{id:'symptoms',label:'Symptoms'},{id:'stool',label:'Stool'},{id:'notes',label:'Notes'}].forEach(tp=>{
     const o=document.createElement('option');o.value=tp.id;o.textContent=tp.label;if(S.manualType===tp.id)o.selected=true;typeSel.appendChild(o);
   });
   typeSel.onchange=e=>{S.manualType=e.target.value;render();};
@@ -1138,6 +1138,7 @@ function buildManualLogUI(){
   else if(S.manualType==='supplements'){formWrap.appendChild(buildManualSupplements());}
   else if(S.manualType==='activities'){formWrap.appendChild(buildManualActivities());}
   else if(S.manualType==='symptoms'){formWrap.appendChild(buildManualSymptoms());}
+  else if(S.manualType==='stool'){formWrap.appendChild(buildManualStool());}
   else if(S.manualType==='notes'){formWrap.appendChild(buildManualNotes());}
   wrap.appendChild(formWrap);
 
@@ -1252,6 +1253,39 @@ function buildManualSymptoms(){
   return wrap;
 }
 
+function buildManualStool(){
+  const t=T(),a=A(),sz=z();const wrap=div({});
+  if(!S._manualStool)S._manualStool={type:4,color:'Brown',assisted:false};
+  const ms=S._manualStool;
+  // Bristol type selector
+  wrap.appendChild(div({fontSize:'10px',fontWeight:'600',color:t.muted,textTransform:'uppercase',letterSpacing:'0.04em',marginBottom:'6px'},[txt('Bristol Type')]));
+  const typeRow=div({display:'flex',gap:'6px',flexWrap:'wrap',marginBottom:'10px'});
+  [1,2,3,4,5,6,7].forEach(n=>{
+    typeRow.appendChild(btn({padding:'8px 12px',borderRadius:'8px',border:'0.5px solid '+(ms.type===n?a.m:t.bdr),background:ms.type===n?a.bg:t.surf,color:ms.type===n?a.t:t.muted,fontSize:(sz-1)+'px',cursor:'pointer',display:'flex',alignItems:'center',gap:'4px'},'',()=>{ms.type=n;render();}));
+    const lastBtn=typeRow.lastChild;
+    lastBtn.appendChild(bristolSVG(n,16));
+    lastBtn.appendChild(txt(String(n)));
+  });
+  wrap.appendChild(typeRow);
+  wrap.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,marginBottom:'10px'},[txt(BRISTOL[(ms.type||4)-1])]));
+  // Color selector from stoolDB or defaults
+  const stoolEntry=(S.stoolDB||[]).find(s=>s.type===ms.type);
+  const colors=stoolEntry&&stoolEntry.colors?stoolEntry.colors:['Brown','Dark Brown','Light Brown','Yellow','Green','Red'];
+  wrap.appendChild(div({fontSize:'10px',fontWeight:'600',color:t.muted,textTransform:'uppercase',letterSpacing:'0.04em',marginBottom:'6px'},[txt('Color')]));
+  const colRow=div({display:'flex',gap:'6px',flexWrap:'wrap',marginBottom:'10px'});
+  colors.forEach(c=>{
+    colRow.appendChild(btn({padding:'6px 10px',borderRadius:'8px',border:'0.5px solid '+(ms.color===c?a.m:t.bdr),background:ms.color===c?a.bg:t.surf,color:ms.color===c?a.t:t.muted,fontSize:(sz-2)+'px',cursor:'pointer'},c,()=>{ms.color=c;render();}));
+  });
+  wrap.appendChild(colRow);
+  // Assisted toggle
+  const astRow=div({display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px'});
+  astRow.appendChild(div({fontSize:(sz-2)+'px',color:t.muted},[txt('Assisted')]));
+  const tog=document.createElement('button');tog.className='tog'+(ms.assisted?' on':'');tog.onclick=()=>{ms.assisted=!ms.assisted;render();};
+  astRow.appendChild(tog);
+  wrap.appendChild(astRow);
+  return wrap;
+}
+
 function buildManualNotes(){
   const t=T(),a=A(),sz=z();const wrap=div({});
   wrap.appendChild(div({fontSize:(sz-2)+'px',color:t.muted,marginBottom:'6px'},[txt('Write a note')]));
@@ -1282,13 +1316,19 @@ function doManualLog(){
   }else if(S.manualType==='symptoms'&&S.manualSymptoms.length>0){
     S.manualSymptoms.forEach(sym=>{const entry={symptom:sym.symptom,level:sym.level,duration:sym.duration,time,raw:sym.symptom};if(isPast)logToPastDate(dateStr,'symptom',entry);else S.symptomLogs.push(entry);});
     S.logResult={type:'symptom',text:S.manualSymptoms[0].symptom,time};if(!isPast)showToast('Symptom logged',null);
+  }else if(S.manualType==='stool'){
+    const ms=S._manualStool||{type:4,color:'Brown',assisted:false};
+    const entry={type:ms.type,color:ms.color,assisted:ms.assisted,time,note:null};
+    if(isPast)logToPastDate(dateStr,'stool',entry);else S.stoolLogs.push(entry);
+    S.logResult={type:'stool',stool:entry};if(!isPast)showToast('Stool logged — Type '+ms.type,null);
+    S._manualStool=null;
   }else if(S.manualType==='notes'){
     const noteEl=document.getElementById('manual-note-text');const noteText=noteEl?noteEl.value.trim():'';
     if(!noteText){showToast('Nothing to log',null);return;}
     if(isPast)logToPastDate(dateStr,'note',noteText);else S.noteLogs.push(noteText);
     S.logResult={type:'note',text:noteText};if(!isPast)showToast('Note saved',null);
   }else{showToast('Nothing to log',null);return;}
-  S.logActive=false;S.manualIngredients=[];S.manualSupplements=[];S.manualLiquids=[];S.manualActivities=[];S.manualSymptoms=[];S.manualTime=null;S.manualDate=null;S.selectedIngredient=null;
+  S.logActive=false;S.manualIngredients=[];S.manualSupplements=[];S.manualLiquids=[];S.manualActivities=[];S.manualSymptoms=[];S.manualTime=null;S.manualDate=null;S.selectedIngredient=null;S._manualStool=null;
   saveState();render();
 }
 
