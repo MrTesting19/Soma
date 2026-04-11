@@ -126,7 +126,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
       }
     }
 
-    // Debounced sync to Firebase
     function sync(data) {
       if (!uid) { pendingSync = data; return; }
       clearTimeout(syncTimer);
@@ -141,7 +140,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
       }, 1200);
     }
 
-    // Load latest from Firebase
     function loadLatest() {
       if (!uid) return Promise.resolve(null);
       return db.ref('users/' + uid + '/data').once('value')
@@ -154,14 +152,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 
     window._somaFB = { sync: sync, loadLatest: loadLatest };
 
-    // Sign in anonymously
     firebase.auth().signInAnonymously()
       .then(function(cred) {
         uid = cred.user.uid;
         console.log('Firebase auth OK, uid:', uid);
-        // Flush any sync that happened before auth was ready
         if (pendingSync) { sync(pendingSync); pendingSync = null; }
-        // Trigger a load if the app is already initialised
         if (window._somaFB.onAuth) window._somaFB.onAuth();
       })
       .catch(function(err) {
